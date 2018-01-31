@@ -1,0 +1,104 @@
+{include file="public:yunying_header" /}
+<link href="__PUBLIC__/css/mail.css" rel="stylesheet">
+
+</head>
+<body>
+<div class="mail_info">
+    <div class="task-header">
+        <div class="title">邮箱设置</div>
+        <div class="right-close closed"></div>
+    </div>
+    <!-- 基本信息开始 -->
+    <form class="form-horizontal" id="form_info" >
+        <div class="base">
+
+            <ul>
+                <li>
+                    <label>邮箱账号</label>
+                    <div>
+                        <input type="text" name="mail" class="form-control must" value="{$data.mail}"  placeholder="请输入邮箱">
+                    </div>
+                </li>
+                <li>
+                    <label>邮箱密码</label>
+                    <div>
+                        <input type="text" name="mail_password" class="form-control must" value="{$data.mail_password}"  placeholder="请输入邮箱发送密码">
+                    </div>
+                </li>
+
+            </ul>
+        </div>
+        <!-- 基本信息结束 -->
+
+        <div class="submit   col-sm-12 col-md-12">
+            <span class="btn btn-success" id="up">保存</span>
+            <span class="btn btn-primary closed">取消</span>
+        </div>
+    </form>
+</div>
+{include file="public:js" /}
+<script type="text/javascript">
+    $(".closed").click(function(){
+        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+        parent.layer.close(index); //再执行关闭
+    });
+
+
+
+    
+
+    
+     $('#up').click(function() {
+        if (check()) { 
+            var url = "{:url('setMail')}"; 
+            var index = parent.layer.getFrameIndex(window.name); 
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: $('#form_info').serialize(),
+                dataType: 'JSON',
+                async: false,
+                success: function(data) {
+                    if (data.status) {
+                        parent.layer.msg(data.info);
+                        parent.layer.close(index);
+                        //parent.window.location.href=document.referrer;
+                        parent.layer.iframeSrc(index2, document.referrer);
+                        /*parent.layer.open({
+                            title: false,
+                            closeBtn: 0, //不显示关闭按钮
+                            content: data.info,
+                            yes: function(index, layero){
+                                   parent.layer.closeAll();
+                              }
+
+                          });*/
+
+
+                    } else {
+                        parent.layer.msg(data.info);
+                    }
+                }
+            });
+        }
+    });
+    
+    function check() {
+        var msg = '';
+        $(".must").each(function() {
+            if( $.trim($(this).val())=='' ){
+                msg += '-' + $(this).attr('placeholder') + '<br>';
+            }
+        });
+
+        if (msg) {
+            parent.layer.alert(msg, {icon: 3,title:'输入的内容'}); 
+            return false;
+        } else {
+            return true;
+        }
+
+    }
+</script>
+</body>
+</html>

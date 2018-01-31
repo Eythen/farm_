@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+		<meta content="telephone=no" name="format-detection" />
+		<title>提现</title>
+
+		<link href="__PUBLIC__/skin/css/ydui.css" rel="stylesheet">
+		<link href="__PUBLIC__/skin/css/app.css" rel="stylesheet">
+		<style>
+			.g-flexview {
+				height: auto;
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: -ms-flexbox;
+				display: flex;
+				-webkit-box-orient: vertical;
+				-webkit-box-direction: normal;
+				-webkit-flex-direction: column;
+				-ms-flex-direction: column;
+				flex-direction: column;
+				margin: 0 auto;
+				max-width: 750px;
+				min-width: 300px;
+				padding-top: 1rem;
+			}
+		</style>
+
+		<script src="__PUBLIC__/skin/js/ydui.flexible.js"></script>
+	</head>
+
+	<body>
+		<header class="m-navbar">
+			<a href="{:url('users/index')}" class="navbar-item"><i class="back-ico"></i></a>
+			<div class="navbar-center"><span class="navbar-title">提现</span></div>
+		</header>
+		<div class="g-flexview">
+			<div class="top50">
+
+				<div class="m-cell top3">
+					<div class="cell-item">
+						<div class="cell-left">提现金额：</div>
+						<div class="cell-right">
+							<input type="number" pattern="[0-9]*" class="cell-input" id="money" placeholder="输入提现金额" autocomplete="off" required/>
+						</div>
+					</div>
+				</div>
+
+				<div class="weui-btn-area">
+					<a href="javascript:;" onclick="issue()" class="btn-block btn-ls">提交</a>
+				</div>
+
+			</div>
+		</div>
+
+		<script src="__PUBLIC__/skin/js/jquery.min.js"></script>
+		<script src="__PUBLIC__/skin/js/ydui.js"></script>
+		<script src="__PUBLIC__/skin/js/app.js"></script>
+		<script>
+			function issue() {
+				! function(win, $) {
+					var dialog = win.YDUI.dialog;
+					var money = $('#money').val();
+					var re = /^[0-9]*[0-9]$/i;       //校验是否为数字
+					if(money == '') {
+						$('#money').focus();
+						dialog.toast('金额不能为空！', 'none', 1000);
+						return false;
+					}
+					if(re.test(money) && money%100===0) {
+
+					}
+					else{
+						$('#money').focus();
+						dialog.toast('提现金额必须要100的整数倍 ！', 'none', 2000);
+						return false;
+					}
+					/* ajax 成功发送验证码后调用【start】 */
+					YDUI.dialog.loading.open('发送中');
+
+					$.ajax({
+	                    url: "{:url('integral/withdraw')}",
+	                    type: 'POST',
+	                    dataType: 'json',
+	                    data: {user_money: money},
+	                    success: function(data){
+	                        if( data.code ){
+								YDUI.dialog.loading.close();
+								YDUI.dialog.toast(data.msg, 'success', 3000, function(){
+									window.location.href = "{:url('users/index')}";
+								});
+	                        }else{
+	                        	YDUI.dialog.loading.close();
+	                            YDUI.dialog.toast(data.msg, 'error', 2000);
+	                            //window.location.href = "{:url('users/bank')}"; 
+	                        }
+	                    },
+	                    error:function(msg){
+				   			YDUI.dialog.toast('请求失败', 'none', 2000);
+				   		} 
+	                });
+
+				}(window, jQuery);
+			};
+		</script>
+		<script src="__PUBLIC__/js/mui.min.js"></script>
+		<script>
+            mui.init({
+                keyEventBind:{
+                    backbutton:false
+                }
+            })
+		</script>
+		<script src="__PUBLIC__/js/common.js"></script>
+	</body>
+
+</html>

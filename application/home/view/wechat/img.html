@@ -1,0 +1,171 @@
+{include file="public/zhaoshang_header" /}<link href="__PUBLIC__/css/style.min862f.css?v=4.1.0" rel="stylesheet">
+
+<div class="wrapper wrapper-content">
+  
+  
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title"><i class="fa fa-list"></i> 图文回复
+              <button type="button" class="btn btn-warning delete" data-rel="{:url('home/Wechat/add_img')}">
+                  <i class="ace-icon fa fa-minus bigger-110"></i>批量删除
+              </button>
+              <a href="{:url('home/Wechat/add_img')}"><button type="button" class="btn btn-info" data-rel="{:url('home/Wechat/add_img')}">
+                  <i class="ace-icon fa fa-plus bigger-110"></i>增加
+              </button></a>
+              </h3>
+        </div>
+        <div class="panel-body">
+          <div id="ajax_return">
+              <div class="table-responsive">
+                <table class="table text-center" data-toggle="table" data-sort-name="id" data-sort-order="desc" data-url="{:url('Wechat/img')}" data-height="500" data-side-pagination="server" data-pagination="true" data-page-list="[5, 10, 20, 50, 100, 200]" data-search="true" data-show-refresh="true" data-show-columns="true" >
+                      <thead>
+                          <tr class="info" >
+                            <th data-halign="center" data-field="state" data-checkbox="true" ></th>
+                            <th data-halign="center" data-field="id" data-sortable="true" >ID</th>
+                            <th data-halign="center" data-field="keyword">关键词</th>
+                            <th data-halign="center" data-field="title" >标题</th>
+                            <th data-halign="center" data-field="desc" >描述</th>
+                          <!--   <th data-halign="center" data-field="pic" >封面图片</th> -->
+                            <th data-halign="center" data-field="pic" data-formatter="picFormatter" >封面图片</th>
+                            <th data-halign="center" data-field="operate" data-formatter="operateFormatter" data-events="operateEvents">操作</th>
+                          </tr>
+                      </thead>
+                  </table>
+                </div>
+                 
+              </div>
+              
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /.row --> 
+  </section>
+  <!-- /.content --> 
+</div>
+<!-- /.content-wrapper --> 
+
+{include file="public/js" /}
+
+<script>
+
+function picFormatter(value, row, index){
+    return [
+        '<button class="btn btn-info btn-sm" type="button" onclick="preview(\''+row.pic+'\')">预览</button>'
+    ]
+}
+function operateFormatter(value, row, index){
+    return [
+        '<button type="button" class="btn btn-success edit"><span class="glyphicon glyphicon-pencil" ></span> 编辑</button>','    <button type="button" class="btn btn-warning del"><span class="glyphicon glyphicon-minus" ></span> 删除</button>'
+    ].join('');
+}
+
+window.operateEvents = {
+    'click .edit': function (e, value, row, index) {
+        var url ="{:url('add_img')}"+"?id="+row.id;
+        window.location = url;
+        //art.dialog.open(url,{width:600,lock:true,height:300,resize:true,title:'查看',close:function(){ $("button[name='refresh']").click(); } }, false);
+       /* layer.open({
+          type: 2,
+          title: '编辑',
+          shadeClose: true,
+          shade: 0.8,
+          //area: ['96%', '90%'],
+          content: url, //iframe的url
+          end:function(){ $("button[name='refresh']").click(); }
+        });*/ 
+    },
+    'click .del': function (e, value, row, index) {
+        var str = row.id;
+        if( str!='' ){
+            $.ajax({
+                type: 'POST',
+                url: "{:url('deleteUser')}",
+                data: {id: str},
+                dataType: 'JSON',
+                async: false,
+                success: function(data) {
+                    if(data.status){
+                        id = row.id;
+                        $(".table").bootstrapTable('remove', {
+                            field: 'id',
+                            values: id
+                        });
+                    }else{
+                        layer.alert(data.info);
+                    }
+                }
+            });
+        }
+    },
+}
+
+$(".delete").click(function() {
+  var obj = $(".table").bootstrapTable('getSelections');
+  var str = '';
+  for ( var o in obj) {
+    str = str + obj[o].id + ",";
+  };
+  if( str!='' ){
+    $.ajax({
+      type: 'POST',
+      url: "{:url('del_img')}",
+      data: {id: str},
+      dataType: 'JSON',
+      async: false,
+      success: function(data) {
+        if(data.status){
+          ids = $.map(obj, function (row) {
+                        return row.id;
+                        });
+                    $(".table").bootstrapTable('remove', {
+                        field: 'id',
+                        values: ids
+                    });
+        }else{
+          layer.alert(data.info);
+        }
+      }
+    });
+  }
+});
+
+$(".add").click(function() {
+    var url= $(this).data('rel');
+    //art.dialog.open(url,{width:1000,lock:true,height:400,resize:true,title:'查看',close:function(){ $("button[name='refresh']").click(); } }, false);
+    layer.open({
+        type: 2,
+        title: '增加',
+        shadeClose: true,
+        shade: 0.8,
+        area: ['96%', '90%'],
+        content: url, //iframe的url
+        end:function(){ $("button[name='refresh']").click(); }
+      }); 
+
+});
+        // 删除操作
+        function del(id,t)
+        {
+            if(!confirm('确定要删除吗?'))
+                return false;
+
+            location.href = $(t).data('href');
+        }
+        function preview(url){
+            layer.open({
+                type: 1,
+                title: false,
+                closeBtn: false,
+                area: '300px 300px',
+                skin: 'layui-layer-nobg', //没有背景色
+                shadeClose: true,
+                content: "<img src='"+url+"'>"
+            });
+        }
+</script> 
+</body>
+</html>

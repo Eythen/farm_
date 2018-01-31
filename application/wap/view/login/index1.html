@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+		<meta content="telephone=no" name="format-detection" />
+		<title>登录</title>
+
+		<link href="__PUBLIC__/skin/css/ydui.css" rel="stylesheet">
+		<link href="__PUBLIC__/skin/fonts/iconfont.css" rel="stylesheet">
+		<link href="__PUBLIC__/skin/css/app.css" rel="stylesheet">
+		<style>
+			body {
+				background: -webkit-linear-gradient(135deg, #02b2c9 0%, #48cd7f 100%);
+				background: linear-gradient(-45deg, #02b2c9 0%, #48cd7f 100%);
+				height: 100vh;
+			}
+			
+			.navbar-item,
+			.navbar-item .back-ico:before,
+			.navbar-center .navbar-title {
+				color: #fff;
+			}
+			
+			.g-flexview {
+				height: auto;
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: -ms-flexbox;
+				display: flex;
+				-webkit-box-orient: vertical;
+				-webkit-box-direction: normal;
+				-webkit-flex-direction: column;
+				-ms-flex-direction: column;
+				flex-direction: column;
+				margin: 0 auto;
+				max-width: 750px;
+				min-width: 300px;
+			}
+		</style>
+
+		<script src="__PUBLIC__/skin/js/ydui.flexible.js"></script>
+	</head>
+
+	<body>
+
+		<div class="g-flexview">
+			<div class="login-box">
+
+				<div class="cent-box-header">
+					<div class="main-title"></div>
+					<h2 class="sub-title">独需-你的智能购物商城</h2>
+				</div>
+				<div class="cont-main clearfix">
+					<div class="index-tab">
+						<div class="index-slide-nav">
+							<a href="{:url('login/index')}" class="active">登录</a>
+							<a href="{:url('users/add')}">注册</a>
+						</div>
+					</div>
+					<div class="login form">
+						<div class="slide-bar"></div>
+						<div class="group">
+							<div class="group-ipt phone">
+								<span class="icon-phone"></span>
+								<input type="number" pattern="[0-9]*" id="Mobile" class="ipt" placeholder="手机号" required/>
+							</div>
+							<div class="group-ipt password">
+								<span class="icon-mima"></span>
+								<input type="password" id="Pwd" class="ipt" placeholder="密码" />
+								<div class="icon-wrapper">
+								    <span toggle="#Pwd" class="icon-xianshimima field-icon toggle-password"></span>
+								</div>
+							</div>
+							<div class="login-top">
+								<button type="submit" class="login-btn register-btn" onclick="submit()" id="regBtn">登录</button>
+							</div>
+							<div class="remember clearfix">
+								<label class="forgot-password">
+									<a href="{:url('login/forgetpsw')}">忘记密码？</a>
+								</label>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script src="__PUBLIC__/skin/js/jquery.min.js"></script>
+		<script src="__PUBLIC__/skin/js/ydui.js"></script>
+		<script src="__PUBLIC__/skin/js/app.js"></script>
+		<script>
+			function submit() {
+				! function(win, $) {
+					var dialog = win.YDUI.dialog;
+					var Mobile = $('#Mobile').val(),
+						Pwd = $('#Pwd').val();
+					partten = /^1[3|4|5|7|8]\d{9}$/;
+					if(Mobile == '') {
+						$('#Mobile').focus();
+						dialog.toast('手机不能为空！', 'none', 1000);
+					} else if(!partten.test(Mobile)) {
+						dialog.toast('请输入正确的手机号码？', 'none', 1000);
+					} else if(Pwd == '') {
+						$('#Pwd').focus();
+						dialog.toast('密码不能为空！', 'none', 1000);
+					} else {
+
+						$.ajax({
+                        type : "POST",
+                        url:"{:url('Login/ajaxLogin')}",
+                        data : {'mobile':Mobile,'password':Pwd},
+                        dataType:'json',
+                        success: function(data){
+                            if(data.status == 2){
+                                window.top.window.location = "{$referurl}";
+							}else{
+                                dialog.toast(data.msg, 'none', 1000);
+                                return false;
+                            }
+                        }
+                    });
+					}
+				}(window, jQuery);
+			};
+
+			$(document).ready(function() { 
+			    //隐藏或显示密码 
+			    $(".icon-wrapper").click(function() { 
+			        $(".toggle-password").toggleClass(".icon-xianshimima icon-xianshimima1"); 
+			        var input = $($(".toggle-password").attr("toggle")); 
+			        if (input.attr("type") == "password") { 
+			            input.attr("type", "text"); 
+			        } else { 
+			            input.attr("type", "password"); 
+			        } 
+			    }); 
+			});
+		</script>
+		<script src="__PUBLIC__/js/mui.min.js"></script>
+		<script>
+            mui.init({
+                keyEventBind:{
+                    backbutton:false
+                }
+            })
+		</script>
+		<script src="__PUBLIC__/js/common.js"></script>
+	</body>
+
+</html>

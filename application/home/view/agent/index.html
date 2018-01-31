@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <link href="__PUBLIC__/img/favicon.ico" rel="shortcut icon">
+    <link href="__PUBLIC__/css/bootstrap.min.css?v=3.3.5" rel="stylesheet">
+    <link href="__PUBLIC__/css/bootstrap-theme.min.css?v=3.3.5" rel="stylesheet">
+    <link href="__PUBLIC__/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="__PUBLIC__/css/animate.min.css" rel="stylesheet">
+    <link href="__PUBLIC__/css/morelist.css" rel="stylesheet">
+    <script src="__PUBLIC__/js/jquery.min.js?v=2.1.4"></script>
+    <script src="__PUBLIC__/js/bootstrap.min.js?v=3.3.5"></script>
+    <script src="__PUBLIC__/js/plugins/layer/layer.js?v=2.2"></script>
+    <style>
+    .ng-hide {
+        display: none;
+    }
+    </style>
+</head>
+
+<body>
+    <div class="viewFramework-product viewFramework-product-col-1" role="main">
+        <div class="viewFramework-product-navbar ng-scope">
+            <!-- product nav -->
+            <div bindonce="" class="product-nav-stage ng-scope product-nav-stage-main">
+                <div class="product-nav-scene product-nav-main-scene">
+                    <div class="product-nav-title ng-scope" id="nav-title" text-length="20">代理管理</div>
+                    <!-- 自定义内容插入点，比如商标、logo -->
+                    <div customized-content="" class="ng-isolate-scope"></div>
+                    <div class="product-nav-list">
+                        <ul role="tree" aria-labelledby="nav-title">
+                            <!-- ngRepeat: item in config.mainNav -->
+                            {volist name="menu['son']" id="vo"}
+                            <li class="{eq name='key' value='0'}active{/eq}{notempty name="vo['son']"} showchild{/notempty}">
+                                <div class="ng-isolate-scope">
+                                    <a href="javascript:void(0);" class="ng-scope" data-url="{neq name="vo['url']" value=""}{:url($vo['url'])}{/neq}">
+                                        <div class="nav-icon">{notempty name="vo['son']"}<span class="fa fa-angle-down"></span>{/notempty}</div>
+                                        <div class="nav-title" text-length="20">{$vo.title}</div>
+                                    </a>
+                                </div>
+                                {notempty name="vo['son']"}
+                                <ul role="group" class="ng-scope ng-hide">
+                                    {volist name="vo['son']" id="vv"}
+                                    <li class="">
+                                        <div class="ng-isolate-scope">
+                                            <a href="javascript:void(0);" class="ng-scope" data-url="{neq name="vv['url']" value=""}{:url($vv['url'])}{/neq}">
+                                                <div class="nav-icon"></div>
+                                                <div class="nav-title" text-length="20" is-unicode-length="true">{$vv.title}</div>
+                                            </a>
+                                        </div>
+                                    </li>
+                                    {/volist}
+                                </ul>
+                                {/notempty}
+
+                            </li>
+                            {/volist}
+                            <!-- 
+                            <li class="active">
+                                <div class="ng-isolate-scope">
+                                    <a href="javascript:void(0);" class="ng-scope" data-url="{:url('achievement')}">
+                                        <div class="nav-icon"></div>
+                                        <div class="nav-title" text-length="20">业绩</div>
+                                    </a>
+                                </div>
+                            </li>
+                            <li class="">
+                                <div class="ng-isolate-scope">
+                                    <a href="javascript:void(0);" class="ng-scope" data-url="{:url('mycode')}">
+                                        <div class="nav-icon"></div>
+                                        <div class="nav-title" text-length="20">我的二维码</div>
+                                    </a>
+                                </div>
+                            </li>
+                            <li class="">
+                                <div class="ng-isolate-scope">
+                                    <a href="javascript:void(0);" class="ng-scope" data-url="{:url('admin/index')}">
+                                        <div class="nav-icon"></div>
+                                        <div class="nav-title" text-length="20">代理商城</div>
+                                    </a>
+                                </div>
+                            </li>
+                            <li class="showchild">
+                                <div class="ng-isolate-scope">
+                                    <a href="javascript:void(0);" class="ng-scope">
+                                        <div class="nav-icon">
+                                            <span class="fa fa-angle-down"></span>
+                                        </div>
+                                        <div class="nav-title" text-length="20">代理商管理</div>
+                                    </a>
+                                </div>
+                                <ul role="group" class="ng-scope ng-hide">
+                                    <li class="">
+                                        <div class="ng-isolate-scope">
+                                            <a href="javascript:void(0);" class="ng-scope">
+                                                <div class="nav-icon"></div>
+                                                <div class="nav-title" text-length="20" is-unicode-length="true">代理商列表</div>
+                                            </a>
+                                        </div>
+                                    </li>
+                                    <li class="">
+                                        <div class="ng-isolate-scope">
+                                            <a href="javascript:void(0);" class="ng-scope">
+                                                <div class="nav-icon"></div>
+                                                <div class="nav-title" text-length="20" is-unicode-length="true">代理商指派</div>
+                                            </a>
+                                        </div>
+                                    </li>
+                                    <li class="">
+                                        <div class="ng-isolate-scope">
+                                            <a href="javascript:void(0);" class="ng-scope">
+                                                <div class="nav-icon"></div>
+                                                <div class="nav-title" text-length="20" is-unicode-length="true">代理商申请</div>
+                                            </a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="showchild">
+                                <div class="ng-isolate-scope">
+                                    <a href="javascript:void(0);" class="ng-scope">
+                                        <div class="nav-icon">
+                                            <span class="fa fa-angle-down"></span>
+                                        </div>
+                                        <div class="nav-title" text-length="20">订单管理</div>
+                                    </a>
+                                </div>
+                                <ul role="group" class="ng-scope ng-hide">
+                                    <li class="">
+                                        <div class="ng-isolate-scope">
+                                            <a href="javascript:void(0);" class="ng-scope">
+                                                <div class="nav-icon"></div>
+                                                <div class="nav-title" text-length="20" is-unicode-length="true">订单列表</div>
+                                            </a>
+                                        </div>
+                                    </li>
+                                    <li class="">
+                                        <div class="ng-isolate-scope">
+                                            <a href="javascript:void(0);" class="ng-scope">
+                                                <div class="nav-icon"></div>
+                                                <div class="nav-title" text-length="20" is-unicode-length="true">提货单管理</div>
+                                            </a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li> -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- /product nav -->
+        </div>
+        <!-- product nav collapse-->
+        <div class="viewFramework-product-navbar-collapse ng-scope" style="">
+            <div class="product-navbar-collapse-inner">
+                <div class="product-navbar-collapse-bg"></div>
+                <div class="product-navbar-collapse">
+                    <span class="icon-collapse-left fa fa-indent"></span>
+                    <span class="icon-collapse-right fa fa-outdent"></span>
+                </div>
+            </div>
+        </div>
+        <!-- /product nav collapse-->
+        <div class="viewFramework-product-body">
+            <a tabindex="0" href="javascript:void(0)" id="viewFramework-product-anchor" role="landmark" style="position: absolute;top: -10000px;left: -10000px">let's go</a>
+            <div aliyun-console-test=""></div>
+            <!-- product body -->
+            <iframe class="J_iframe" name="iframe2" width="100%" height="100%" src="{:url('achievement')}" frameborder="0" data-id="{:url('achievement')}" seamless="" style="display: block;"></iframe>
+            <!-- /product body -->
+        </div>
+    </div>
+    <script type="text/javascript">
+    //$('.nav-title').click(function(){
+    $('.product-nav-list a').click(function() {
+        var showchild = $(this).closest('li').hasClass('showchild');
+        if (showchild) {
+            $(this).closest('li').find('ul').toggleClass('ng-hide');
+            $(this).closest('li').find('.fa').toggleClass("fa-angle-down").toggleClass("fa-angle-up");
+        } else {
+            //在二级栏目里
+            var child = $(this).closest('li').parent('ul').parent('li').hasClass('showchild');
+            if (child) {
+                $(this).closest('li').addClass('active').siblings('li').removeClass('active');
+                $(this).closest('li').parent('ul').parent('li').siblings('li').removeClass('active');
+                $(this).closest('li').parent('ul').parent('li').siblings('li').find('li').removeClass('active');//同样有子项的其它栏目
+            } else {
+                $(this).closest('li').addClass('active').siblings('li').removeClass('active').find('li').removeClass('active');
+            }
+
+        }
+        var url = $(this).data('url');
+        if (url) {
+            var html = '<iframe class="J_iframe" name="iframe2" width="100%" height="100%" src="' + url + '" frameborder="0" data-id="' + url + '" seamless="" style="display: block;">';
+            $('.viewFramework-product-body').html(html);
+        }
+    });
+
+    $('.product-navbar-collapse').click(function() {
+        var right = $('.icon-collapse-right').css('display');
+        if (right == 'inline') {
+            $('.icon-collapse-right').css('display', 'none');
+            $('.icon-collapse-left').css('display', 'inline');
+            $('.viewFramework-product').removeClass('viewFramework-product-col-1');
+        } else {
+            $('.icon-collapse-left').css('display', 'none');
+            $('.icon-collapse-right').css('display', 'inline');
+            $('.viewFramework-product').addClass('viewFramework-product-col-1');
+        }
+    });
+    </script>
+</body>
+
+</html>

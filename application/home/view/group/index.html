@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>信息管理平台</title>
+	{include file="public:css" /}
+	<style type="text/css">
+		.btn-icon{ font-size: 16px; margin: 0px 5px; }
+	</style>
+</head>
+<body>
+	<div class="well well-sm" >
+		<div id="toolbar">
+            <button id="add" class="btn btn-success">
+                <i class="glyphicon glyphicon-plus"></i> 新增分组
+            </button>
+        </div>
+		<table class="table text-center table-hover" data-toolbar="#toolbar" data-toggle="table" data-sort-name="id" data-sort-order="desc" data-url="{:url('index')}" data-side-pagination="server" data-pagination="true" data-page-list="[10, 20, 50, 100, 200]" data-show-refresh="true" data-search="true" data-show-export="true" data-filter-control="true" data-filter-show-clear="true" >
+            <thead>
+                <tr>
+                    <th data-halign="center" data-field="id" data-filter-control="input" >ID</th>
+                    <th data-halign="center" data-field="title" data-filter-control="input" >分组名称</th>
+                    <th data-halign="center" data-field="desc" data-filter-control="input" >分组描述</th>
+                    <th data-halign="center" data-field="operate" data-formatter="operateFormatter" data-events="operateEvents" >操作</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+	{include file="public:js" /}
+	<script type="text/javascript">
+		function operateFormatter(value, row, index) {
+			if( row.status==1 ){
+				return [
+	            	'<a href="javascript:void(0);" class="btn btn-sm btn-primary btn-icon eye" title="视图维护"><i class="fa fa-eye"></i>视图维护</a><a href="javascript:void(0);" class="btn btn-sm btn-info btn-icon users" title="成员查看"><i class="fa fa-users"></i>成员查看</a><a href="#" class="btn btn-sm btn-default btn-icon edit" title="编辑分组"><i class="fa fa-edit"></i>编辑分组</a><a href="javascript:void(0);" class="btn btn-sm btn-danger btn-icon remove" title="删除分组"><i class="fa fa-remove"></i>删除分组</a>',
+	            ].join('');
+			}else{
+				return [
+	            	'<a href="javascript:void(0);" class="btn btn-sm btn-primary btn-icon eye" title="视图维护"><i class="fa fa-eye"></i>视图维护</a><a href="javascript:void(0);" class="btn btn-sm btn-info btn-icon users" title="成员查看"><i class="fa fa-users"></i>成员查看</a><a href="#" class="btn btn-sm btn-default btn-icon edit" title="编辑分组"><i class="fa fa-edit"></i>编辑分组</a><a href="javascript:void(0);" class="btn btn-sm btn-danger btn-icon remove" title="删除分组"><i class="fa fa-remove"></i>删除分组</a>',
+	            ].join('');
+			}
+            
+        }
+
+        window.operateEvents = {
+        	// 视图维护
+            'click .eye': function (e, value, row, index) {
+            	layer.open({
+                    title:'视图维护',
+                    type: 2,
+                    area: ['600px', '400px'],
+                    fix: true, //不固定
+                    maxmin: true,
+                    content: "{:url('menu')}"+"?id="+row.id,
+                    end: function(){
+                    }
+                });
+            },
+            // 权限维护
+            'click .expeditedssl': function (e, value, row, index) {
+                layer.open({
+                    title:'权限维护',
+                    type: 2,
+                    area: ['600px', '400px'],
+                    fix: true, //不固定
+                    maxmin: true,
+                    content: "{:url('rule')}"+"?id="+row.id,
+                    end: function(){
+                    }
+                });
+            },
+            // 成员维护
+            'click .users': function (e, value, row, index) {
+                layer.open({
+                    title:'视图维护',
+                    type: 2,
+                    area: ['1000px', '600px'],
+                    fix: true, //不固定
+                    maxmin: true,
+                    content: "{:url('Group/users')}"+"?id="+row.id,
+                    end: function(){
+                    }
+                });
+            },
+        	// 禁用分组
+            'click .minus-circle': function (e, value, row, index) {
+            	$.ajax({
+                    url: "{:url('edit')}",
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {id: row.id, status: 0},
+                    success: function(data){
+                        if( data.code ){
+                            $(".table").bootstrapTable('refresh');
+                        }else{
+                            layer.msg(data.info, {icon: 2}); 
+                        }
+                    }
+                })
+            },
+            // 启用分组
+            'click .check-circle': function (e, value, row, index) {
+            	$.ajax({
+                    url: "{:url('edit')}",
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {id: row.id, status: 1},
+                    success: function(data){
+                        if( data.code ){
+                            $(".table").bootstrapTable('refresh');
+                        }else{
+                            layer.msg(data.info, {icon: 2}); 
+                        }
+                    }
+                })
+            },
+        	// 编辑分组
+            'click .edit': function (e, value, row, index) {
+            	layer.open({
+                    title:'编辑分组',
+                    type: 2,
+                    area: ['400px', '300px'],
+                    fix: false, //不固定
+                    maxmin: true,
+                    content: "{:url('edit')}"+"?id="+row.id,
+                    end: function(){
+                        $(".table").bootstrapTable('refresh');
+                    }
+                });
+            },
+            // 删除分组
+            'click .remove': function (e, value, row, index) {
+            	$.ajax({
+            		url: "{:url('delete')}",
+            		type: 'POST',
+            		dataType: 'json',
+            		data: {id: row.id},
+            		success: function(data){
+            			if( data.code ){
+							//$(".table").bootstrapTable('refresh');
+							
+            				//$(".table").bootstrapTable('remove', {
+							$(".table").bootstrapTable('remove', {
+	                            field: 'id',
+	                            values: [row['id']]
+	                        });
+
+            			}else{
+            				layer.msg(data.msg, {icon: 2}); 
+            			}
+
+            		}
+            	})
+            },
+        };
+
+        $(function(){
+        	$('#add').click(function(event) {
+        		layer.open({
+                    title:'新增分组',
+                    type: 2,
+                    area: ['400px', '300px'],
+                    fix: false, //不固定
+                    maxmin: true,
+                    content: "{:url('edit')}",
+                    end: function(){
+                        $(".table").bootstrapTable('refresh');
+                    }
+                });
+        	});
+        })
+	</script>
+</body>
+</html>

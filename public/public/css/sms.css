@@ -1,0 +1,167 @@
+.animated{padding:10px 20px;}
+.sms-status,.sms-type{position:relative; width:180px;display: block;line-height: 34px;float:right;margin-left:20px;}
+.sms-status .txt,.sms-type .txt{position:relative; width:60px;display: block;line-height: 34px;float:left;text-align: right;}
+.sms-status .select,.sms-type .select{position:relative; width:120px;display: block;line-height: 34px;float:right;}
+* {margin:0;padding:0;font-family:"microsoft yahei";font-size:14px;margin:0 auto;}
+/* search-box */
+.box-search{padding:10px 5px;height:35px;padding-bottom:40px;}
+.box-search .company_title{padding-right:10px;font-weight:100;}
+.box-search .company_laber{padding:0 10px;font-weight:100;}
+.box-search .company_date{margin-left:10px;}
+.box-search .search-sms{margin-left:14px;float:left;}
+.box-search .search-text{margin-left:14px;width:130px;float:left;}
+.box-search .search-status{width:300px;float:left;}
+.box-search .search-status-label{margin:0px 1em;line-height:34px;height:34px;float:left;}
+.box-search .search-status-select{width:150px;float:left;}
+
+/* content-box */
+.box-content{margin:10px auto;min-height:370px;}
+.box-content ul{text-align:center;margin:0;padding:0;}
+.box-content li{text-align:left;font-size:12px;list-style:none;float:left;position:relative;height:130px;margin-top:10px;}
+.dropdown-menu li{height: 20px!important;}
+
+.data-list{position: relative;width:100%;float:left;}
+.one {width:1000px;height:1000px;margin:0 auto;}
+
+.top-tel {width:190px;height:40px;padding-left:80px;background:url(..../img/sms/icon.png) 0 -60px no-repeat;font-size:14px;color:#fff;line-height:40px;text-align:left;}
+
+.box {width:190px;height:160px;background:#fff;border:1px solid #74c2e4;border-radius:5px;position:relative;float:left;margin:20px 10px 0;transition: all 0.5s;overflow: hidden;}
+.top {width:190px;height:40px;padding-left:20px;background:#86ceed;font-size:14px;color:#fff;line-height:40px;text-align:left;}
+.txt {width:190px;line-height:25px;}
+.a {width:190px;height:100px;background:url(../img/task/a.png) no-repeat;background-position:12px 0;float:left;}
+.a1 {font-size:14px;font: bold;margin-left:45px;margin-top:11px;float:left;}
+.a2 {font-size:12px;margin-left:45px;line-height:20px;float:left;margin-top:5px;}
+.a2 p{text-align: left}
+.bottom {width:190px;height:40px;background:rgba(134,206,237,0.8);position:absolute;bottom:0;margin:0 auto;display:none;}
+/*.bottom div {width:132px;height:34px;border:1px solid #3cacdc;background:#5ab8e0;text-align:center;line-height:34px;color:#fff;transition:all 0.5s;-webkit-transition:all 0.5s;}*/
+.bottom .sms-btn {width:50%;height:40px;border:1px solid #3cacdc;background:#5ab8e0;text-align:center;line-height:40px;color:#fff;transition:all 0.5s;-webkit-transition:all 0.5s;float: left;}
+.bottom .sms-btn:hover {background:#2ea4d6;cursor: pointer;}
+.box:hover {box-shadow:0px 0px 12px #9d9d9d;}
+
+.tp{width:100%;float:left;display: block;text-align: left;margin-left:10px;    margin-top: 2px;}
+.tp p{width:50%;float:left;margin:0px;}
+.line{width:190px;float:left;height:1px;background:url(../img/task/tiao.png) no-repeat center;margin-top:17px;}
+.icon-pass {position:absolute;top:9px;right:8px;background: url(../img/sms/icon.png) 0 0px no-repeat;width:21px;height:20px;}
+.icon-fail {position:absolute;top:9px;right:8px;background: url(../img/sms/icon.png) 0 -20px no-repeat;width:21px;height:20px;}
+.icon-wait {position:absolute;top:9px;right:8px;background: url(../img/sms/icon.png) 0 -40px no-repeat;width:21px;height:20px;}
+.icon-sms {position:absolute;top:9px;right:8px;background: url(../img/sms/icon.png) 0 -65px no-repeat;width:21px;height:20px;}
+/*上面是任务进行中的样式*/
+
+.box1 {width:190px;height:160px;background:#fff;border:1px solid #a0a0a0;border-radius:5px;position:relative;float:left;margin:20px 10px 0;transition: all 0.5s;}
+.box1 .top {width:190px;height:40px;background:#bdbdbd;padding-left:20px;text-align:left;font-size:14px;color:#fff;line-height:40px;}
+.box1 .txt {width:190px;line-height:25px;}
+.box1 .a {width:190px;height:100px;background:url(../img/task/a1.png) no-repeat;background-position:12px 0;}
+.box1 .a1 {font-size:14px;font: bold;margin-left:45px;margin-top:11px;float:left;}
+.box1 .a2{font-size:12px;margin-left:45px;line-height:20px;float:left;margin-top:5px;}
+.box1 .bottom {width:190px;height:40px;background:rgba(189,189,189,0.8);position:absolute;bottom:0;margin:0 auto;display:none;}
+.box1 .bottom .sms-btn {width:50%;height:40px;border:1px solid #959595;background:#a6a6a6;text-align:center;line-height:40px;color:#fff;transition:all 0.5s;-webkit-transition:all 0.5s;float: left;}
+.box1 .bottom .sms-btn:hover {background:#909090;}
+.box1 .tb {position:absolute;top:4px;right:8px;background: url(../img/sms/icon.png) 0 -40px no-repeat;}
+.box1:hover {box-shadow:0px 0px 12px #9d9d9d;}
+/*上面是任务完成时的样式*/
+
+.box2 {width:190px;height:160px;background:#fff;border:1px solid #f6bd74;border-radius:5px;position:relative;float:left;margin:20px 10px 0;transition: all 0.5s;}
+.box2 .top {width:190px;height:40px;background:#f6bd74;font-size:16px;color:#fff;line-height:45px;}
+.box2 .txt2 {width:190px;line-height:25px;}
+.box2 .a {width:190px;height:100px;background:url(../img/task/a2.png) no-repeat;background-position:12px 0;}
+.box2 .a1 {font-size:14px;font: bold;margin-left:45px;margin-top:11px;float:left;}
+.box2 .a2 {font-size:12px;margin-left:45px;line-height:20px;float:left;margin-top:5px;}
+.box2 .bottom {width:190px;height:40px;background:rgba(246,189,116,0.8);position:absolute;bottom:0;margin:0 auto;display:none;}
+/*.box2 .bottom div {width:132px;height:34px;border-radius:5px;border:1px solid #ec8604;background:#f09622;margin-top:5px;text-align:center;line-height:34px;color:#fff;transition:all 0.5s;-webkit-transition:all 0.5s;}*/
+.box2 .bottom .sms-btn {width:50%;height:40px;border:1px solid #ec8604;background:#f09622;text-align:center;line-height:40px;color:#fff;transition:all 0.5s;-webkit-transition:all 0.5s;float: left;}
+.box2 .bottom .sms-btn:hover {background:#ec8909;}
+.box2 .tb {position:absolute;top:4px;right:8px;}
+.box2:hover {box-shadow:0px 0px 12px #9d9d9d;}
+/*上面是任务待接受时的样式*/
+.page_next{position: absolute; width: 58px; height:59px; top: 50%;margin-top:-29px; right:20px;background: url(../img/task/task-next-prev.png) -58px 0 no-repeat;z-index: 999;cursor: pointer;}
+.page_prev{position: absolute; width: 58px; height:59px; top: 50%;margin-top:-29px; left:20px;background: url(../img/task/task-next-prev.png) 0px 0 no-repeat; z-index: 999;cursor: pointer;}
+.data-list{    position: relative; margin: 0 auto; display: block; }
+
+/* btn */
+.set_sms{background-color:#86ceed;border-color:#86ceed;color:#fff;}
+.set_sms:hover{background-color:#68B2D2}
+.top-btn{padding-left:20px;padding-right:20px;}
+.btn-white{background-color:#FFF;border-color:#cccccc;color:#333333;}
+.btn-white:hover,.btn-white:focus{background-color:#f7f6f6;border-color:#cccccc;color:#333333;}
+.btn-select{background-color:#468cc8;border-color:#2f79ba;color:#fff;}
+.btn-select:hover,.btn-select:focus{background-color:#4f97d5;color:#fff;}
+.btn-print{background-color:#60b761;border-color:#50ac51;color:#fff;}
+.btn-print:hover,.btn-print:focus{background-color:#69bd69;color:#fff;}
+.btn-down{background-color:#60c0dc;border-color:#4cb8d8;color:#fff;}
+.btn-down:hover,.btn-down:focus{background-color:#69c6e1;color:#fff;}
+.btn-edit{background-color:#efad57;border-color:#df983b;color:#fff;}
+.btn-edit:hover,.btn-edit:focus{background-color:#f4b564;color:#fff;}
+.btn-big{padding-left:56px;padding-right:56px;}
+.border-radius{border-radius:6px;}
+.w50{width:50px!important;}
+.w-20{width:20%!important;}
+.w-40{width:40%!important;min-width: 180px;}
+.w-60{width:60%!important;min-width: 320px;}
+.w-80{width:80%!important;}
+
+
+/* stats-box */
+.box-stats{padding:5px 10px;position:absolute;float:left;width:97%;margin-top:10px;bottom:0;background-color:#fff;}
+.box-stats .record_stats{line-height:34px;}
+.box-stats .record_stats i{color:#f79445;font-style:normal;}
+.box-stats .page-value{text-align:center;}
+
+/* content-box */
+.box-content{margin:10px auto;min-height:370px;}
+.box-content ul{text-align:center;margin:0;padding:0;}
+.box-content li{text-align:left;font-size:12px;list-style:none;float:left;position:relative;height:130px;margin-top:10px;}
+
+.sms_info .base{position:relative;padding:20px;margin-top:50px;float:left;}
+.sms_info .base ul{position: relative;margin:0;padding:0;clear:both;}
+.sms_info .base li{float:left;list-style:none;margin-bottom:15px;}
+.sms_info .base li h3{text-align:center;color:#428bca;}
+.sms_info .base li label{font-weight:normal;text-align:right;padding-top:7px;height:30px;overflow: hidden;}
+.sms_info .base li .form-control{display:inline-block;width:100%;vertical-align:middle;}
+.sms_info .base input,.sms_info .base textarea{border:1px solid #86ceed;border-radius:4px;}
+.sms_info .tel textarea{padding-right: 36px;}
+.sms_info .customer{width:36px;height:36px;line-height: 36px;position: absolute;top:0px;right:14px;border-top-right-radius: 4px;background-color: #86ceed;color:#fff;text-align: center;cursor: pointer;}
+.sms_info .base .textarea-label{width:13.1%;float:left;padding-right:15px;padding-left:15px;min-width:104px;}
+.sms_info .base .textarea-content{width:86.9%;float:left;padding-right:8px;padding-left:15px;min-width:200px;}
+.sms_info .base .textarea-content textarea{width:100%;}
+.sms_info .submit{text-align:center;padding-top:40px;padding-bottom:40px;}
+.sms_info .submit span{margin-right:20px;padding-left:25px;padding-right:25px;}
+.sms_info .others{position:relative;padding:20px;float:left;}
+.sms_info .sms_config{width:100%;height:240px;border:1px solid #86ceed;border-radius:4px;padding: 10px 0;overflow-y:auto; }
+.sms_info .sms_config p{background:url(../img/sms/li.png) 0px 0px no-repeat;padding-left:26px; margin: 5px 5px;cursor:pointer;}
+.sms_info .sms_config p.on{background:url(../img/sms/li-on.png) 0px 0px no-repeat;}
+
+
+.sms_info .sms-header{position: fixed;width:100%;height:50px;line-height:50px;border-bottom: 4px solid #428bca;margin-bottom:16px;float:left;background-color: #fff;z-index: 10000;}
+.sms_info .sms-header .title{font-size: 18px;float:left;color: #333333;padding-left:30px;_padding-left: 15px;}
+.sms_info .right-close{position:relative;width:36px;height:36px;float: right;margin-right:15px;_margin-right: 7px; top:6px;cursor: pointer;background: url(../img/task/close.png) left top no-repeat;}
+.sms_info .glyphicon-user{cursor: pointer;}
+.sms_info .nav-tabs>li>a { color: #699ed0!important;}
+.sms_info .nav-tabs>li.active>a, .sms_info .nav-tabs>li.active>a:focus, .sms_info .nav-tabs>li.active>a:hover { color: #494949!important;}
+
+
+
+.list_content{border:1px solid #86ceed;height:180px;border-radius:5px;padding:10px;font-size:16px;width:100%;overflow-y: auto;}
+.list_content li,.list_content ul{list-style: none;padding:0;}
+.list_content p{font-size:14px;}
+.list_content .time{font-size:10px;padding-left: 10px;}
+.list_content .to_tel{font-size:10px;padding:0 10px;background-color: #F8AC59;}
+.list_content .status{font-size:10px;padding-left: 10px;color:#999;}
+.list_content .status_error{font-size:10px;padding-left: 10px;color:red;}
+.list_content .smscontent{font-size:12px;background-color: #c0e2f1; border-radius: 4px; padding: 10px; display: inline-block; color: #0088c4;}
+
+
+
+
+/*弹窗*/
+.layui-layer-task {border-radius: 10px!important; max-width: 1250px; }
+.layui-layer-task .layui-layer-content {border-radius: 15px; }
+
+/*上传显示start*/
+
+.uploadify{position: relative; width:100%;height:34px!important;padding:0px;vertical-align:middle;border-radius: 4px; }
+.uploadify-queue{ width:84px!important;height:84px!important;position: absolute!important;left: 0px;bottom: 0px;display: none;}
+.uploadify-button{position:relative; width:100%;height:34px}
+.uploadify-button-text{position: absolute; width:100%;left:0px;bottom:0px;color:#fff;background-color:#f8ac59;text-align:center;margin:0px;border-radius: 4px;}
+/*#SWFUpload_0{left:0;top:0px;width:100%;height:100%;}*/
+#telup22{position: relative;width:100%;height: 34px!important;border-radius: 4px;}
+/*上传显示end*/

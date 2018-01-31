@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>充值记录</title>
+		<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport" />
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+		<meta content="telephone=no" name="format-detection" />
+
+		<!-- 引入YDUI样式 -->
+		<link rel="stylesheet" href="__PUBLIC__/css/ydui.css" />
+		<link rel="stylesheet" href="__PUBLIC__/font/iconfont.css" />
+		<link rel="stylesheet" href="__PUBLIC__/css/animate.min.css" />
+		<link rel="stylesheet" href="__PUBLIC__/css/style.css" />
+
+		<!-- 引入YDUI自适应解决方案类库 -->
+		<script src="__PUBLIC__/js/ydui.flexible.js"></script>
+
+	</head>
+
+	<body>
+
+		<header class="navheader">
+			<a class="icon-jiantou-copy" href="javascript:history.go(-1)"></a>
+			<h1 class="mui-title">充值记录</h1>
+		</header>
+
+        <div class="animated bounceInLeft">
+			<section class="g-flexview">
+				<div class="tp-bt">
+					
+	                <div class="guess tp3">
+	                	<div class="table-list">
+	                		<span>时间</span>
+	                		<span>充值积分</span>
+	                		<span>支付方式</span>
+	                		<span>累计充值</span>
+	                	</div>
+						<ul class="tablelists">
+							<li>
+								<div class="table-scroller">
+									<span>2017.9.11</span>
+									<span>500</span>
+									<span>微信支付</span>
+									<span>5000</span>
+								</div>
+							</li>
+							<li>
+								<div class="table-scroller">
+									<span>2017.9.11</span>
+									<span>500</span>
+									<span>微信支付</span>
+									<span>5000</span>
+								</div>
+							</li>
+						</ul>
+					</div>
+	
+				</div>
+		    </section>
+		</div>
+
+
+		<script src="__PUBLIC__/js/jquery.min.js"></script>
+		<script src="__PUBLIC__/js/ydui.js"></script>
+		<script src="__PUBLIC__/js/fastclick.js"></script>
+		<script src="__PUBLIC__/js/dropload.min.js"></script>
+
+        
+		<script>
+			$(function() {
+				//消除IOS延迟
+				FastClick.attach(document.body);
+			});
+			
+			
+			//列表加载
+			var counter = 0;
+		    // 每页展示4个
+		    var num = 20;
+		    var pageStart = 0,pageEnd = 0;
+		    // dropload
+		    $('.guess').dropload({
+		        scrollArea : window,
+		        loadDownFn : function(me){
+		            $.ajax({
+		                type: 'GET',
+		                url: '../json/list.json',
+		                dataType: 'json',
+		                success: function(data){
+		                    var result = '';
+		                    counter++;
+		                    pageEnd = num * counter;
+		                    pageStart = pageEnd - num;
+		                    for(var i = pageStart; i < pageEnd; i++){
+		                        result +=   '<li>'
+												+'<div class="table-scroller">'
+													+'<span>'+data.tablelists[i].time+'</span>'
+													+'<span>'+data.tablelists[i].integral+'</span>'
+													+'<span>'+data.tablelists[i].pay+'</span>'
+													+'<span>'+data.tablelists[i].total+'</span>'
+												+'</div>'
+											+'</li>';
+		                        if((i + 1) >= data.tablelists.length){
+		                            // 锁定
+		                            me.lock();
+		                            // 无数据
+		                            me.noData();
+		                            break;
+		                        }
+		                    }
+		                    // 为了测试，延迟1秒加载
+		                    setTimeout(function(){
+		                        $('.tablelists').append(result);
+		                        // 每次数据加载完，必须重置
+		                        me.resetload();
+		                    },1000);
+		                },
+		            });
+		        }
+		    });
+
+		</script>
+		<script src="__PUBLIC__/js/mui.min.js"></script>
+		<script>
+            mui.init({
+                keyEventBind:{
+                    backbutton:false
+                }
+            })
+		</script>
+		<script src="__PUBLIC__/js/common.js"></script>
+	</body>
+
+</html>

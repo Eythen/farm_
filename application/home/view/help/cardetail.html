@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+	<head>
+	  <meta charset="UTF-8">
+	  <title>信息管理平台</title>
+	  {include file="public:css" /}
+	  <style type="text/css">
+			body{background-color: #eee}
+		.btn-icon{ font-size: 12px; margin: 0px 5px; }
+	  </style>
+	</head>
+	<body>
+	<!--------头部开始-------------->
+
+		<div class="well">
+
+			<div class="panel panel-primary">
+
+				<div class="panel-heading">
+					<div class="panel-title text-center">车辆详情</div>
+				</div>
+
+				<div class="panel-body">
+					<table class="table table-bordered">
+						<tr>
+							<th>车辆类型：</th>
+							<td>{$res.car_type}</td>
+						</tr>
+						<tr>
+							<th>座位数：</th>
+							<td>{$res.seat}</td>
+						</tr>
+						<tr>
+							<th>载重：</th>
+							<td>{$res.load}</td>
+						</tr>
+						<tr>
+							<th>车主姓名：</th>
+							<td>{$res.name}</td>
+						</tr>
+						<tr>
+							<th>车型号：</th>
+							<td>{$res.model}</td>
+						</tr>
+						<tr>
+							<th>车牌号码：</th>
+							<td>{$res.car_number}</td>
+						</tr>
+						<tr>
+							<th>驾驶员：</th>
+							<td>{$res.driver}</td>
+						</tr>
+						<tr>
+							<th>驾照：</th>
+							<td>{$res.car_license}</td>
+						</tr>
+						<tr>
+							<th style="line-height: 100px;">照片：</th>
+							<td><img width="150px;" src="{$res.car_pic}" alt=""></td>
+						</tr>
+					</table>
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

@@ -1,0 +1,49 @@
+/*头部*/
+.con{ padding-top: 0rem;  }
+.content{border-bottom: 1px solid #e8e8e8; }
+input[type="checkbox"]{display: none;}
+/*列表*/
+.list{width: 100%;padding: .3rem;border-bottom: 1px solid #e8e8e8;}
+.list p{margin-left: .7rem;line-height: .58rem;font-size: .3rem;}
+ul li{width: 100%;padding: 30px;border-bottom: 1px solid #e8e8e8; margin-bottom: 20px;background: #fff; }
+ul li .label{margin-top: 64px;display: inline-block;width: 40px;}
+ul li .img{width:180px;float: left; margin-left: 20px;}
+ul li .text{width: 60%;margin-left: 30px;float: left;}
+ul li .text p{width: 100%;}
+.text .number{display: inline-block;text-align: center;width:100px;height:50px;line-height:50px;color: #000;font-size: 28px;float: left;}
+.overflow{line-height: 1.2; display: -webkit-box; overflow: hidden; font-size: 30px; text-align: left; color: #333; -webkit-line-clamp: 2; -webkit-box-orient: vertical;}
+.fs{font-size: 40px;}
+.over{line-height: 1; font-size: 24px; text-align: left; color: #999; display: -webkit-box; overflow: hidden; -webkit-line-clamp: 2; -webkit-box-orient: vertical; margin-top: 10px;}
+ul li .img img{width: 100%;height: 100%;}
+.list label img{width: .4rem;height: .4rem;    margin-top: .06rem;}
+.label img{width: 40px;height: 40px;margin-top: -0.2rem;}
+.total{width: 100%;background: white;text-align: right; color: #666;padding:30px;line-height: 1;}
+.total span{color: #FF6E6E; font-size: 30px;}
+.m-spinner{float: right; display: inline-block; overflow: hidden;margin-top: 8px;}
+.m-spinner .btn1{float: left; width: 50px; height: 50px; border: none; background: url(../img/icon/jian.png) no-repeat;}
+.m-spinner .btn2{float: left; width: 50px; height: 50px; border: none; text-align: center; background: url(../img/icon/jia.png) no-repeat;}
+.top{margin-top: 20px;}
+
+/*底部结算*/
+.bottom{bottom: 0;width: 100%;color: #701C17;background: #fff; position: fixed;left: 0;border-top: 1px solid #e8e8e8;height: 110px;line-height: 110px;}
+.bottom .bottom-label{ float: left; padding-left: 30px;font-size: 30px;width: 20%;}
+.bottom .bottom-label label{ line-height: 110px;}
+.bottom .bottom-label span{ float: left;}
+.bottom .bottom-label img{width: 40px;height: 40px;margin-top: 36px;margin-right: 5px;}
+.bottom .bottom-label b{ font-size: 30px;color: #333;font-weight: normal;line-height: 1;position: absolute;left: 80px;top: 44px;}
+.bottom .bottom-left{ float: right; width: 80%;color: #333; font-size: 30px;line-height: 110px;padding-left: 40px;}
+.bottom .bottom-left span{color: #FF6E6E; font-size: 40px; margin:0rem;}
+.bottom .bottom-left .sett{width: 200px;color:#fff;text-align: center;font-size: 28px;margin-left: 30px;float: right;height: 110px; line-height: 110px;border: none;}
+.bottom .delete{width: 200px;color: #fff;font-size: 30px;margin-left: 30px;float: right;height: 110px; line-height: 110px;border: none;}
+
+
+/*没有数据*/
+.Dataempty{ text-align: center; margin-top: 1rem;}
+.Dataempty .Dataempty_img { width:100%; margin:0 auto .5rem;}
+.Dataempty .Dataempty_img img{ width: 295px; height: 235px; display: block;margin:80px auto 0;}
+.Dataempty .txte{ font-size: 28px; color: #777; margin-top: 30px;}
+.Dataempty .strollaround{width: 90%; margin: 0 auto;}
+
+/*没有数据*/
+.clearfix:after{content:"";display:block;width:100%;height:0;clear:both;} 
+.cart-btn{border-radius: 10px; display: block; width:50%; margin:20px auto 0; height: 70px; line-height: 70px; font-size: 34px; border: none; color: #fff; text-align: center; background-image: -webkit-linear-gradient(top, #00cc9a, #00b9a3); background-image: -moz-linear-gradient(top, #00cc9a, #00b9a3); background-image: -ms-linear-gradient(top, #00cc9a, #00b9a3);}

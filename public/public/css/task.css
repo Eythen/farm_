@@ -1,0 +1,206 @@
+.animated{padding:10px 20px;position: relative;}
+.task-status{position:relative; width:180px;display: block;line-height: 34px;float:right;margin-left:20px;}
+.task-status .txt{position:relative; width:60px;display: block;line-height: 34px;float:left;text-align: right;}
+.task-status .select{position:relative; width:120px;display: block;line-height: 34px;float:right;}
+* {margin:0;padding:0;font-family:"microsoft yahei";font-size:14px;margin:0 auto;}
+/* search-box */
+.box-search{padding:10px 5px;height:35px;padding-bottom:40px;}
+.box-search .company_title{padding-right:10px;font-weight:100;}
+.box-search .company_laber{padding:0 10px;font-weight:100;}
+.box-search .company_date{margin-left:10px;}
+/* content-box */
+.box-content{margin:10px auto;min-height:370px;}
+.box-content ul{text-align:center;margin:0;padding:0;}
+.box-content li{text-align:left;font-size:12px;list-style:none;float:left;position:relative;height:130px;margin-top:10px;}
+.dropdown-menu li{height: 20px!important;}
+.one {width:1000px;height:1000px;margin:0 auto;}
+.box {width:274px;height:270px;background:#fff;border:1px solid #74c2e4;border-radius:5px;position:relative;float:left;margin:20px 25px 0;transition: all 0.5s;overflow: hidden;}
+.top {width:274px;height:45px;background:#86ceed;font-size:18px;color:#fff;text-align:center;line-height:45px;}
+.txt {width:274px;line-height:25px;}
+.a {width:274px;height:100px;background:url(../img/task/a.png) no-repeat;background-position:12px 0;float:left;}
+.a1 {font-size:14px;font: bold;margin-left:45px;margin-top:11px;float:left;}
+.a2 {font-size:12px;margin-left:45px;line-height:20px;float:left;margin-top:5px;}
+.a2 p{text-align: left}
+.bottom {width:274px;height:45px;background:rgba(134,206,237,0.8);position:absolute;bottom:0;margin:0 auto;display:none;}
+.bottom div {width:132px;height:34px;border-radius:5px;border:1px solid #3cacdc;background:#5ab8e0;margin-top:5px;text-align:center;line-height:34px;color:#fff;transition:all 0.5s;-webkit-transition:all 0.5s;}
+.bottom div:hover {background:#2ea4d6;cursor: pointer;}
+.box:hover {box-shadow:0px 0px 12px #9d9d9d;}
+
+.tp{width:100%;float:left;display: block;text-align: left;margin-left:10px;    margin-top: 2px;}
+.tp p{width:50%;float:left;margin:0px;}
+.line{width:274px;float:left;height:1px;background:url(../img/task/tiao.png) no-repeat center;margin-top:17px;}
+/*上面是任务进行中的样式*/
+
+.box1 {width:274px;height:270px;background:#fff;border:1px solid #a0a0a0;border-radius:5px;position:relative;float:left;transition: all 0.5s;}
+.box1 .top {width:274px;height:45px;background:#bdbdbd;font-size:18px;color:#fff;text-align:center;line-height:45px;}
+.box1 .txt {width:274px;line-height:25px;}
+.box1 .a {width:274px;height:100px;background:url(../img/task/a1.png) no-repeat;background-position:12px 0;}
+.box1 .a1 {font-size:14px;font: bold;margin-left:45px;margin-top:11px;float:left;}
+.box1 .a2{font-size:12px;margin-left:45px;line-height:20px;float:left;margin-top:5px;}
+.box1 .bottom {width:274px;height:45px;background:rgba(189,189,189,0.8);position:absolute;bottom:0;margin:0 auto;display:none;}
+.box1 .bottom div {width:132px;height:34px;border-radius:5px;border:1px solid #959595;background:#a6a6a6;margin-top:5px;text-align:center;line-height:34px;color:#fff;transition:all 0.5s;-webkit-transition:all 0.5s;}
+.box1 .bottom div:hover {background:#909090;}
+.box1 .tb {position:absolute;top:4px;right:8px;}
+.box1:hover {box-shadow:0px 0px 12px #9d9d9d;}
+/*上面是任务完成时的样式*/
+
+.box2 {width:274px;height:270px;background:#fff;border:1px solid #f6bd74;border-radius:5px;position:relative;float:left;transition: all 0.5s;}
+.box2 .top {width:274px;height:45px;background:#f6bd74;font-size:18px;color:#fff;text-align:center;line-height:45px;}
+.box2 .txt2 {width:274px;line-height:25px;}
+.box2 .a {width:274px;height:100px;background:url(../img/task/a2.png) no-repeat;background-position:12px 0;}
+.box2 .a1 {font-size:14px;font: bold;margin-left:45px;margin-top:11px;float:left;}
+.box2 .a2 {font-size:12px;margin-left:45px;line-height:20px;float:left;margin-top:5px;}
+.box2 .bottom {width:274px;height:45px;background:rgba(246,189,116,0.8);position:absolute;bottom:0;margin:0 auto;display:none;}
+.box2 .bottom div {width:132px;height:34px;border-radius:5px;border:1px solid #ec8604;background:#f09622;margin-top:5px;text-align:center;line-height:34px;color:#fff;transition:all 0.5s;-webkit-transition:all 0.5s;}
+.box2 .bottom div:hover {background:#ec8909;}
+.box2 .tb {position:absolute;top:4px;right:8px;}
+.box2:hover {box-shadow:0px 0px 12px #9d9d9d;}
+/*上面是任务待接受时的样式*/
+.page_next{position: absolute; width: 58px; height:59px; top: 50%;margin-top:-29px; right:20px;background: url(../img/task/task-next-prev.png) -58px 0 no-repeat;z-index: 999;cursor: pointer;}
+.page_prev{position: absolute; width: 58px; height:59px; top: 50%;margin-top:-29px; left:20px;background: url(../img/task/task-next-prev.png) 0px 0 no-repeat; z-index: 999;cursor: pointer;}
+.data-list{    position: relative; width:100%;float:left; }
+
+/* btn */
+.top-btn{padding-left:20px;padding-right:20px;}
+.btn-white{background-color:#FFF;border-color:#cccccc;color:#333333;}
+.btn-white:hover,.btn-white:focus{background-color:#f7f6f6;border-color:#cccccc;color:#333333;}
+.btn-select{background-color:#468cc8;border-color:#2f79ba;color:#fff;}
+.btn-select:hover,.btn-select:focus{background-color:#4f97d5;color:#fff;}
+.btn-print{background-color:#60b761;border-color:#50ac51;color:#fff;}
+.btn-print:hover,.btn-print:focus{background-color:#69bd69;color:#fff;}
+.btn-down{background-color:#60c0dc;border-color:#4cb8d8;color:#fff;}
+.btn-down:hover,.btn-down:focus{background-color:#69c6e1;color:#fff;}
+.btn-edit{background-color:#efad57;border-color:#df983b;color:#fff;}
+.btn-edit:hover,.btn-edit:focus{background-color:#f4b564;color:#fff;}
+.btn-big{padding-left:56px;padding-right:56px;}
+.border-radius{border-radius:6px;}
+.w50{width:50px!important;}
+/* stats-box */
+.box-stats{padding:5px 10px;border:1px solid #ccc;position:relative;float:left;width:97%;margin-top:20px;bottom:0;background-color:#fff;}
+.box-stats .record_stats{line-height:34px;}
+.box-stats .record_stats i{color:#f79445;font-style:normal;}
+.box-stats .page-value{text-align:center;}
+
+/* content-box */
+.box-content{margin:10px auto;min-height:370px;}
+.box-content ul{text-align:center;margin:0;padding:0;}
+.box-content li{text-align:left;font-size:12px;list-style:none;float:left;position:relative;height:130px;margin-top:10px;}
+
+.task_info .base{position:relative;padding:20px;margin-top:50px;float:left;}
+.task_info .base ul{position: relative;margin:0;padding:0;clear:both;}
+.task_info .base li{float:left;list-style:none;margin-bottom:15px;}
+.task_info .base li h3{text-align:center;color:#428bca;}
+.task_info .base li label{font-weight:normal;text-align:right;padding-top:7px;height:30px;overflow: hidden;}
+.task_info .base li .form-control{display:inline-block;width:100%;vertical-align:middle;}
+.task_info .base input,.task_info .base textarea{border:1px solid #cccccc;border-radius:4px;}
+.task_info .base .textarea-label{width:13.1%;float:left;padding-right:15px;padding-left:15px;min-width:104px;}
+.task_info .base .textarea-content{width:86.9%;float:left;padding-right:8px;padding-left:15px;min-width:200px;}
+.task_info .base .textarea-content textarea{width:100%;}
+.task_info .submit{text-align:center;padding-top:40px;padding-bottom:40px;}
+.task_info .submit span{margin-right:20px;padding-left:25px;padding-right:25px;}
+.task_info .others{position:relative;padding:20px;float:left;}
+
+
+.task_info .task-header{position: fixed;width:100%;height:50px;line-height:50px;border-bottom: 4px solid #428bca;margin-bottom:16px;float:left;background-color: #fff;z-index: 10000;}
+.task_info .task-header .title{font-size: 18px;float:left;color: #333333;padding-left:30px;_padding-left: 15px;}
+.task_info .right-close{position:relative;width:36px;height:36px;float: right;margin-right:15px;_margin-right: 7px; top:6px;cursor: pointer;background: url(../img/task/close.png) left top no-repeat;}
+.task_info .glyphicon-user{cursor: pointer;}
+.task_info .nav-tabs>li>a { color: #699ed0!important;}
+.task_info .nav-tabs>li.active>a, .task_info .nav-tabs>li.active>a:focus, .task_info .nav-tabs>li.active>a:hover { color: #494949!important;}
+/*增加节点start*/
+.task_info #node .node-data{padding:50px 0 0 0;display: none;}
+.task_info #node .node{position: absolute; height:30px; width: 30px;background: url(../img/task/node-icon.png) 0px -70px no-repeat;cursor: pointer;z-index: 3}
+.task_info #node .add-node{position: absolute; width:30px; height:30px; background: url(../img/task/node-icon.png) -40px -35px no-repeat;cursor: pointer;z-index: 3}
+.task_info #node .add-mid-node{position: absolute; width:30px; height:30px; left:106px; top:0px; background: url(../img/task/node-icon.png)  -40px -35px no-repeat;cursor: pointer;display: none;z-index: 3}
+.task_info #node .del-node{position: absolute; width:30px; height:30px; left:18px;top:-8px;background: url(../img/task/node-icon.png) -40px 0px no-repeat;cursor: pointer;display: none;z-index: 3}
+.task_info #node .done-node{position: absolute; width:30px; height:30px; background-position: 0 -35px;z-index: 3}
+.task_info #node .fail-node{position: absolute; width:30px; height:30px; background-position: left top;z-index: 3}
+.task_info #node .doing-node{position: absolute; width:30px; height:30px; background: url(../img/task/doing-node.gif) 0 0 no-repeat;z-index: 3}
+.task_info #node .fen-node{position: absolute; width:40px; height:54px; left:-5px;top:-52px;text-align: center;padding-top: 10px;background: url(../img/task/node-icon.png) 0 -146px no-repeat;cursor: pointer;color: #428bca;z-index: 3}
+
+.task_info #node ul { position:relative; height:120px;list-style: none; margin:0px; padding: 0;}
+.task_info #node ul li{ color: #494949; height:100px;margin-top:-76px;margin-left:28px;float:left;}
+/*.task_info #node ul .node_qu{position: absolute; background: url(../img/task/node-line-lr.png) 0 -146px no-repeat;}
+.task_info #node ul .node_qu{ right:-53px;top:53px;width:68px;height:133px;z-index: 3;}
+.task_info #node .node_right .node_qu{position: absolute; background-position: 0 0px;left:-53px;top:53px;width:68px;height:133px;z-index: 3;}*/
+
+.task_info #node .node_right li{ color: #494949; height:100px;margin-top:-76px;margin-left:28px;float:right;}
+.task_info #node ul .node_qu{ background: url(../img/task/node-line-lr.png) 0 -146px no-repeat;position: absolute;width:68px;height:133px;z-index: 3;right:-63px;top:53px;}
+.task_info #node ul .node_qu_on{ background: url(../img/task/node-line-lr_on.png) 0 -146px no-repeat;position: absolute;width:68px;height:133px;z-index: 3;right:-68px;top:53px;}
+.task_info #node .node_right .node_qul{ position:absolute;z-index: 3;width: 68px;height:133px; background: url(../img/task/node-line-lr.png) 0 -0px no-repeat;left:-53px;top:53px;clear:both;}
+.task_info #node .node_right .node_qul_on{ position:absolute;z-index: 3;width: 86px;height:133px; background: url(../img/task/node-line-lr_on2.png) 0 -0px no-repeat;left:-53px;top:54px;clear:both;}
+
+
+.task_info #node ul li span{ background-color: #494949;position: absolute;z-index: 3;left:-50%;}
+.task_info #node .node_line{ width:100%; height:120px; background: url(../img/task/node-line.png) 0 center repeat-x;}
+
+.task_info #node .node_right .doing-node{ transform: rotateY(180deg);}
+.task_info #node .node_right .node_bg{ position:absolute; width:232px;height:30px;background: url(../img/task/node-line_on.png) 0 0px repeat-x; left:0px; top:10px; z-index:2;display: none;}
+.task_info #node .node_right li.node_bg:last-child{ position:absolute; width:260px;height:30px;background: url(../img/task/node-line_on.png) 0 0px repeat-x; left:-28px; top:10px; z-index:2;display: none;}
+.task_info #node .node_bg{ position:absolute; width:260px;height:30px;background: url(../img/task/node-line_on.png) 0 0px repeat-x; left:-28px; top:10px; z-index:2;display: none;}
+.task_info #node .node_bg:last-child{width:60px;}
+.task_info #node .node_w{ position:relative; width:204px; float:left;cursor: pointer;}
+.task_info #node .node_w{ position:relative; width:204px; float:left;cursor: pointer;}
+.task_info #node .node_w .txt{ position:absolute; width:198px; min-height:18px; left:-88px; top:36px;z-index: 99;font-size: 12px;padding-bottom:8px;}
+.task_info #node .node_w .txt p{ position:relative; width:100%;text-align: center;margin:0px;}
+.task_info #node .node_w .txt .red{ color:red;display: none;text-align: center;margin:0px;}
+.task_info #node .node_w .txt .col{ color:#26a7df;}
+.task_info #node .node_w .txt span{ position:relative; width:100%;text-align: left;}
+.task_info #node .node_w .done-txt{ /* position:relative; */ width:198px; text-align: left;border: #d9edf6 1px solid;background-color: #e9f5fa;padding-top:20px; margin-top: 5px;border-radius:5px; z-index: 999;}
+.task_info #node .node_w .txt_v{ position:absolute; width:198px; height:8px;left:1px;top:-8px; background: url(../img/task/node-v.png) center top no-repeat;display: none;}
+.task_info #node .node_w .txt .txt_v{ display: none;}
+.task_info #node .node_w .txt .txt-content{ position:relative; width:178px; margin:30px auto 20px;display: none;font-size: 12px;}
+.task_info #node .node_w .done-txt .txt-content p{ position:relative; width:38px; height:26px; line-height: 26px; float:left;font-size: 12px;}
+.task_info #node .node_w .done-txt .txt-content input{ position:relative; width:74px;height:24px; float:left;}
+.task_info #node .node_w .done-txt .txt-content .p_btn{ position:relative; width:64px; float:left;text-align: center;font-size: 12px;}
+.task_info #node .node_w .done-txt .txt-content .p_btn .btn{ padding: 2px 14px;font-size: 12px;}
+.task_info #node .node_w .done-txt .txt-content .txt_line{ position: relative; width:100%;height:1px; background-color: #86ceed;margin:7px 0px;float:left;}
+.task_info #node .node_w .done-txt .txt-content .txt_title{ position: relative; width:100%;height:16px; margin:7px 0px;float:left;}
+.task_info #node .node_w .done-txt .img_box{position: relative;float:left;}
+.task_info #node .node_w .done-txt .img_box img{ position: relative; width:50px;height:52px;border-radius:5px; margin:7px 4px;float:left;}
+.task_info #node .node_w .done-txt .txt-content  .btn_box { position: relative;width: 100%; float:left;}
+.task_info #node .node_w .done-txt .txt-content  .btn_box .btn{ position: relative; padding:2px 12px;margin-left:2px;margin-right:2px;float:left;font-size: 12px;}
+
+.task_info .fileupbox{ position: relative; width:84px;height:85px;background: #eeeeee url(../img/task/file-up.png) 0 0 no-repeat; margin-right:18px;float:left;border-radius:5px;overflow: hidden;}
+.task_info .fileupbox img{ position: relative; width:84px;height:85px;}
+.task_info .fileupbox p{ position: absolute; width:84px;height:22px;line-height:22px;left:0px;bottom:0px;color:#fff;background-color:#909090;text-align:center;margin:0px;}
+.task_info .attachment_box{ position: relative; width:84px;height:85px;background-color: #eeeeee; margin-right:18px;float:left;border-radius:5px;overflow: hidden;}
+.task_info .attachment_del{ position: absolute; width:30px; height:30px; right:-4px;top:0px;background: url(../img/task/node-icon.png) -40px 0px no-repeat;cursor: pointer;z-index: 3}
+.task_info .attachment_img{ position: relative; width:84px;height:85px;}
+.task_info .attachment_img img{ position: relative; width:84px;height:85px;}
+.attachment_img2{width:58px;float:left;}
+
+/*增加节点end*/
+/*签到节点start*/
+.task_info #sign ul { position:relative; height:97px;list-style: none; margin:0px; padding: 0;font-size: 12px;}
+.task_info #sign ul li{ position:relative;color: #494949; height:100px;margin-top:-76px;margin-left:28px;float:left;}
+.task_info #sign .sign_right li{ color: #494949; height:100px;margin-top:-76px;margin-left:28px;float:right;}
+.task_info #sign ul .sign_qu{ background: url(../img/task/sign-line-lr.png) 0 0 no-repeat;position: absolute;width:64px;height:102px;z-index: 3;}
+.task_info #sign ul .sign_qu{ right:-40px;top:59px;}
+.task_info #sign .sign_right .sign_qul{ background: url(../img/task/sign-line-lr.png) 0 -124px no-repeat; position: absolute;width:64px;height:102px;left:-43px;top:59px;}
+
+
+.task_info #sign .sign_line{ position:relative;width:100%; height:120px; background: url(../img/task/sign-line.png) 0 center repeat-x;}
+.task_info #sign .nodeSign{ position:absolute;width:30px; height:30px; background: url(../img/task/node-icon.png) -40px -70px no-repeat;cursor: pointer;font-size: 12px;}
+.task_info #sign .sign_w{ position:relative; width:264px; float:left;cursor: pointer;}
+.task_info #sign .sign_w .txt{ position:absolute; width:230px; height:94px; left:38px; top:26px;z-index: 99;font-size: 12px;line-height: 160%;}
+.task_info #sign .sign_w .txt p{ position:relative; width:100%;text-align: left;margin:0px;font-size: 12px;line-height: 160%;}
+.task_info #sign .sign_w .txt .col{ position:relative;clear:both;color:#26a7df;font-size: 12px;}
+.task_info #sign .sign_w .txt .col b{ clear:both;color:#26a7df;font-size: 12px;line-height: 160%;}
+.task_info #sign .sign_w .txt span{ position:relative; width:100%;text-align: left;}
+/*签到节点end*/
+
+/* 签到总结start*/
+.task_info #desc {text-align:center;}
+.task_info #desc textarea{width:100%;resize:none;border-radius: 4px;padding:10px;}
+/* 签到总结end*/
+
+/*弹窗*/
+.layui-layer-task {border-radius: 10px!important; max-width: 1250px; }
+.layui-layer-task .layui-layer-content {border-radius: 15px; }
+
+/*上传显示start*/
+.uploadify{ width:84px;height:84;float:left;margin-right:18px }
+.uploadify-queue{ width:84px!important;height:84px!important;position: absolute!important;left: 0px;bottom: 0px;display: none;}
+.uploadify-button-text{position: absolute; width:84px;height:22px;line-height:22px;left:0px;bottom:0px;color:#fff;background-color:#909090;text-align:center;margin:0px;}
+/*上传显示end*/

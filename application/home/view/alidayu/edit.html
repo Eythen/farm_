@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>信息管理平台</title>
+	{include file="public:css" /}
+</head>
+<body>
+<div class="well-lg" >
+    <form class="form-horizontal" id="generalize_info">
+        <div class="form-group">
+            <label for="username" class="col-xs-4 control-label text-right">短信分类:</label>
+            <div class="col-xs-7">
+                <select class="form-control" name="cat">
+                    {volist name="cat" key="k" id="v"}
+                    <option value="{$k}" {eq name="data['cat']" value="$k"}selected{/eq}>{$v}</option>
+                    {/volist}
+                </select>
+                <!-- <input type="text" class="form-control" id="cat" name="cat" value="{$data.cat}" > -->
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="username" class="col-xs-4 control-label text-right">短信内容:</label>
+            <div class="col-xs-7">
+                <textarea class="form-control" id="content" rows="5" name="content">{$data.content}</textarea>
+            </div>
+        </div>
+
+        {notempty name="data.id"}
+        <div class="form-group">
+            <label for="username" class="col-xs-4 control-label text-right">啊里大于模板:</label>
+            <div class="col-xs-7">
+                <input type="text" class="form-control" id="templatecode" name="templatecode" value="{$data.templatecode}" >
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="username" class="col-xs-4 control-label text-right">短信签名:</label>
+            <div class="col-xs-7">
+                <input type="text" class="form-control" id="sign_name" name="sign_name" value="{$data.sign_name}" >
+            </div>
+        </div>
+        {/notempty}
+
+        <div class="form-group">
+            <div class="col-xs-4 col-xs-offset-4">
+                <button type="button" class="btn btn-primary pull-right" id='submit' >保存</button>
+                <input type="hidden" id="id" name="id" value="{$data.id}" >
+            </div>
+        </div>
+    </form>
+</div>
+	{include file="public:js" /}
+    <script type="text/javascript">
+        var index = parent.layer.getFrameIndex(window.name);
+        parent.layer.iframeAuto(index);//调整高度自适应
+
+        $(function(){
+            $('#submit').click(function(event) {
+                var content = $.trim($('#content').val());
+                if(content==''){
+                    layer.msg('短信内容不能为空', {icon: 2}); 
+                }else{
+                    $.ajax({
+                        url: "{:url('edit')}",
+                        type: 'POST',
+                        dataType: 'json',
+                        data: $('#generalize_info').serialize(),
+                        success: function(data){
+                            if( data.code ){
+
+                                var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                                parent.layer.close(index); //再执行关闭 
+                            }else{
+                                layer.msg(data.msg, {icon: 2}); 
+                            }
+                        }
+                    })
+                }
+            });
+        })
+    </script>
+</body>
+</html>

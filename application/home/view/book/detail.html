@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>信息管理平台</title>
+    {include file="public:css" /}
+    <style type="text/css">
+        html{background-color: #f5f5f5}
+        .table thead {background-color: #ccc;}
+        .margin{margin-right:1em;}
+
+
+    </style>
+</head>
+<body>
+    <div class="panel panel-info well">
+    <section class="content">
+    <div class="row">
+      <div class="col-xs-12">
+      	<div class="box">
+           <nav class="navbar navbar-default">	     
+			<div class="collapse navbar-collapse">
+                <div class="navbar-form pull-right margin">
+                      <!-- {if condition="$order['order_status'] lt 2"}
+                         <a href="{:url('home/order/editOrder',array('order_id'=>$order['order_id']))}" data-toggle="tooltip" title="" class="btn btn-primary" data-original-title="编辑">修改订单</a>
+                      {/if} -->
+                     <!--  {if condition="($split eq 1) and ($order['order_status'] lt 2)"}
+                        <a href="{:url('home/order/split_order',array('order_id'=>$order['order_id']))}" data-toggle="tooltip" title="" class="btn btn-primary" data-original-title="编辑">拆分订单</a>
+                     {/if}-->
+                     <a href="{:url('editOrder',array('order_id'=>$order['order_id'], 'act' => 'print'))}" target="_blank" data-toggle="tooltip" title="" class="btn btn-primary" data-original-title="打印订单">
+                                              <i class="fa fa-print"></i>打印订单
+                                           </a>
+                      <a href="javascript:history.go(-1)" data-toggle="tooltip" title="" class="btn btn-default" data-original-title="返回"><i class="fa fa-reply"></i></a>
+               </div>
+            </div>
+           </nav>
+   
+        <!--新订单列表 基本信息-->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title text-center">基本信息</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <td>订单 ID:</td>
+                            <td>订单号:</td>
+                            <td>下单人:</td>
+                            <td>电话:</td>
+                            <td>应付:</td>
+                            <td>订单 状态:</td>
+                            <td>下单时间:</td>
+                            <td>支付时间:</td>
+                        </tr>
+                        <tr>
+                            <td>{$order.order_id}</td>
+                            <td>{$order.order_sn}</td>
+                            <td>{$order.name}</td>
+                            <td>{$order.mobile}</td>
+                            <td>{$order.order_amount}</td>
+                            <td id="order-status">{$order_status[$order['order_status']]} / {$pay_status[$order['pay_status']]}</td>
+                            <td>{$order.add_time|date='Y-m-d H:i',###}</td>
+                            <td>
+                                {if condition="$order.pay_time neq 0"}
+                                    {$order.pay_time|date='Y-m-d H:i',###}
+                                {else/}
+                                    N
+                                {/if}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!--新订单列表 收货人信息-->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title text-center">订餐信息</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <td>用餐时间:</td>
+                            <td>座位:</td>
+                            <td>人数:</td>
+                            <td>备注:</td>
+                        </tr>
+                        <tr>
+                            <td>{$order.at_time}</td>
+                            <td>{$order.table}</td>
+                            <td>{$order.people_num}</td>
+                            <td>{$order.user_note}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!--新订单列表 商品信息-->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title text-center">商品信息 </h3>
+            </div>
+            <div class="panel-body">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <td class="text-left">商品</td>
+                        <td class="text-right">数量</td>
+                        <td class="text-right">单品价格</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {volist name="order['order_combo']" id="good"}
+                        <tr>
+                            <td class="text-left">{$good.goods_name}</td>
+                            <td class="text-right">{$good.goods_num}</td>
+                            <td class="text-right">{$good.goods_price}</td>
+                        </tr>
+                        <tr class="bg-info">
+                            <td colspan="3" class="text-left">{$good.goods_name}:{$good.goods_content}</td>
+                            
+                        </tr>
+                    {/volist}
+                    {volist name="order['order_goods']" id="good"}
+                        <tr>
+                            <td class="text-left">{$good.goods_name}</td>
+                            <td class="text-right">{$good.goods_num}</td>
+                            <td class="text-right">{$good.goods_price}</td>
+                        </tr>
+                    {/volist}
+                    <tr>
+                        <td colspan="2" class="text-right">小计:</td>
+                        <td class="text-right">{$order.order_amount}</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+        <!--新订单列表 费用信息-->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title text-center">费用信息
+                    <!-- <a class="btn btn-primary btn-xs" data-original-title="修改费用" title="" data-toggle="tooltip" href="{:url('home/Order/editprice',array('order_id'=>$order['order_id']))}">
+                        <i class="fa fa-pencil"></i>
+                    </a> -->
+                </h3>
+            </div>
+            <div class="panel-body">
+                <table class="table table-bordered">
+                    <tbody>
+                    <tr>
+                        <td class="text-right">总金额:</td>
+                        <td class="text-right">已付:</td>
+                        <td class="text-right">未付:</td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">{$order.order_amount}</td>
+                        <td class="text-right">{$order.pay_money}</td>
+                        <td class="text-right">{$order.pay_money_spare}</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+        <!--新订单列表 操作信息-->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title text-center">操作信息</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table table-bordered">
+                    <tbody>
+                    <tr>
+                        <div class="row">
+                            <td class="text-right col-sm-2"><p class="margin">操作备注：</p></td>
+                            <td colspan="3">
+                                <form id="order-action">
+                                    <textarea name="note" id="note" placeholder="请输入操作备注" rows="3" class="form-control"></textarea>
+                                </form>
+                            </td>
+                        </div>
+                    </tr>
+                    <tr>
+                        <div class="row">
+                            <td class="text-right col-sm-2"><p class="margin">当前可执行操作：</p></td>
+                            <td colspan="3">
+                                <div class="input-group">
+                                	   <!-- 0待处理，1已完成，2退订中3无效 4未到店消费（退款成功） -->
+                                		{if condition="!in_array($order['order_status'], [1,2,3,4])"}                                               
+                                			<button class="btn btn-primary margin action" data-url="{:url('orderAction',array('order_id'=>$order['order_id'], 'act' => 'success', 'order_status' => 1))}">完成</button>
+                                        {/if}    
+                                		{if condition="($order['order_status'] eq '2') && !empty($order['pay_status'])"}
+                                            <button class="btn btn-danger margin action" data-url="{:url('orderAction',array('order_id'=>$order['order_id'], 'act' => 'refund') )}">退款确认</button>可能需要退款{$order['refund_amount']}
+                                        {/if}
+
+                                        {if condition=" empty($order['order_status']) && empty($order['pay_status']) "}
+                                            <button class="btn btn-warning margin action" data-url="{:url('orderAction',array('order_id'=>$order['order_id'], 'act' => 'success', 'order_status' => 3) )}">无效</button>
+                                        {/if}
+                                        
+                                	                               
+                                </div>
+                            </td>
+                        </div>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!--新订单列表 操作记录信息-->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title text-center">操作记录</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <td class="text-center">操作者</td>
+                        <td class="text-center">操作时间</td>
+                        <td class="text-center">订单状态</td>
+                        <td class="text-center">付款状态</td>
+                        
+ 
+                        <td class="text-center">备注</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {volist name="action_log" id="log"}
+                        <tr>
+                            <td class="text-center">{$log.action_user}</td>
+                            <td class="text-center">{$log.log_time|date='Y-m-d H:i:s',###}</td>
+                            <td class="text-center">{$order_status[$log['order_status']]}</td>
+                            <td class="text-center">{$pay_status[$log['pay_status']]}</td>
+                            
+                            <td class="text-center">{$log.action_note}</td>
+                        </tr>
+                    {/volist}
+                    </tbody>
+                </table>
+            </div>
+          </div>
+        </div>
+	  </div>
+    </div> 
+   </section>
+</div>
+</body>
+{include file="public:js" /}
+
+<script type="text/javascript">
+    function dayin(){
+        document.all('qingkongyema').click();
+        $("#print").hide();
+        $("#think_page_trace_open").hide();
+        window.print();
+        $("#print").show();
+    }
+</script>
+
+<script language="VBScript">
+    dim hkey_root,hkey_path,hkey_key
+    hkey_root="HKEY_CURRENT_USER"
+    hkey_path="/Software/Microsoft/Internet Explorer/PageSetup"
+    //设置网页打印的页眉页脚为空
+    function pagesetup_null()
+    on error resume next
+    Set RegWsh = CreateObject("WScript.Shell")
+    hkey_key="/header" 
+    RegWsh.RegWrite hkey_root+hkey_path+hkey_key,""
+    hkey_key="/footer"
+    RegWsh.RegWrite hkey_root+hkey_path+hkey_key,""
+    end function
+</script>
+<script>
+function pay_cancel(obj){
+    var url =  $(obj).attr('data-url')+'/'+Math.random();
+    layer.open({
+        type: 2,
+        title: '退款操作',
+        shadeClose: true,
+        shade: 0.8,
+        area: ['45%', '50%'],
+        content: url, 
+    });
+}
+//取消付款
+function pay_callback(s){
+	if(s==1){
+		layer.msg('操作成功', {icon: 1});
+		layer.closeAll('iframe');
+		location.href =	location.href;
+	}else{
+		layer.msg('操作失败', {icon: 3});
+		layer.closeAll('iframe');
+		location.href =	location.href;		
+	}
+}
+
+// 弹出退换货商品
+function selectGoods2(order_id){
+	var url = "/index.php/home/Order/get_order_goods&order_id="+order_id;
+	layer.open({
+		type: 2,
+		title: '选择商品',
+		shadeClose: true,
+		shade: 0.8,
+		area: ['60%', '60%'],
+		content: url, 
+	});
+}    
+// 申请退换货
+function call_back(order_id,goods_id)
+{
+	var url = "/index.php/home/Order/add_return_goods/order_id="+order_id+"&goods_id="+goods_id;	
+	location.href = url;
+}
+
+$('.action').on('click', function(){
+    var url = $(this).data('url');
+        note = $('#note').val();
+    $.ajax({
+        url: url,
+        type: 'POST',
+        dataType: 'json',
+        data: {note: note},
+        success: function(data){
+            if( data.code ){
+                location.href = location.href;
+            }else{
+                layer.msg('操作失败', {icon: 3});
+            }
+        }
+    })    
+})
+</script>
+</html>

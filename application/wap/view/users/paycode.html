@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+		<meta content="telephone=no" name="format-detection" />
+		<title>修改支付密码</title>
+
+		<link href="__PUBLIC__/skin/css/ydui.css" rel="stylesheet">
+		<link href="__PUBLIC__/skin/css/app.css" rel="stylesheet">
+		<style>
+			.g-flexview {
+				height: auto;
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: -ms-flexbox;
+				display: flex;
+				-webkit-box-orient: vertical;
+				-webkit-box-direction: normal;
+				-webkit-flex-direction: column;
+				-ms-flex-direction: column;
+				flex-direction: column;
+				margin: 0 auto;
+				max-width: 750px;
+				min-width: 300px;
+				padding-top: 1rem;
+			}
+		</style>
+
+		<script src="__PUBLIC__/skin/js/ydui.flexible.js"></script>
+	</head>
+
+	<body>
+		<header class="m-navbar">
+			<a href="{$referurl}" class="navbar-item"><i class="back-ico"></i></a>
+			<div class="navbar-center"><span class="navbar-title">修改支付密码</span></div>
+		</header>
+		<div class="g-flexview">
+			<div class="top50">
+
+				<!--<div class="m-title"><span id="smssend" >验证码已经发送到<?=noPhone($user['mobile'])?>手机号，请注意！</span></div>-->
+				<div class="m-cell top3">
+					<div class="cell-item">
+						<div class="cell-left">身份证：</div>
+						<div class="cell-right">
+							<input type="text" class="cell-input" id="IDcard" placeholder="输入身份证号" autocomplete="off" />
+						</div>
+					</div>
+					<div class="cell-item">
+						<div class="cell-left">验证码：</div>
+						<div class="cell-right">
+							<input type="number" pattern="[0-9]*" class="cell-input" id="Verification" placeholder="输入验证码" autocomplete="off" required/>
+							<button type="button" class="btn btn-warning" id="J_GetCode">获取短信验证码</button>
+						</div>
+					</div>
+				</div>
+				<div class="m-cell">
+					<div class="cell-item">
+						<div class="cell-left">重置密码：</div>
+						<div class="cell-right">
+							<input type="password"  class="cell-input" pattern="[0-9]*"  id="pwd" placeholder="输入六位数字密码" autocomplete="off" maxlength="6" />
+						</div>
+					</div>
+					<div class="cell-item">
+						<div class="cell-left">再次输入：</div>
+						<div class="cell-right">
+							<input type="password" class="cell-input" pattern="[0-9]*"  id="pwd1" placeholder="再次输入六位数字密码" autocomplete="off" maxlength="6" />
+						</div>
+					</div>
+				</div>
+
+				<div class="weui-btn-area">
+					<a href="javascript:;" onclick="issue()" class="btn-block btn-ls">确定修改</a>
+				</div>
+
+			</div>
+		</div>
+
+		<div class="m-keyboard" id="J_KeyBoard">
+			<!-- 自定义内容区域 -->
+			<div style="text-align: right;padding: .15rem .8rem 0;"><a href="http://www.ydui.org" style="color: #666;font-size: .24rem;">忘记密码</a></div>
+			<!-- 自定义内容区域 -->
+		</div>
+
+		<script src="__PUBLIC__/skin/js/jquery.min.js"></script>
+		<script src="__PUBLIC__/skin/js/ydui.js"></script>
+		<script src="__PUBLIC__/skin/js/app.js"></script>
+		<script>
+			var $keyboard = $('#J_KeyBoard');
+
+		    /* 初始化参数 */
+		    $keyboard.keyBoard({
+		        disorder: false, /* 是否打乱数字顺序 */
+		        title: '安全键盘' /* 显示标题 */
+		    });
+
+		    /* 打开键盘 */
+		    $('#pwd, #pwd1').on('click', function () {
+		    	mypasswordtag = $(this);
+		        $keyboard.keyBoard('open');
+		    });
+
+		    /* 六位密码输入完毕后执行 */
+		    $keyboard.on('done.ydui.keyboard', function (ret) {
+
+		        //console.log('输入的密码是：' + ret.password);
+		        mypasswordtag.val(ret.password);
+
+		        /* 关闭键盘 */
+		         $keyboard.keyBoard('close'); 
+		    });
+
+			var $getCode = $('#J_GetCode');
+			/* 定义参数 */
+			$getCode.sendCode({
+				disClass: 'btn-disabled',
+				secs: 300,
+				run: false,
+				runStr: '{%s}秒后重新获取',
+				resetStr: '重新获取验证码'
+			});
+			$getCode.on('click', function() {
+				var IDcard = $('#IDcard').val();
+				partten = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+				if(!partten.test(IDcard)) {
+					$('#IDcard').focus();
+					YDUI.dialog.toast('请检查身份证！', 'none', 1000);
+					return false;
+				} 
+				/* ajax 成功发送验证码后调用【start】 */
+				/*YDUI.dialog.loading.open('发送中');
+				setTimeout(function() {
+					YDUI.dialog.loading.close();
+					$getCode.sendCode('start');
+					YDUI.dialog.toast('已发送', 'success', 1500);
+				}, 1500);*/
+				YDUI.dialog.loading.open('发送中');
+	
+				$.ajax({
+                    url: "{:url('users/editsendcode')}",
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {idno: IDcard},
+                    success: function(data){
+                        if( data.code ){
+
+							YDUI.dialog.loading.close();
+							$getCode.sendCode('start');
+							YDUI.dialog.toast('已发送', 'success', 1500);
+							$('#smssend').css('display', 'block');
+                        }else{
+                        	YDUI.dialog.loading.close();
+                            YDUI.dialog.toast(data.msg, 'error', 2000); 
+                        }
+
+                    }
+                });
+			});
+
+			function issue() {
+				! function(win, $) {
+					var dialog = win.YDUI.dialog;
+					var Verification = $('#Verification').val();
+					var IDcard = $('#IDcard').val();
+					var pwd = $("#pwd").val();
+					var pwd1 = $("#pwd1").val();
+					partten = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+                    reg =/^\d{6}$/
+
+					if(Verification == '') {
+						$('#Verification').focus();
+						dialog.toast('验证码不能为空！', 'none', 1000);
+						return false;
+					} else if(!partten.test(IDcard)) {
+						$('#IDcard').focus();
+						dialog.toast('身份证不能为空！', 'none', 1000);
+						return false;
+					} else if(!reg.test(pwd)) {
+						$('#pwd').focus();
+						dialog.toast('输入6位数字密码！', 'none', 1000);
+						return false;
+					} else if(pwd !== pwd1) {
+						$('#pwd1').focus();
+						dialog.toast('2次6位密码输入不一致！', 'none', 1000);
+						return false;
+					}
+
+					var data = {
+						idno:IDcard, 
+						pay_code:pwd,
+						code:Verification
+					};
+					$.ajax({
+				   		type:"post",
+				   		url:"{:url('users/paycode')}",
+					    data: data,
+				   		success:function(data){
+				   			if(data.code){
+								dialog.toast('提交成功！', 'none', 1000, function() {
+                                    window.top.window.location = "{$referurl}";
+								});
+							}
+							else{
+								dialog.toast(data.msg, 'none', 2000);
+							}	
+				   		},
+				   		error:function(msg){
+				   			dialog.toast('请求失败', 'none', 2000);
+				   		}
+				   	});
+
+				}(window, jQuery);
+			};
+		</script>
+		<script src="__PUBLIC__/js/mui.min.js"></script>
+		<script>
+            mui.init({
+                keyEventBind:{
+                    backbutton:false
+                }
+            })
+		</script>
+		<script src="__PUBLIC__/js/common.js"></script>
+	</body>
+
+</html>

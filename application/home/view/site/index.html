@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>信息管理平台</title>
+    {include file="public:css" /}
+    <link href="__PUBLIC__/css/style.min862f.css?v=4.1.0" rel="stylesheet">
+    <style type="text/css">
+    html {
+        background-color: #f5f5f5
+    }
+
+    .table thead {
+        background-color: #ccc;
+    }
+    </style>
+</head>
+
+<body class="gray-bg">
+    <div class="wrapper wrapper-content animated fadeIn">
+        <div class="col-sm-12">
+            <div class="tabs-container">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a data-toggle="tab" href="#tab-1" aria-expanded="false"> 缓存处理</a></li>
+                    <li class=""><a data-toggle="tab" href="#tab-2" aria-expanded="true"> 返利设置</a></li>
+                    <!--  <li class=""><a data-toggle="tab" href="#tab-4" aria-expanded="false"> 前台用户导入</a></li> -->
+                </ul>
+                <div class="tab-content">
+
+                    <div id="tab-1" class="tab-pane active">
+                        <div class="panel-body">
+                            <form id="info">
+                                <table class="table table-bordered">
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="3" class="info">平台运行久了，卡慢，可以清空下缓存试试</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3"><span class="btn btn-primary cache-btn pull-right">清空缓存</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div id="tab-2" class="tab-pane">
+                        <div class="panel-body">
+                            <form id="info2">
+                                <table class="table table-bordered">
+                                    <tbody>
+         
+                                        <tr>
+                                            <td>订单支付有效期</td>
+                                            <td>
+                                                <input type="number" title="只能输入数字" class="input-sm" name="order_no_pay" value="{$site['order_no_pay']}">秒</td>
+                                            <td>过期后订单不能支付</td>
+                                        </tr>
+                                        
+                                      
+                                       <tr>
+                                           <td colspan="3" class="success">用户分类：推荐用户报单时获取的返利设置</td>
+                                       </tr>
+                                       {volist name="level" id="vo"}
+                                       <tr>
+                                           <td>{$vo.level_name}：</td>
+                                           <td>
+                                               <input type="number" name="level[{$vo.level_id}][amount]" value="{$vo.amount}" class="input-sm must" name="tax">元</td>
+                                           <td>
+                                               <input type="number" name="level[{$vo.level_id}][discount]" value="{$vo.discount}" class="input-sm must" name="tax">折扣</td>
+                                       </tr>
+                                       {/volist}
+
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="3">
+                                                <span class="pull-right"><input class="btn btn-primary up_btn" type="button" value="保存"></span></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <div id="tab-3" class="tab-pane">
+                        <div class="panel-body">
+                            <form id="info3">
+                                <table class="table table-bordered">
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="3" class="info">用户数据一定要符合下载的excel表格格式<br>导入后，用户登陆名为手机号，密码为123456，支付密码为123456&nbsp;&nbsp;<a herf="/public/users.zip" class="btn btn-warning">下载excel表格格式</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" class="col-sm-12" style="display: block;height: 68px;padding-top: 12px;"><div class="col-sm-offset-4 col-sm-4"><span class="myup" id="picker">上传用户excel表格</span></div></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" style="display: none"><div id="result"></div></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {include file="public:js" /}
+    <script src="__PUBLIC__/js/plugins/webuploader/webuploader.min.js"></script>
+    <link rel="stylesheet" href="__PUBLIC__/js/plugins/webuploader/webuploader.css" type="text/css">
+    <style>
+    .myup{
+        position: relative;
+
+    }
+    /* .webuploader-container{
+        position: relative;
+        width:260px;
+        height:48px;} */
+    .webuploader-pick {
+        position: absolute;
+        display: block!important;
+        cursor: pointer;
+        background: #00b7ee!important;
+        padding: 6px 6px!important;
+        margin: 0!important;
+        color: #fff;
+        text-align: center;
+        border-radius: 4px!important;
+        /* width: 100%;
+        height: 100%; */
+        width:260px;
+        height:38px;
+
+    
+        border: 1px solid transparent;
+        overflow: hidden;
+    } 
+   /*  #picker label{
+       margin: 0px!important;
+   } */
+    </style>
+
+    <script type="text/javascript">
+    var blayer = 0;
+    var uploader = WebUploader.create({
+
+        // swf文件路径
+        swf: '__ROOT__public/js/plugins/webuploader/Uploader.swf',
+
+        // 文件接收服务端。
+        //server: '{:url("Upload/uploadTel")}',
+        server: '{:url("Upload/uploadfile")}',
+
+        // 选择文件的按钮。可选。
+        // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+        pick: '#picker',
+
+        // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+        resize: false,
+
+        accept: {
+                //title: 'Images',
+                extensions: 'xls,xlsx'
+                //mimeTypes: 'image/*'
+            }
+    });
+    //$('.webuploader-pick').next('div').css({'width':'100%', 'height':'100%'});
+
+    // 文件加入时
+    uploader.on('fileQueued', function(){
+        //$('#ctlBtn').click();
+        uploader.upload()
+        blayer = layer.load(1);
+    });
+
+    // 文件上传成功
+    uploader.on('uploadSuccess', function(file, data){
+        layer.close(blayer);
+        $('#result').html(data.info);
+        $('#result').closest('td').css('display','block');
+        
+    });
+
+    // 当有文件被添加进队列的时候
+    var $list = $('#thelist');
+    uploader.on('fileQueued', function(file) {
+        $list.append('<div id="' + file.id + '" class="item">' +
+            '<h4 class="info">' + file.name + '</h4>' +
+            '<p class="state">等待上传...</p>' +
+            '</div>');
+    });
+    //错误提示
+    uploader.onError = function( code ) {
+        if(code == 'Q_TYPE_DENIED'){
+            layer.msg('类型不合！,必须为.xls,.xlsx后缀')
+        }
+        if(code == 'Q_EXCEED_SIZE_LIMIT'){
+            layer.msg('文件超大，请修改为小于4M的文件！')
+        }
+
+    };
+    // 文件上传过程中创建进度条实时显示。
+    uploader.on('uploadProgress', function(file, percentage) {
+        var $li = $('#' + file.id),
+            $percent = $li.find('.progress .progress-bar');
+
+        // 避免重复创建
+        if (!$percent.length) {
+            $percent = $('<div class="progress progress-striped active">' +
+                '<div class="progress-bar" role="progressbar" style="width: 0%">' +
+                '</div>' +
+                '</div>').appendTo($li).find('.progress-bar');
+        }
+
+        $li.find('p.state').text('上传中');
+
+        $percent.css('width', percentage * 100 + '%');
+    });
+    uploader.on('uploadSuccess', function(file) {
+        $('#' + file.id).find('p.state').text('已上传');
+    });
+
+    uploader.on('uploadError', function(file) {
+        $('#' + file.id).find('p.state').text('上传出错');
+    });
+
+    uploader.on('uploadComplete', function(file) {
+        $('#' + file.id).find('.progress').fadeOut();
+    });
+    </script>
+    <script type="text/javascript">
+    $(function() {
+        //提交
+        $('.up_btn').click(function(event) {
+            var points_max = $('input[name=goods_points]').val();
+            var msg = '';
+            $(".must").each(function() {
+                var v = $(this).val();
+                var i = v - points_max;
+
+                if (v == '') {
+                    msg = $(this).closest('td').prev('td').text()+'不能为空！';
+                    layer.msg(msg);
+                    $(this).focus();
+                    return false; //跳出each
+                }
+            });
+
+            if (msg) {
+                return false; //中止
+            }
+            console.log($('#info2').serialize());
+            $.ajax({
+                url: "{:url('index')}",
+                type: 'POST',
+                dataType: 'json',
+                data: $('#info2').serialize(),
+                success: function(data) {
+                    if (data.code) {
+                        layer.msg(data.msg)
+                    } else {
+                        layer.msg(data.msg, { icon: 2 });
+                    }
+
+                }
+            })
+        });
+
+
+        //清空缓存
+        $('.cache-btn').click(function() {
+            $.ajax({
+                url: "{:url('cacheDel')}",
+                type: 'POST',
+                dataType: 'json',
+                success: function(data) {
+                    if (data.code) {
+                        layer.msg(data.msg)
+                    } else {
+                        layer.msg(data.msg, { icon: 2 });
+                    }
+
+                }
+            });
+        });
+
+    })
+    </script>
+</body>
+
+</html>

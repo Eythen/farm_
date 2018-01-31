@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>信息管理平台</title>
+	{include file="public:css" /}
+	<style type="text/css">
+        html{background-color: #f5f5f5}
+		.btn-icon{ font-size: 12px; margin: 0px 5px; }
+	</style>
+</head>
+<body>
+	<div class="well well-sm" >
+		<table id="table" class="table text-center table-hover table-condensed" data-toolbar="#toolbar" data-toggle="table" data-sort-name="id" data-sort-order="desc" data-url="{:url('logOne',['mobile'=>$mobile])}" data-side-pagination="server" data-pagination="true" data-page-list="[10, 20, 50, 100, 200]" data-show-refresh="true" data-search="false" data-show-export="true" data-filter-control="true" data-filter-show-clear="true" >
+            <thead>
+                <tr>
+                    <!-- <th data-halign="center" data-field="state" data-checkbox="true" ></th> -->
+                    <th data-halign="center" data-field="id" data-filter-control="input" >ID</th>
+                    <th data-halign="center" data-field="admin_id" data-filter-control="input" >发送人</th>
+                    <th data-halign="center" data-field="mobile" data-filter-control="input" >手机号码</th>
+                    <th data-halign="center" data-field="content" data-filter-control="input" >发送内容</th>
+                    <th data-halign="center" data-field="add_time" data-filter-control="input" >添加时间</th>
+                    <th data-halign="center" data-field="sms_send_time" data-filter-control="input" >发送时间</th>
+                    <th data-halign="center" data-field="sms_receiver_time" data-filter-control="input" >接收时间</th>
+                    <th data-halign="center" data-field="sms_status" data-filter-control="input" >发送状态</th>
+                   <!--  <th data-halign="center" data-field="operate" data-formatter="operateFormatter" data-events="operateEvents" >操作</th> -->
+                </tr>
+            </thead>
+        </table>
+    </div>
+	{include file="public:js" /}
+	<script type="text/javascript">
+		function operateFormatter(value, row, index) {
+			return [
+                    '<a href="javascript:void(0);" class="btn-icon remove  btn btn-sm btn-danger" title="删除"><i class="fa fa-remove"></i>删除</a>',
+                ].join('');
+            
+        }
+
+        window.operateEvents = {
+        	
+        	
+            // 删除
+            'click .remove': function (e, value, row, index) {
+                var id = row.id;
+            	$.ajax({
+            		url: "{:url('deleteLog')}",
+            		type: 'POST',
+            		dataType: 'json',
+            		data: {id: row.id},
+            		success: function(data){
+            			if( data.code ){
+                            $(".table tr[data-index="+index+"]").remove();
+            			}else{
+            				layer.msg(data.msg, {icon: 2}); 
+            			}
+
+            		}
+            	})
+            },
+        };
+
+        $(function(){
+
+
+            //批量删除
+            $("#delete_more").click(function(event) {
+              var obj = $(".table").bootstrapTable('getSelections');
+              var str = '';
+              for ( var o in obj) {
+                str = str + obj[o].id + ",";        
+              }; 
+
+
+              if( str!='' ){
+                //询问框
+                layer.confirm('您确定要批量删除么？', {
+                  btn: ['确定','取消'] //按钮
+                }, function(index){
+                    layer.close(index);
+
+                    $.ajax({
+                        url: "{:url('deleteLog')}",
+                        type: 'POST',
+                        dataType: 'json',
+                        data: {id: str},
+                        success: function(data){
+                            if( data.code ){
+                                
+                                $(".table").bootstrapTable('refresh');
+                            }else{
+                                layer.msg(data.msg, {icon: 2}); 
+                            }
+
+                        }
+                    })
+                }, function(){
+                  
+                });
+
+                
+              }else{
+                layer.alert('请选择需要删除的!');
+              }
+            });
+
+            
+            //$('input[name=btSelectAll]').after(" 全选 ");
+
+            
+        })
+
+	</script>
+</body>
+</html>

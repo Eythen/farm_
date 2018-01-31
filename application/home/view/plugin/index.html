@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>信息管理平台</title>
+    {include file="public:css" /}
+    <link href="__PUBLIC__/css/style.min862f.css?v=4.1.0" rel="stylesheet">
+    <style type="text/css">
+        html{background-color: #f5f5f5}
+        .table thead {background-color: #ccc;}
+
+
+    </style>
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeIn">
+    <div class="col-sm-12">
+        <div class="tabs-container">
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#tab-1" aria-expanded="true"> 支付插件</a></li>
+                <!-- <li class=""><a data-toggle="tab" href="#tab-2" aria-expanded="false">登陆插件</a></li>
+                <li class=""><a data-toggle="tab" href="#tab-3" aria-expanded="false">物流插件</a></li>
+                <li class=""><a data-toggle="tab" href="#tab-4" aria-expanded="false">功能插件</a></li> -->
+            </ul>
+            <div class="tab-content">
+                <div id="tab-1" class="tab-pane active">
+                    <div class="panel-body">
+                        {volist name="payment" id="p"}
+                            <div class="col-sm-2">
+                                <div class="thumbnail">
+                                    <img  style="width:150px; height:60px;" src="/plugins/payment/{$p.code}/{$p.icon}" alt="...">
+                                    <div class="caption">
+                                        <h4>{$p.name}</h4>
+                                        <p>{$p.desc}</p>
+                                        {if condition="$p.status eq 0"}
+                                            <p><a onclick="installPlugin('{$p.type}','{$p.code}',1)" href="#" class="btn btn-primary" role="button">一键安装</a> </p>
+                                            {else /}
+                                            <p><a onclick="installPlugin('{$p.type}','{$p.code}',0)" href="#" class="btn btn-danger" role="button">卸载</a>
+                                                <a href="{:url('home/Plugin/setting',array('type'=>$p['type'],'code'=>$p['code']))}" class="btn btn-primary" role="button">配置</a>
+                                            </p>
+
+                                        {/if}
+                                    </div>
+                                </div>
+                            </div>
+                        {/volist}
+                    </div>
+                </div>
+                <!-- <div id="tab-2" class="tab-pane">
+                    <div class="panel-body">
+                        {volist name="login" id="l"}
+                            <div class="col-sm-2">
+                                <div class="thumbnail">
+                                    <img style="width:150px; height:60px;" src="/plugins/login/{$l.code}/{$l.icon}">
+                                    <div class="caption">
+                                        <h4>{$l.name}</h4>
+                                        <p>{$l.desc}</p>
+                                        {if condition="$l.status eq 0"}
+                                            <p><a onclick="installPlugin('{$l.type}','{$l.code}',1)" href="#" class="btn btn-primary" role="button">一键安装</a> </p>
+                                            {else /}
+                                            <p><a onclick="installPlugin('{$l.type}','{$l.code}',0)" href="#" class="btn btn-danger" role="button">卸载</a> <a href="{:url('home/Plugin/setting',array('type'=>$l['type'],'code'=>$l['code']))}" class="btn btn-primary" role="button">配置</a></p>
+                                        {/if}
+                                    </div>
+                                </div>
+                            </div>
+                        {/volist}
+                    </div>
+                </div>
+                <div id="tab-3" class="tab-pane">
+                    <div class="panel-body">
+                        {volist name="shipping" id="l"}
+                            <div class="col-sm-2"  style="width:260px;">
+                                <div class="thumbnail">
+                                    <img style="width:150px; height:60px;" src="/plugins/shipping/{$l.code}/{$l.icon}">
+                                    <div class="caption">
+                                        <h4>{$l.name}</h4>
+                                        <p>{$l.desc}</p>
+                                        {if condition="$l.status eq 0"}
+                                            <p>
+                                                <a onclick="installPlugin('{$l.type}','{$l.code}',1)" href="#" class="btn btn-primary" role="button">一键安装</a>
+                                                <a onclick="if(confirm('确定要删除吗?')) del_shipping('{$l['code']}');" href="#" class="btn btn-danger" role="button"><i class="fa fa-trash-o"></i></a>
+                                            </p>
+                                            {else /}
+                                            <p>
+                                                <a onclick="installPlugin('{$l.type}','{$l.code}',0)" href="#" class="btn btn-danger" role="button">卸载</a>
+                                                <a href="{:url('home/Plugin/shipping_list',array('type'=>'shipping','code'=>$l['code']))}" class="btn btn-primary" role="button">配置</a>
+                                                <a href="{:url('home/Plugin/shipping_print',array('type'=>'shipping','code'=>$l['code']))}" class="btn btn-primary" role="button">模板编辑</a>
+                                            </p>
+                                        {/if}
+                                    </div>
+                                </div>
+                            </div>
+                        {/volist}
+                    </div>
+                </div>
+                
+                <div id="tab-4" class="tab-pane">
+                    <div class="panel-body">
+                        {volist name="function" id="l"}
+                            <div class="col-sm-2"  style="width:260px;">
+                                <div class="thumbnail">
+                                    <img style="width:150px; height:60px;" src="/plugins/function/{$l.code}/{$l.icon}">
+                                    <div class="caption">
+                                        <h4>{$l.name}</h4>
+                                        <p>{$l.desc}</p>
+                                        {if condition="$l.status eq 0"}
+                                            <p><a onclick="installPlugin('{$l.type}','{$l.code}',1)" href="#" class="btn btn-primary" role="button">一键安装</a> </p>
+                                            {else /}
+                                            <p>
+                                                <a onclick="installPlugin('{$l.type}','{$l.code}',0)" href="#" class="btn btn-danger" role="button">卸载</a>                                                                                                                        
+                                            </p>
+                                        {/if}
+                                    </div>
+                                </div>
+                            </div>
+                        {/volist}
+                    </div>
+                </div> -->
+                
+            </div>
+
+
+        </div>
+    </div>
+</div>
+    <!-- <div class="well well-sm" >
+        <div id="toolbar">
+            <button id="add" class="btn btn-success">
+                <i class="glyphicon glyphicon-plus"></i> 新增短信模板
+            </button>
+            <button class="btn btn-warning myrefresh">
+                <i class="glyphicon glyphicon-refresh"></i> 更新
+            </button>
+        </div>
+        <table class="table text-center table-hover table-condensed" data-toolbar="#toolbar" data-toggle="table" data-sort-name="id" data-sort-order="desc" data-url="{:url('templateList')}" data-side-pagination="server" data-pagination="true" data-page-list="[10, 20, 50, 100, 200]" data-show-refresh="true" data-search="true" data-show-export="true" data-filter-control="true" data-filter-show-clear="true" >
+            <thead>
+                <tr>
+                    <th data-halign="center" data-field="id" data-filter-control="input" >ID</th>
+                    <th data-halign="center" data-field="userid" data-filter-control="input" >申请人</th>
+                    <th data-halign="center" data-field="cat" data-filter-control="input" >短信分类</th>
+                    <th data-halign="center" data-field="content" data-filter-control="input" >模板内容</th>
+                    <th data-halign="center" data-field="add_time" data-filter-control="input" >添加时间</th>
+                    <th data-halign="center" data-field="templatecode" data-formatter="statusFormatter" >审核状态</th>
+                    <th data-halign="center" data-field="operate" data-formatter="operateFormatter" data-events="operateEvents" >操作</th>
+                </tr>
+            </thead>
+        </table>
+    </div> -->
+    {include file="public:js" /}
+    <script type="text/javascript">
+        function statusFormatter(value, row, index) {
+            if(row.templatecode){
+                return [
+                        '已审核'
+                    ].join('');
+            }
+            else{
+                return [
+                        '<font color="red">未审核</font>',
+                    ].join('');
+            }
+        }
+
+        function operateFormatter(value, row, index) {
+            if(row.templatecode && (row.id>1)){
+                return [
+                        '<a href="javascript:void(0);" class="btn-icon edit btn btn-sm btn-primary" title="发送短信"><i class="fa fa-list"></i>发送短信</a>',
+                    ].join('');
+            }    
+        }
+
+        window.operateEvents = {
+            
+            // 发送短信
+            'click .edit': function (e, value, row, index) {
+                //var url = $(this).data('url');
+                /*var url = "{:url('logOne')}"+"?mobile="+row.mobile;
+                var title = row.mobile+"历史记录";
+                var arr = new Array();
+                
+                $(window.parent.document).find(".page-tabs-content a").each(function(index){
+                    arr[index] = $(this).data('id');
+                });
+                //获取导航index    
+                var weizhi = $.inArray( url, arr );
+                if(weizhi < 0 ){
+
+                    $(window.parent.document).find(".page-tabs-content a").removeClass('active');
+                    $(window.parent.document).find(".page-tabs-content").append('<a href="javascript:;" class="J_menuTab active" data-id="'+url+'">'+title+' <i class="fa fa-times-circle"></i></a>');
+
+                    $(window.parent.document).find(".J_mainContent iframe").css('display','none');
+                    $(window.parent.document).find(".J_mainContent").append('<iframe class="J_iframe" name="iframeUid0" width="100%" height="100%" src="'+url+'" frameborder="0" data-id="'+url+'" seamless></iframe>');
+                }
+                else{
+                    $(window.parent.document).find(".page-tabs-content a").removeClass('active');
+                    $(window.parent.document).find(".J_mainContent iframe").css('display','none');
+                    $(window.parent.document).find(".J_mainContent iframe:eq("+weizhi+")").css('display','block');
+                    $(window.parent.document).find(".page-tabs-content a:eq("+weizhi+")").addClass('active');
+                }*/
+                layer.open({
+                    title:'发送',
+                    type: 2,
+                    area: ['400px', '300px'],
+                    fix: false, //不固定
+                    maxmin: true,
+                    content: "{:url('send')}"+"?id="+row.id,
+                    end: function(){
+                        //$(".table").bootstrapTable('refresh');
+                    }
+                });
+            },
+            // 删除
+            'click .remove': function (e, value, row, index) {
+                $.ajax({
+                    url: "{:url('deleteLog')}",
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {id: row.mobile},
+                    success: function(data){
+                        if( data.code ){
+                            $(".table tr[data-index="+index+"]").remove();
+                        }else{
+                            layer.msg(data.msg, {icon: 2}); 
+                        }
+
+                    }
+                })
+            },
+        };
+
+        $(function(){
+            $('#add').click(function(event) {
+                layer.open({
+                    title:'新增',
+                    type: 2,
+                    area: ['400px', '300px'],
+                    fix: false, //不固定
+                    maxmin: true,
+                    content: "{:url('edit')}",
+                    end: function(){
+                        $(".table").bootstrapTable('refresh');
+                    }
+                });
+            });
+
+            //更新
+            $('.myrefresh').click(function(event) {
+                $(".table").bootstrapTable('refresh');
+            });
+
+            //批量删除
+            $("#delete_more").click(function(event) {
+              var obj = $(".table").bootstrapTable('getSelections');
+              var str = '';
+              for ( var o in obj) {
+                str = str + obj[o].mobile + ",";        
+              };  
+
+
+         
+
+              if( str!='' ){
+                //询问框
+                layer.confirm('您确定要批量删除么？', {
+                  btn: ['确定','取消'] //按钮
+                }, function(index){
+                    layer.close(index);
+
+                    $.ajax({
+                        url: "{:url('deleteLog')}",
+                        type: 'POST',
+                        dataType: 'json',
+                        data: {id: str},
+                        success: function(data){
+                            if( data.code ){
+                                
+                                $(".table").bootstrapTable('refresh');
+                            }else{
+                                layer.msg(data.msg, {icon: 2}); 
+                            }
+
+                        }
+                    })
+                }, function(){
+                  
+                });
+
+                
+              }else{
+                layer.alert('请选择需要删除的!');
+              }
+            });
+
+            
+            $('input[name=btSelectAll]').after(" 全选 ");
+
+            //添加到导航上面
+            $('.J_menuItem').click(function(){
+                var url = $(this).data('url');
+                var title = $(this).data('title');
+                var arr = new Array();
+                
+                $(window.parent.document).find(".page-tabs-content a").each(function(index){
+                    arr[index] = $(this).data('id');
+                });
+                //获取导航index    
+                var weizhi = $.inArray( url, arr );
+                if(weizhi < 0 ){
+
+                    $(window.parent.document).find(".page-tabs-content a").removeClass('active');
+                    $(window.parent.document).find(".page-tabs-content").append('<a href="javascript:;" class="J_menuTab active" data-id="'+url+'">'+title+' <i class="fa fa-times-circle"></i></a>');
+
+                    $(window.parent.document).find(".J_mainContent iframe").css('display','none');
+                    $(window.parent.document).find(".J_mainContent").append('<iframe class="J_iframe" name="iframeUid0" width="100%" height="100%" src="'+url+'" frameborder="0" data-id="'+url+'" seamless></iframe>');
+                }
+                else{
+                    $(window.parent.document).find(".page-tabs-content a").removeClass('active');
+                    $(window.parent.document).find(".J_mainContent iframe").css('display','none');
+                    $(window.parent.document).find(".J_mainContent iframe:eq("+weizhi+")").css('display','block');
+                    $(window.parent.document).find(".page-tabs-content a:eq("+weizhi+")").addClass('active');
+                }
+
+            });
+        })
+
+    </script>
+<script>
+
+    // 删除物流
+    function del_shipping(code)
+    {
+        $.ajax({
+            type : "POST",
+            url:"{:url('home/Plugin/del_shipping')}",//+tab,
+            dataType: "json",
+            data : {code:code},
+            success: function(data){
+                layer.alert(data.msg, {icon: 2} ,function(index){
+                    layer.close(index);
+                    //location.href = location.href;
+                    location.reload();
+                });
+
+            }
+        });
+    }
+
+    //插件安装(卸载)
+    function installPlugin(type,code,type2){
+
+        var url = '/index.php/home/Plugin/install/type/'+type+'/code/'+code+'/install/'+type2;
+
+        $.get(url,function(data){
+            var obj = JSON.parse(data);
+            alert(obj.msg);
+            //layer.alert(obj.msg, {icon: 2});  
+            if(obj.status == 1){
+                //parent.location.reload();
+                window.location.reload();
+            }
+        })
+    }
+
+</script>    
+</body>
+</html>

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>进展报告</title>
+		<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport" />
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+		<meta content="telephone=no" name="format-detection" />
+		
+		<!-- 引入YDUI样式 -->
+		<link rel="stylesheet" href="__PUBLIC__/css/ydui.css" />
+		<link rel="stylesheet" href="__PUBLIC__/font/iconfont.css" />
+		<link rel="stylesheet" href="__PUBLIC__/css/animate.min.css" />
+		<link rel="stylesheet" href="__PUBLIC__/css/style.css" />
+
+		<!-- 引入YDUI自适应解决方案类库 -->
+		<script src="__PUBLIC__/js/ydui.flexible.js"></script>
+	</head>
+	<body>
+		
+		<header class="navheader">
+		    <a class="icon-jiantou-copy" href="javascript:history.go(-1)"></a>
+		    <h1 class="mui-title">进展报告</h1>
+		</header>
+		
+		<section class="g-flexview">
+			<div class="animated bounceInLeft">
+			
+				<div class="tp-bt">
+					<div class="news">
+						<ul class="news_list prog_bt">
+							<li>
+								<div class="new_img">
+									<img src="{$help.pic}" />
+								</div>
+								<div class="txt-box">
+			  	 					<h2>{$help.title}</h2>
+			  	 					<p>已有<strong>{$help.points_num}</strong>名爱心网友参与捐款</p>
+			  	 			    </div>
+							</li>
+						</ul>
+						<p class="projectTitle">本项目进展报告</p>
+
+						<ul id="accordion" class="yd-accordion">
+							{volist name="res" id="res" empty="<span class='link'>暂无数据</span>"}
+							<li>
+								<div class="link">{$res.title}<i class="icon-less"></i></div>
+								<ul class="submenu">
+									{$res.content}
+								</ul>
+							</li>
+							{/volist}
+					    </ul>
+
+					</div>
+				</div>
+
+			</div>
+		</section>
+		
+		<!--<footer class="m-tabbar">-->
+			<!--<a href="#" class="tabbar-item" class="tabbar-item" {if condition="$help['status'] eq '2'"} style="display: none" {/if}>-->
+			<!--<span class="" id="Btn01">我捐款99</span>-->
+			<!--</a>-->
+			<!--<a href="{:url('people',array('help_id'=>$help['help_id']))}" class="tabbar-item" {if condition="$help['status'] eq '2'"} style="display: none" {/if}>-->
+			<!--<span class="" id="Btn02">参加志愿者</span>-->
+			<!--</a>-->
+			<!--<a href="{:url('car',array('help_id'=>$help['help_id']))}" class="tabbar-item" {if condition="$help['status'] eq '2'"} style="display: none" {/if}>-->
+			<!--<span class="" id="Btn03">请用我的车</span>-->
+			<!--</a>-->
+			<!--<a href="" class="tabbar-item" {if condition="$help['status'] eq '1'"} style="display: none" {/if}>-->
+			<!--<span class="javascript:void(0)">项目已完结</span>-->
+			<!--</a>-->
+			<!--<a href="javascript:;" id="J_ShowActionSheet" class="tabbar-item">-->
+				<!--<span class="tabbar-icon" id="Btn04">-->
+					<!--<i class="icon-iconshare"></i>-->
+				<!--</span>-->
+			<!--</a>-->
+		<!--</footer>-->
+		
+		<!-- 我捐款 -->
+		<div class="mask"></div>
+		<form>
+			<div class="m-actionsheet" id="J_ActionSheet1">
+				<a href="#" class="actionsheet-item">请输入捐赠积分</a>
+				<a href="#" class="actionsheet-item" id="Radio">
+					<button class="btn-active">99积分</button>
+					<button>198积分</button>
+					<button>297积分</button>
+					<button>396积分</button>
+				</a>
+				<div class="m-cell">
+				    <div class="cell-item">
+				        <div class="cell-left font">99x</div>
+				        <div class="cell-right"><input type="number" pattern="[0-9]*" id="Multi" name="Multi" class="cell-input" placeholder="自定义数字" autocomplete="off" /></div>
+				    </div>
+				</div>
+				<button type="submit" class="btn-block btn-primary">立即捐赠</button>
+				<a href="javascript:;" class="actionsheet-action J_Cancel1" id="J_Cancel1"><i class="icon-guanbi"></i></a>
+			</div>
+		</form>
+		
+		
+		<!-- 分享弹窗 -->
+		<div class="m-actionsheet" id="J_ActionSheet">
+			<ul class="share">
+				<li><a href=""><span class="icon-weixin"></span><span class="nav-label">微信</span></a></li>
+				<li><a href=""><span class="icon-pengyouquan"></span><span class="nav-label">朋友圈</span></a></li>
+				<li><a href=""><span class="icon-shoucang1"></span><span class="nav-label">收藏</span></a></li>
+				<li><a href=""><span class="icon-qqq"></span><span class="nav-label">QQ好友</span></a></li>
+				<li><a href=""><span class="icon-qqkongjian"></span><span class="nav-label">QQ空间</span></a></li>
+			</ul>
+            <a href="javascript:;" class="actionsheet-action" id="J_Cancel">取消</a>
+        </div>
+		
+		
+		<script src="__PUBLIC__/js/jquery.min.js"></script>
+		
+		<script src="__PUBLIC__/js/mui.min.js"></script>
+		<script src="__PUBLIC__/js/mui.zoom.js"></script>
+		<script src="__PUBLIC__/js/mui.previewimage.js"></script>
+		<script type="text/javascript">
+			mui.init({
+				keyEventBind:{
+					backbutton:false
+				}
+			})
+		</script>
+		<script src="__PUBLIC__/js/ydui.js"></script>
+		<script src="__PUBLIC__/js/fastclick.js"></script>
+		<script>
+			$(function() {
+			    //消除IOS延迟
+				FastClick.attach(document.body);
+				
+				var Accordion = function(el, multiple) {
+					this.el = el || {};
+					this.multiple = multiple || false;
+					var links = this.el.find('.link');
+					links.on('click', {el: this.el, multiple: this.multiple}, this.dropdown)
+				}
+				Accordion.prototype.dropdown = function(e) {
+					var $el = e.data.el;
+						$this = $(this),
+						$next = $this.next();
+					$next.slideToggle();
+					$this.parent().toggleClass('open');
+					if (!e.data.multiple) {
+						$el.find('.submenu').not($next).slideUp().parent().removeClass('open');
+					};
+				}	
+				var accordion = new Accordion($('#accordion'), false);
+
+			});
+			
+			function BottomBtnFn(obj, openbtn, closebtn) {
+				openbtn.on('click', function() {
+					obj.actionSheet('open');
+				});
+				obj.on('open.ydui.actionsheet', function() {
+					$('#Radio button').eq(0).addClass('btn-active').siblings('button').removeClass('btn-active');
+					$('.mask').show()
+				
+				}).on('close.ydui.actionsheet', function() {
+					$('.mask').hide()
+				});
+				closebtn.on('click', function() {
+					obj.actionSheet('close');
+				});
+			}
+			BottomBtnFn($('#J_ActionSheet1'),$('#Btn01'),$('.J_Cancel1'));
+			
+			
+			var integral = 0;
+			function btn1Fn(){
+				$('#Multi').on('click',function(){
+					$('#Radio button').removeClass('btn-active');
+				})
+				if($('#Multi').val()){
+					integral = parseInt($('#Multi').val())*99;
+				}else{
+					$('#Radio button').on('click',function(){
+						$('#Multi').val(null);
+						$(this).addClass('btn-active').siblings('button').removeClass('btn-active');
+					})
+					integral = parseInt($('.btn-active').text());
+					return integral;
+				}
+			}
+			btn1Fn();
+			
+			
+			//分享弹窗
+		    !function ($) {
+		        var $myAs = $('#J_ActionSheet');
+		        $('#J_ShowActionSheet').on('click', function () {
+		            $myAs.actionSheet('open');
+		        });
+		        $('#J_Cancel').on('click', function () {
+		            $myAs.actionSheet('close');
+		        });
+		        // 自定义事件
+		        $myAs.on('open.ydui.actionsheet', function () {
+		            console.log('打开了');
+		        }).on('close.ydui.actionsheet', function () {
+		            console.log('关闭了');
+		        });
+		    }(jQuery)
+		    
+		    
+		    
+			
+		</script>
+	<script src="__PUBLIC__/js/common.js"></script>
+	</body>
+</html>

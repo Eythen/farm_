@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+		<meta content="telephone=no" name="format-detection" />
+		<title>填写收货地址</title>
+
+		<link href="__PUBLIC__/skin/css/ydui.css" rel="stylesheet">
+		<link href="__PUBLIC__/skin/css/cart.css" rel="stylesheet">
+		<link href="__PUBLIC__/skin/css/app.css" rel="stylesheet">
+		<style>
+			.g-flexview {
+				height: auto;
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: -ms-flexbox;
+				display: flex;
+				-webkit-box-orient: vertical;
+				-webkit-box-direction: normal;
+				-webkit-flex-direction: column;
+				-ms-flex-direction: column;
+				flex-direction: column;
+				margin: 0 auto;
+				max-width: 750px;
+				min-width: 300px;
+				padding-top: 1rem;
+			}
+			
+			.navbar-item {
+				height: auto
+			}
+
+			.btn-danger {
+				background-color: #3ec4c8;
+				color: #FFF;
+			}
+
+		</style>
+
+		<script src="__PUBLIC__/skin/js/ydui.flexible.js"></script>
+	</head>
+
+	<body>
+		<header class="m-navbar">
+			<a href="javascript:history.go(-1)" class="navbar-item"><i class="back-ico"></i></a>
+			<div class="navbar-center"><span class="navbar-title">填写收货地址</span></div>
+		</header>
+		<div class="g-flexview">
+			<div class="top50">
+
+				<div class="m-cell top1">
+					<div class="cell-item">
+						<div class="cell-right"><input type="text" id="Name" class="cell-input" name="consignee" placeholder="收货人"></div>
+					</div>
+					<div class="cell-item">
+						<div class="cell-right"><input type="number" pattern="[0-9]*" id="phone" class="cell-input" name="mobile" placeholder="联系电话" required/></div>
+					</div>
+					<div class="cell-item">
+						<div class="cell-right">
+							<div class="cell-right"><input type="text" class="cell-input" readonly="" id="J_Address" name="address" placeholder="选择地区" required/></div>
+						</div>
+					</div>
+					<div class="cell-item">
+						<div class="cell-right"><input type="text" id="street" class="cell-input" name="street" placeholder="街道"></div>
+					</div>
+				</div>
+				<div class="m-cell">
+					<label class="cell-item">
+						<span class="cell-left">设置默认地址</span>
+						<label class="cell-right">
+							<input type="checkbox" name="is_default" id="is_default"/>
+							<i class="cell-checkbox-icon"></i>
+						</label>
+					</label>
+				</div>
+				<div class="foo_fixed">
+					<button type="button" class="btn-block btn-ls" onclick="issue()" />提交</button>
+				</div>
+			</div>
+		</div>
+
+		
+
+		<script src="__PUBLIC__/skin/js/jquery.min.js"></script>
+		<script src="__PUBLIC__/skin/js/ydui.js"></script>
+		<script src="__PUBLIC__/skin/js/citys.js"></script>
+		<script src="__PUBLIC__/skin/js/app.js"></script>
+		<script>
+			//选择地区
+			! function() {
+				var $target = $('#J_Address');
+				$target.citySelect();
+				$target.on('click', function(event) {
+					event.stopPropagation();
+					$target.citySelect('open');
+				});
+				$target.on('done.ydui.cityselect', function(ret) {
+					$(this).val(ret.provance + ' ' + ret.city + ' ' + ret.area);
+				});
+			}();
+
+			//判断输入
+			function issue() {
+				! function(win, $) {
+					var dialog = win.YDUI.dialog;
+					var Name = $('#Name').val();
+					var phone = $("#phone").val();
+					var J_Address = $("#J_Address").val();
+					var street = $("#street").val();
+					partten = /^1[3|4|5|7|8]\d{9}$/;
+					if(Name == '') {
+						$('#Name').focus();
+						dialog.toast('姓名不能为空！', 'none', 1000);
+						return false;
+					} else if(!partten.test(phone)) {
+						$('#phone').focus();
+						dialog.toast('电话不能为空！', 'none', 1000);
+						return false;
+					} else if(J_Address == '') {
+						$('#J_Address').focus();
+						dialog.toast('地址不能为空！', 'none', 1000);
+						return false;
+					} else if(street == '') {
+						$('#street').focus();
+						dialog.toast('详情地址不能为空！', 'none', 1000);
+						return false;
+					}
+
+					var data = {
+						consignee:$('#Name').val(),
+						mobile:$('#phone').val(),
+						address:$('#J_Address').val(),
+						street:$('#street').val(),
+						is_default:$('#is_default').val(),
+					};
+					$.ajax({
+					   		type:"post",
+					   		url:"{:url('users/addAddress')}",
+						    data: data,
+					   		success:function(data){
+					   			if(data.code){
+									dialog.toast('增加成功！', 'none', 1000,  function() {
+										window.location.href="{$referurl}";
+									});
+								}
+								else{
+									dialog.toast(data.msg, 'none', 2000);
+								}	
+					   		},
+					   		error:function(msg){
+					   			dialog.toast('请求失败', 'none', 2000);
+					   		}
+					   	});	
+				}(window, jQuery);
+			};
+		</script>
+		<script src="__PUBLIC__/js/mui.min.js"></script>
+		<script>
+            mui.init({
+                keyEventBind:{
+                    backbutton:false
+                }
+            })
+		</script>
+		<script src="__PUBLIC__/js/common.js"></script>
+	</body>
+
+</html>

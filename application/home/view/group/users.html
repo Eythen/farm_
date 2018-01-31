@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>信息管理平台</title>
+	{include file="public:css" /}
+	<link href="__PUBLIC__/css/plugins/jstree/default/style.min.css?v=3.3.0" rel="stylesheet">
+</head>
+<body>
+	<div class="col-xs-4" >
+		<div class="panel panel-default">
+		  	<div class="panel-heading">
+		    	<h3 class="panel-title">组织架构</h3>
+		  	</div>
+		  	<div class="panel-body">
+		    	<div id="jstree_demo" style="height:400px; overflow:auto" ></div>
+		  	</div>
+		</div>
+		<!-- <button type="button" class="btn btn-primary btn-block submit" style="margin-top: 20px;" >保存</button> -->
+	</div>
+	<div class="col-xs-8" >
+		<div class="panel panel-default">
+		  	<div class="panel-heading">
+		    	<h3 class="panel-title">分组成员</h3>
+		  	</div>
+		  	<div class="panel-body">
+		    	<table class="table text-center table-hover" data-toolbar="#toolbar" data-toggle="table" data-sort-name="id" data-sort-order="desc" data-url="{:url('users',array('id'=>$id))}" data-side-pagination="client" data-pagination="true" data-page-list="[10, 20, 50, 100, 200]" data-show-refresh="true" data-search="true" data-show-export="true" data-filter-control="true" data-filter-show-clear="true" >
+	            <thead>
+	                <tr>
+	                    <th data-halign="center" data-field="username" >姓名</th>
+	                    <!-- <th data-halign="center" data-field="framework_name" >部门</th>
+	                    <th data-halign="center" data-field="position" >职位</th> -->
+	                    <th data-halign="center" data-field="phone" >电话</th>
+	                    <!-- <th data-halign="center" data-field="filiale" >分公司</th> -->
+	                </tr>
+	            </thead>
+	        </table>
+		  	</div>
+		</div>
+	</div>
+	{include file="public:js" /}
+	<script src="__PUBLIC__/js/plugins/jstree/jstree.min.js?v=3.3.0"></script>
+	<script type="text/javascript">
+		$(function(){
+			$('#jstree_demo').jstree({
+			 	"core" : {
+			    	'data' : <?=$json?>		
+			    },
+			  	"checkbox" : {
+	      			"keep_selected_style" : false
+	    		},
+	    		"plugins" : [
+	    			"checkbox",
+	    		]
+			});
+
+			$(".submit").click(function(event) {
+				var nodes=$("#jstree_demo").jstree("get_checked"); //使用get_checked方法
+				$.ajax({
+					url: "{:url('update_user')}"+"?id={$id}",
+					type: 'POST',
+					dataType: 'json',
+					data: {nodes: nodes},
+					success: function(data){
+						if( data.status ){
+							$(".table").bootstrapTable('refresh');
+						}else{
+    						layer.msg(data.info, {icon: 2}); 
+						}
+					}
+				})
+			});
+		});
+	</script>
+</body>
+</html>

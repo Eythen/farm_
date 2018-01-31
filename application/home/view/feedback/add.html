@@ -1,0 +1,424 @@
+{include file="public:yunying_header" /}
+<style type="text/css">
+    .title{height:40px;padding:20px 0 40px 30px;font-size:20px;border-bottom:4px solid #428bca;}
+    .content{padding:30px 25px 0 25px;}
+    input,textarea,select{border-radius:4px!important;border:1px solid #CCC!important;}
+    textarea{padding:6px 12px;width: 100%;resize: none;}
+    .input-group-addon{height:34px;border-top-right-radius: 4px;border-bottom-right-radius: 4px;border-color: #CCC;}
+    .input-date{padding-left: 15px;float: left;width: 220px;}
+    .input-label{float: left;padding-left: 15px;}
+    .uploadify-queue{ display: none;}
+    .attachment{position:relative;clear:both;}
+    .attachment li{float:left;width:120px;margin-bottom:10px;list-style: none;}
+    .attachment_box{position:relative;border:1px dashed #dcdcdc;width:84px;background-color:#eeeeee;border-radius:5px;height:84px;overflow:hidden;}
+    .attachment_box:hover{cursor:pointer;}
+    .attachment_box .attachment_bg{font-size:35px;text-align:center;color:#dddddd;z-index:0;padding-top: 23px;padding-left: 24px;}
+    .attachment_box .attachment_tips{position:absolute;bottom:0;text-align:center;width:100%;background-color:rgba(0,0,0,0.48);padding:2px 0;color:#FFF;z-index:3;font-size:12px;}
+    .attachment_box .attachment_del{position:absolute;top:3px;right:3px;color:#8E8E8E;z-index:4;font-size:15px;}
+    .attachment_box .attachment_del:hover{cursor:pointer;}
+    .attachment_box .attachment_img{position:absolute;top:0;z-index:2;}
+    .attachment_box .attachment_img img{width:100%;height:100%;cursor:pointer;}
+    .attachment_name{text-align:left;}
+    .chosen-container-multi .chosen-choices{border-radius: 4px;height: 38px;padding:5px;border-color:#CCC;}
+    .reply_content{padding:10px;border:1px solid #CCC;height:160px;border-radius:5px;margin-left:15px;font-size:16px;width:80%;
+    overflow: auto;}
+    .reply_content li,.reply_content ul{list-style: none;padding:0;}
+    .reply_content p{font-size:14px;}
+    .reply_content .time{font-size:10px;padding-left: 10px;}
+    .reply_content .reply{font-size:12px;background-color: #c0e2f1; border-radius: 4px; padding: 10px; display: inline-block; color: #0088c4;}
+    /* layer */
+    .layui-layer-record{border-radius:5px!important;max-width: 1250px;}
+    .layui-layer-record .layui-layer-setwin .layui-layer-close2{position:absolute;right:0px;top:0px;width:30px;height:30px;margin-left:0;background-position:-149px -31px;_display:none;}
+    .layui-layer-content {border-radius: 15px;}
+    .upload-btn{background-color: #428bcb;color:#FFF;font-size:12px;cursor: pointer;}
+    .btn-upload{background-color: #60c1dd;color:#FFF;}
+    .btn-upload:hover,.btn-upload:focus{background-color: #44bbde;color:#FFF;}
+    .input-addon-border {border-top-right-radius: 0!important;border-bottom-right-radius: 0!important;}
+    {if condition="$data.mode eq 0"}
+    .chosen-container-multi .chosen-choices li.search-choice .search-choice-close{display: none;}
+    {/if}
+</style>
+</head>
+<body>
+<div class="title">
+    {empty name="data.id"}新建客户反馈表{else/}查看详情{/empty}
+</div>
+<div class="content">
+    <form class="form-horizontal" id="info" >
+        <div class="form-group">
+            <label class="col-sm-2 control-label" >业主姓名</label>
+            <div class="col-sm-2" >
+                <input type="text" name="customer" class="form-control must" placeholder="请输入业主姓名" value="{$data.customer}" {if condition="$data.mode eq 0"}readonly{/if}>
+            </div>
+            <label class="col-sm-2 control-label" >电话</label>
+            <div class="col-sm-2" >
+                <input type="text" name="tel" class="form-control" placeholder="请输入电话" value="{$data.tel}" readonly>
+            </div>
+            <label class="col-sm-2 control-label">反馈人</label>
+            <div class="col-sm-2" style="padding-left: 0;">
+                <input type="text" name="feedback_name" class="form-control must" placeholder="请输入反馈人" value="{$data.feedback_name}" {if condition="$data.mode eq 0"}readonly{/if}>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label" >地址</label>
+            <div class="col-sm-10" >
+                <input type="text" name="address" class="form-control" placeholder="请输入地址" value="{$data.address}" readonly>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label" >招商经理</label>
+            <div class="col-sm-2" >
+                <input type="text" name="zhaoshang_manager" class="form-control" placeholder="请输入招商经理" value="{$data.zhaoshang_manager}" readonly>
+            </div>
+            <label class="col-sm-2 control-label" >区域经理</label>
+            <div class="col-sm-2" >
+                <input type="text" name="quyu_manager" class="form-control" placeholder="请输入区域经理" value="{$data.quyu_manager}" readonly>
+            </div>
+            <label class="col-sm-2 control-label">运营助理</label>
+            <div class="col-sm-2" style="padding-left: 0;">
+                <input type="text" name="yunying_manager" class="form-control" placeholder="请输入运营助理" value="{$data.yunying_manager}" readonly>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label" >反馈描述</label>
+            <div class="col-sm-10">
+                <textarea name="content" rows="4" class="must" placeholder="请输入反馈描述" {if condition="$data.mode eq 0"}readonly{/if}>{$data.content}</textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label" >接收人</label>
+            <div class="col-sm-10" >
+                <select data-placeholder="请选择接收人，可多选，根据选择顺序作为接收顺序" placeholder="请选择接收人" class="chosen-select must" multiple style="width:100%;" tabindex="4" name="sendee[]"  value="{$data.sendee}" {if condition="$data.mode eq 0"}disabled{/if}>
+                    <!-- <option value="">根据选择顺序作为接收顺序</option> -->
+                    {foreach name="sendees" item="v"}
+                    <option value="{$v.userid}" hassubinfo="true" {foreach name="sendee" item="val" key="k"}{eq name="v.userid" value="$val"}selected{/eq}{/foreach}>{$v.username}</option>
+                    {/foreach}
+                </select>
+            </div>
+        </div>
+        {notempty name="data.id"}
+        <div class="form-group">
+            <label class="col-sm-2 control-label" >接收人回复</label>
+            <div class="col-sm-10 reply_content">
+                 <ul>
+                 {foreach name="data.reply" item="v"}
+                     <li>
+                        <p>{$v.position}-{$v.username} <span class="time">{$v.time}</span></p>
+                        <p class="reply">{$v.content}</p>
+                     </li>
+                 {/foreach}
+                 </ul>
+            </div>
+        </div>
+        {neq name="data.status" value="100"}
+        <div class="form-group">
+            <label class="col-sm-2 control-label" ></label>
+            <div class="col-sm-10">
+                <textarea name="reply" rows="2" class="must" placeholder="请输入回复内容"></textarea>
+            </div>
+        </div>
+        {/neq}
+        {/notempty}
+        <div class="form-group">
+            <label class="col-sm-2 control-label" >附件</label>
+            <div class="col-sm-10" style="padding-right:8px;">
+                <div class="attachment">
+                    <ul class="attachment-file" style="padding-left:0px">
+                        {notempty name="data.fileshow"}
+                            {foreach name="data.fileshow" item="v"}
+                                <li>
+                                    <div class="attachment_box">
+                                        <div class="attachment_img" data-file-url="{$v.path}"><img src="{$v.pic}" width="100%"></div>
+                                        {empty name="data.id"}
+                                        <div class="attachment_del glyphicon glyphicon-remove-sign" data-file-url="{$v.path}" data-file-name="{$v.name}" title="删除"></div>
+                                        {/empty}
+                                        <div class="attachment_tips">{$v.name}</div>
+                                    </div>
+                                </li>
+                            {/foreach}
+                        {/notempty}
+                        {empty name="data.id"}
+                        <li>
+                            <div class="attachment_box add-box">
+                                <span class="attachment_bg glyphicon glyphicon-plus"></span>
+                                <div class="attachment_img"></div>
+                            </div>
+                        </li>
+                        {/empty}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {neq name="data.status" value="100"}
+        <div class="form-group">
+            {eq name="data.add" value="1"}
+            <div class="col-sm-2 col-sm-offset-4" >
+                <input type="hidden" name="id" value="{$data.id}">
+                <input type="hidden" name="sendees" id='sendees'>
+                <input type="hidden" name="file" id="file" value="{$data.file}">
+                <button type="button" class="btn btn-success" id="up" >提　交</button>
+            </div>
+            <div class="col-sm-2" >
+                <button type="reset" class="btn btn-primary btn-cancel">取　消</button>
+            </div>
+            {/eq}
+        </div>
+        {/neq}
+    </form>
+</div>
+<div class="upload_box" style="display:none;">
+    <div class="title">
+        上传附件
+    </div>
+    <div class="content form-horizontal form-group">
+        <label class="col-sm-2 control-label">选择文件</label>
+        <div class="col-sm-6 input-group" style="float:left;">
+            <input type="input" name="upload_path" id="atnupload_path" class="form-control input-addon-border" placeholder="请选择附件" readonly>
+            <span class="input-group-addon upload-btn"><span class="glyphicon">浏览</span></span>
+        </div>
+        <div class="col-sm-3">
+        <form id="atnfile_box">
+            <input type="file" name="Filedata" id="atnupload_file" class="hidden" accept=".xls,.xlsx,.doc,.docx,.jpg,.jpeg,.png,.gif,.pdf,.zip,.rar">
+            <input type="input" name="upload_text" id="atnupload_text" class="form-control" placeholder="请输入文件描述">
+        </form>
+        </div>
+    </div>
+    <div class="col-sm-12" style="text-align:center;margin-top:20px;">
+        <button type="button" class="btn btn-upload">上传</button>
+    </div>
+</div>
+{include file="public:js" /}
+<script type="text/javascript">
+    $('.form_date').datetimepicker({
+        format: 'yyyy-mm-dd hh:ii:00',
+        language:  'zh-CN',
+        autoclose: true,
+        pickerPosition: 'top-right',
+    });
+    $(document).on('change','#upload_file',function(){
+        $('#upload_path').val($(this).val());
+    })
+    $(document).on('click','.upload-btn',function(){
+        $('#upload_file').click();
+    })
+    if ($('select option').size() < 10) {
+        //window.location.reload();
+    }
+    var blayer = 0;
+    $(document).on('click','.btn-upload',function(){
+        if ($('#upload_file').val() == '') {
+            layer.msg('请选择上传文件');
+            return;
+        }
+        if ($('#upload_text').val() == '') {
+            layer.msg('请输入文件描述');
+            return;
+        }
+        var filepath = $('#upload_file').val();
+        var extStart=filepath.lastIndexOf(".");
+        var ext=filepath.substring(extStart,filepath.length).toUpperCase();
+        if(ext!=".XLS"&&ext!=".XLSX"&&ext!=".DOC"&&ext!=".DOCX"&&ext!=".PDF"&&ext!=".ZIP"&&ext!=".RAR"&&ext!=".PNG"&&ext!=".GIF"&&ext!=".JPG"&&ext!=".JPEG"){
+            layer.msg("仅限于xls,xlsx,doc,docx,jpg,jpeg,png,gif,pdf,zip,rar格式");
+            return false;
+        }
+        var file = document.getElementById("upload_file").files;
+        var size = Number(file[0].size);
+        if (size > 3145728) {  //3m
+            layer.msg('上传文件太大！');
+            return;
+        }
+        blayer = layer.load();
+        var formData = new FormData($( "#file_box" )[0]);
+        var file_title = $('#upload_text').val();
+        $.ajax({
+            type: 'POST',
+            url: '{:url('Upload/file')}',
+            data: formData,
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+                if(data.status){
+                    file_data = '';
+                    file_data += '<li>';
+                    file_data += '<div class="attachment_box">';
+                    file_data += '<div class="attachment_img" data-file-url="'+ data.path +'">' + checkExt(data.path,data.ext) + '</div>';
+                    file_data += '<div class="attachment_del glyphicon glyphicon-remove-sign" data-file-url="'+ data.path +'" data-file-name="'+ data.name + '.' + data.ext +'" title="删除"></div>';
+                    file_data += '<div class="attachment_tips">'+ file_title +'</div>';
+                    file_data += '</div>';
+                    file_data += '</li>';
+                    $('.attachment-file').prepend(file_data);
+                    var files = $.trim($('#file').val());
+                    if( files=='' ){
+                        $("#file").val(data.path+'|'+file_title);
+                    }else{
+                        $("#file").val(files+';'+data.path+'|'+file_title);
+                    }
+                    layer.closeAll('page');
+                }else{
+                    layer.alert(data.info);
+                }
+                layer.close(blayer);
+            },
+            error: function(){
+                layer.close(blayer);
+            }
+        });
+    })
+    $('#up').click(function(){
+        if( check() ){
+            var a = []
+            $('.search-choice').each(function(){
+                a.push($('.chosen-select option:eq('+$(this).find('a').data('option-array-index')+')').val());
+            })
+            $('#sendees').val(a);
+            {empty name="data.id"}
+            var url = "{:url('add')}";
+            {else/}
+            var url = "{:url('updateFeedback')}";
+            {/empty}///
+
+            $.ajax({
+                  type: 'POST',
+                  url: url,
+                  data: $('#info').serialize(),
+                  dataType: 'JSON',
+                  async: false,
+                  success: function(data) {
+                    if(data.status){
+                        layer.msg(data.info, {
+                            icon: 1,
+                            time: 3000
+                        }, function(){
+                            parent.location.reload();
+                            var index = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(index);
+                        });
+                    }else{
+                        layer.alert(data.info);
+                    }
+                  }
+            });
+        }
+    });
+    function check(){
+        var msg = '';
+        $(".must").each(function() {
+            if ($.trim($(this).val()) == '') {
+                msg += '-'+$(this).attr('placeholder')+'<br />';
+            }
+        });
+        if( msg ){
+            layer.msg(msg);
+            return false;
+        }else{
+            return true;
+        }
+    }
+    //查找输入的客户
+    $("input[name=customer]").blur(function(event) {
+       var customer= $("input[name=customer]").val();
+       var url="{:url('findCustomer')}";
+       if(customer!=''){
+          $.ajax({
+              type: 'POST',
+              url: url,
+              data: 'customer_name='+customer,
+              dataType: 'JSON',
+              async: false,
+              success: function(data) {
+                  if(data.status){
+                      $("input[name=tel]").val(data.info.tel);
+                      $("input[name=contract_sn]").val(data.info.contract_sn);
+                      $("input[name=address]").val(data.info.province+data.info.city+data.info.store_address);
+                      $("input[name=zhaoshang_manager]").val(data.info.zhaoshang_manager);
+                      $("input[name=quyu_manager]").val(data.info.quyu_manager);
+                      $("input[name=yunying_manager]").val(data.info.yunying_manager);
+                  }else{
+                      layer.msg(data.info);
+                  }
+              }
+          });
+       }
+    });
+    $(document).on('click','.attachment_del',function(){
+        var file_url = $(this).data('file-url');
+        var file_name = $(this).data('file-name');
+        var obj = $(this);
+        $.ajax({
+            type: 'POST',
+            url: '{:url('Upload/fileDelete')}',
+            data: 'file_url='+file_url,
+            dataType: 'JSON',
+            async: false,
+            success: function(res){
+                if (res.status) {
+                    obj.parent().parent().remove();
+                    $("#file").val($("#file").val().replace(file_url+'|'+file_name, ""));
+                    $("#file").val($("#file").val().replace(";;", ";"));
+                    if ($('#file').val() == ';') {
+                        $("#file").val('');
+                    }
+                }else{
+                    layer.msg(res.info);
+                }
+            },
+            error: function(){
+                layer.msg('删除失败了！请联系管理员!');
+            }
+        });
+    })
+    $(document).on('click','.attachment_img',function(){
+        var url = $(this).data('file-url').replace("./", "/");
+        var ext = url.slice(url.lastIndexOf(".")+1).toLowerCase();
+        if (ext == 'jpg' || ext == 'gif' || ext == 'png' || ext == 'jpeg') {
+            parent.parent.parent.layer.open({
+                type: 1,
+                maxWidth: '960px',
+                offset: '20px',
+                title: false,
+                content: $(this).html()
+            });
+        }else{
+            window.open(url);
+        }
+    })
+    $('.add-box').click(function(){
+        layer.open({
+            type: 1,
+            area: ['800px', '200px'],
+            offset: '150px',
+            title: false,
+            skin: 'layui-layer-record',
+            content: $('.upload_box').html().replace(new RegExp(/(atn)/g),'')
+        });
+    })
+    $('.btn-cancel').click(function(){
+        var index = parent.layer.getFrameIndex(window.name);
+        parent.layer.close(index);
+    });
+    {notempty name="data.id"}
+        var sendee = [{$data.sendee}];
+        if (sendee.length) {
+            for(var key in sendee){
+                $('.chosen-select option[value='+sendee[key]+']').insertBefore($('.chosen-select option:eq('+key+')'));
+            }
+            $('.chosen-select').chosen({
+                no_results_text: "没有找到"
+            });
+        }
+        $(function(){
+            setTimeout(function(){
+                var reply_bottom = $('.reply_content').find('ul').height()-$('.reply_content').height();
+                $('.reply_content').scrollTop(reply_bottom)
+            },1000)
+        });
+    {else/}
+        $('.chosen-select').chosen({
+            no_results_text: "没有找到"
+        });
+    {/notempty}
+</script>
+</body>
+</html>

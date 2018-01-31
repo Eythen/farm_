@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>信息管理平台</title>
+    {include file="public:css" /}
+    <style type="text/css">
+        * {margin:0; padding:0; border:0; outline:0; font-size:100%; vertical-align:baseline;}
+        table{border-collapse:collapse;border-spacing:0;}
+        .c-100 {width: 100%;}
+        .c-t-center {text-align: center;}
+        .c-main {width: 100%;margin: 0 auto;}
+        .c-main h3{ margin: 15px 0;}
+        /* table
+        -----------------------------------------------------------------------------*/
+        .tb th { padding:10px 5px; font-size: 14px;font-weight: normal;border-top:1px solid #ccc; border-bottom:1px solid #ccc; background-color:#f4f5f6; line-height: 20px; color:#333; vertical-align: middle;}
+        .tb td { padding:10px 5px; line-height: 25px; background-color:#fff; border-bottom:1px solid #ddd; word-wrap: break-word; word-break:break-all; color:#666; vertical-align: middle;}
+        .tb th.small {padding:5px;}
+        .tb .hover td { background-color:#fafafa;}
+        .tb-b {border:1px solid #ddd;}
+        .tb-b th , .tb-b td {border-color:#ddd; border-left:1px solid #ddd;}
+        .tb-n th , .tb-n td {border:0; background:none; vertical-align:middle; padding:10px; color:#666;}
+
+        .tb-s {border-left: 1px solid #ddd; border-top: 1px solid #ddd;}
+        .tb-s th {background-color: #F8F8F8; color: #333; border-bottom: 1px solid #ddd; border-right: 1px solid #ddd; padding: 15px 10px; width: 120px;}
+        .tb-s td {border-bottom: 1px solid #ddd;  border-right: 1px solid #ddd;  padding: 15px 10px;}
+        .tb-skin1 th { position:relative; padding:5px; border-top: 0 none; border-bottom:0 none; background-color:#f4f5f6;}
+        .tb-skin1 th:before { content:''; position:absolute; right:-1px; top:5px; bottom:5px; display:block; width:1px; background-color:#ddd; font-size:0; z-index:1; }
+        .tb-skin1 th:last-child { overflow:hidden; *zoom:1; }
+        .tb-min th , .tb-min td {padding:1px 4px;}
+    </style>
+</head>
+<body>
+    <!-- Main content -->
+    <section class="content">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>加权平均奖金累计总表（元）</h3>
+            </div>
+            <div class="panel-body">
+                <div class="navbar navbar-default">
+                        <form action="" class="navbar-form form-inline" method="post">
+                            <div class="form-group">
+								<input type="text" name="timegap" value="{$timegap}" placeholder="日期"  id="add_time" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> 筛选</button>
+                            </div>
+                            <!--<button type="submit" class="btn btn-default pull-right"><i class="fa fa-file-excel-o"></i>&nbsp;导出excel</button>                               -->
+                        </form>
+                </div>
+
+                <div class="c-main">
+
+                    <table class="tb tb-b c-100 c-t-center">
+                        <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th>黑钻会员ID</th>
+                            <th>会员手机号</th>
+                            <th>会员昵称</th>
+                            <th>本月业绩</th>
+                            <th>直接下线黑钻本月业绩</th>
+                            <th>本月加权奖励业绩</th>
+                            <th>本月人员平均奖金</th>
+                            <th>本月业绩加权平均奖金</th>
+                            <th>本月奖金合计</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {if condition="$all_points_pay gt 0"}
+                        {volist name="points" id="vo" key="key"}
+                        <tr>
+                            <td>{$key}</td>
+                            <td>{$vo.user_id}</td>
+                            <td>{$vo.mobile}</td>
+                            <td>{$vo.nickname}</td>
+                            <td>{$vo.points_recharge}</td>
+                            <td>{$vo.points_pay_son}</td>
+                            <td>{$vo.month_pay}</td>
+                            <td>{$vo.avg_pay}</td>
+                            <td>{$vo.user_pay}</td>
+                            <td>{$vo.all_pay}</td>
+                        </tr>
+                        {/volist}
+                        <tr>
+                            <td colspan="5" style="text-align: left;">合计</td>
+                           <!--  <td>{$all_points_pay}</td> -->
+                            <td>{$total_son_pay}</td>
+                            <td></td>
+                            <td>{$total_avg_pay}</td>
+                            <td>{$total_user_pay}</td>
+                            <td>{$total_month_pay}</td>
+                        </tr>
+                        {else /}
+                            <tr>
+                            <td colspan="10">暂没数据！</td>
+                        </tr>
+                        {/if}
+                        </tbody>
+                    </table>
+
+            </div>
+        </div>
+    </section>
+    <!-- /.content -->
+    <div class="col-xs-2 col-xs-offset-3 well-sm" >
+        <button type="button" class="btn btn-warning btn-block" id="print" onClick="dayin()" >打　印</button>
+        <input type="hidden" name="qingkongyema" id="qingkongyema" class="tab" value="清空页码" onClick="pagesetup_null()">
+    </div>
+    <div class="col-xs-2 col-xs-offset-5 well-sm" >
+        <p id="downloadify">请升级flash版本到10以上</p>
+    </div>
+<!-- /.content-wrapper -->
+{include file="public:js" /}
+<link href="__PUBLIC__/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />
+<script src="__PUBLIC__/plugins/daterangepicker/moment.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/plugins/daterangepicker/daterangepicker.js" type="text/javascript"></script>
+<script type="text/javascript" src="__PUBLIC__/js/plugins/js_to_excel/swfobject.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/plugins/js_to_excel/downloadify.min.js"></script>
+<script type="text/javascript">
+    function dayin(){
+        document.all('qingkongyema').click();
+        $("#print").hide();
+        $("#think_page_trace_open").hide();
+        window.print();
+        $("#print").show();
+    }
+</script>
+<!-- 以下代码是导出excel的 -->
+        <script type="text/javascript">
+            Downloadify.create('downloadify',{
+                filename:"加权平均奖金累计总表"+"<?=date('Y-m-d-His')?>"+'.xls',
+                data: function(){
+                    return $('.c-main').html();
+                },
+                transparent: false,
+                swf: '__PUBLIC__/js/plugins/js_to_excel/downloadify.swf',
+                downloadImage: '__PUBLIC__/js/plugins/js_to_excel/download.png',
+                width: 100,
+                height: 30,
+                transparent: true,
+                append: false
+            });
+
+        </script>
+<!-- 以下代码是导出excel的end -->
+
+<script language="VBScript">
+    dim hkey_root,hkey_path,hkey_key
+    hkey_root="HKEY_CURRENT_USER"
+    hkey_path="/Software/Microsoft/Internet Explorer/PageSetup"
+    //设置网页打印的页眉页脚为空
+    function pagesetup_null()
+    on error resume next
+    Set RegWsh = CreateObject("WScript.Shell")
+    hkey_key="/header" 
+    RegWsh.RegWrite hkey_root+hkey_path+hkey_key,""
+    hkey_key="/footer"
+    RegWsh.RegWrite hkey_root+hkey_path+hkey_key,""
+    end function
+</script>
+
+<script>
+    $(document).ready(function(){
+        $('#add_time').datetimepicker({
+            language:  'zh-CN',
+            format: 'yyyy-mm',
+            weekStart: 1,
+            todayBtn:  1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 3, //这里就设置了默认视图为年视图
+            minView: 3, //设置最小视图为年视图
+            forceParse: 0,
+        });
+    });
+</script>
+</body>
+</html>

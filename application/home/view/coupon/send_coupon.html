@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>信息管理平台</title>
+    {include file="public:css" /}
+    <style type="text/css">
+        html{background-color: #f5f5f5}
+        .table thead {background-color: #ccc;}
+        .navbar-form {padding: 2px 15px; margin: 6px; border: none;}
+
+    </style>
+</head>
+<body>
+    <div class="panel panel-info well">
+<div class="wrapper">
+  <section class="content">
+    <div class="container-fluid">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <div class="navbar navbar-default">
+              <form action="{:url('Coupon/send_coupon')}" id="search-form" class="navbar-form form-inline" method="post">
+                <div class="form-group">
+                  <div class="col-xs-6"><select name="level_id" id="level_id" class="form-control">
+                    <option value="0">所有会员</option>
+                    {foreach name="level" item="vo"}
+                       <option value="{$vo['level_id']}" {if condition="$vo['level_id'] eq $level_id"}selected{/if}> {$vo['level_name']}</option>
+	 			    {/foreach}
+                  </select>
+                  </div>
+                  <div class="col-xs-6">
+                    <input type="hidden" name="cid" id="cid" value="{$cid}">
+                    <input type="hidden" name="type" id="type" value="{$type}">
+                    <button type="submit" id="button-filter" class="btn btn-info">确定发送优惠券</button>
+                  </div>
+                </div>
+              </form>
+          </div>
+          <div class="navbar navbar-default">
+             <form action="{:url('send_coupon')}" id="search-form2" class="navbar-form form-inline" method="post" onsubmit="return false">
+               <div class="form-group">
+                   <label class="control-label" for="input-mobile">手机号码</label>
+                   <div class="input-group">
+                       <input type="text" name="mobile" value="" placeholder="手机号码" id="input-mobile" class="form-control">
+                   </div>
+               </div>
+
+               <!-- <div class="form-group">
+                   <label class="control-label" for="input-email">email</label>
+                   <div class="input-group">
+                       <input type="text" name="email" value="" placeholder="email" id="input-email" class="form-control">                      
+                   </div>
+               </div> -->
+               <div class="form-group">
+                  <label class="control-label" for="input-order-id">昵称关键词</label>
+                  <div class="input-group">
+                    <input type="text" name="nickname" value="{$nickname}" placeholder="搜索词" id="input-order-id" class="form-control">
+                  </div>
+                </div>
+                <button type="button" onclick="ajax_get_table('search-form2',1)" id="button-filter search-order" class="btn btn-primary"><i class="fa fa-search"></i>查找</button>
+              	<button type="button" onclick="doconfirm()" id="button-filter" class="btn btn-info pull-right">确定发送优惠券</button>	  
+              </form>
+          </div>
+          <form method="post" action="{:url('send_coupon')}" id="form-user">
+           <input type="hidden" name="cid" id="cid" value="{$cid}">
+           <input type="hidden" name="type" id="type" value="{$type}">
+	          <div id="ajax_return"> 
+		
+	          </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+{include file="public:js" /}  
+<script>
+    $(document).ready(function(){
+        ajax_get_table('search-form2',1);
+
+    });
+
+    // ajax 抓取页面
+    function ajax_get_table(tab,page){
+        cur_page = page; //当前页面 保存为全局变量
+            $.ajax({
+                type : "POST",
+                url:"/index.php/home/Coupon/ajax_get_user?page="+page,//+tab,
+                data : $('#'+tab).serialize(),// 你的formid
+                success: function(data){
+                    $("#ajax_return").html('');
+                    $("#ajax_return").append(data);
+                }
+            });
+    }
+
+    function doconfirm(){
+  	   if($("input[type='checkbox']:checked").length == 0)
+ 	   {
+ 		   layer.alert('请选择会员', {icon: 2}); //alert('请选择商品');
+ 		   return false;
+ 	   }else{
+ 		   $('#form-user').submit();
+ 	   }
+     }
+</script>
+</div>
+</body>
+</html>

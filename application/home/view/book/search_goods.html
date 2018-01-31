@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>信息管理平台</title>
+    {include file="public:css" /}
+    <style type="text/css">
+        html{background-color: #f5f5f5;padding-bottom: 30px;}
+        .table thead {background-color: #ccc;}
+        .user{
+            position: relative;
+            margin-right: 14px;
+        }
+          .user i{
+             width: 20px;
+             height: 20px;
+             border-radius: 10px;
+             z-index: 999;
+             position: absolute;
+             background-color:red;
+             color:#fff;
+             top: -10px;
+             right:-10px;
+             padding-top: 3px;
+
+         } 
+
+         .myselectusers{
+            border: 1px #ccc solid;
+            padding:0.5em;
+            text-align: left;
+            max-height: 9em;
+            overflow-y: auto;
+
+         }
+         .mybtn {
+            width:100%;
+            position: fixed;
+            left:0px;
+            bottom: 0;
+            background-color: #fff;
+            z-index: 99
+         }
+         .mybtn button{margin-right: 6px; }
+
+    </style>
+</head>
+<body>
+    <div  class="panel panel-info well">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <b class="replyform">查询</b>
+                <span class="pull-right"><i class="fa fa-chevron-up"></i></span>
+            </h4>
+        </div>
+        <div class="panel-body" style="display: none;">
+            <div class="col-sm-12">
+                <form class="form-horizontal" id="mysearch">
+                    <div class="form-group">
+                        <div class="col-sm-4">
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" name="key_word" id="key_word" placeholder="请输入商品标题" value="">
+                            </div>
+                        </div> 
+                        <div class="col-sm-4">
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" name="shop_price" id="shop_price" placeholder="请输入商品价格" value="">
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <!-- <label class="col-sm-4 control-label">上下架：</label> -->
+                            <div class="col-sm-12">
+                                <select name="is_on_sale" id="is_on_sale" class="form-control">
+                                    <option value="">上下架全部</option>                  
+                                    <option value="1">上架</option>
+                                    <option value="0">下架</option>
+                                </select>
+                            </div>    
+                        </div>                
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-6 col-sm-offset-3">
+                            <button type="reset" class="col-sm-5 btn btn-danger">重置</button>
+                            <span class="pull-right col-sm-5 btn btn-primary mysearch_btn">搜索</span>
+                        </div> 
+                          
+                    </div>
+
+                </form>    
+            </div>
+        </div>
+    </div>
+
+    <div class="well well-sm" >
+        <div class="col-sm-12 well-sm text-center bg-warning" style="display: none">
+
+            <p class="bg-info">已选</p>
+            <div id="users" class="myselectusers"></div>
+            <input type="hidden" class="form-control" id="goods_ids" name="goods_ids" value="">
+        </div>
+        <!-- <div class="col-sm-5 well-sm" style="margin-bottom: -4em;"> <button class="btn btn-info btn-sm allselect">全选</button>  <button class="btn btn-default btn-sm log">记录</button></div> -->
+        <table class="table text-center table-hover table-condensed" data-toolbar="#toolbar" data-toggle="table" data-sort-name="user_id" data-sort-order="desc" data-url="{:url('book/search_goods')}" data-side-pagination="server" data-pagination="true" data-page-list="[10, 20, 50, 100, 200]" data-show-refresh="false" data-search="false" data-show-export="true" data-filter-control="true" data-filter-show-clear="true">
+            <thead>
+                <tr>
+                    <th data-halign="center" data-field="state" data-checkbox="true" ></th>
+                    <th data-halign="center" data-field="goods_id" data-filter-control="input" >ID</th>
+                    <th data-halign="center" data-field="goods_name" data-filter-control="input" >商品名称</th>
+                    <th data-halign="center" data-field="shop_price" data-filter-control="input" >商品价格</th>
+                    <th data-halign="center" data-field="last_update_uid" data-filter-control="input" >更新人员</th>
+                    <th data-halign="center" data-field="last_update" data-filter-control="input" >更新时间</th>
+                    <th data-halign="center" data-field="is_on_sale"  data-formatter="is_on_sale_Formatter">上下架</th>
+                    
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <div class="col-sm-12 well-sm text-center mybtn"> <button class="btn btn-danger btn-sm myclearall">清空所有选择</button><button class="btn btn-default btn-sm mycancel">关闭</button><button class="btn btn-success btn-sm mysubmit">确定</button></div>
+    {include file="public:js" /}
+    <link href="__PUBLIC__/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />
+<script src="__PUBLIC__/plugins/daterangepicker/moment.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/plugins/daterangepicker/daterangepicker.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+        function is_on_sale_Formatter(value, row, index) {
+            if(value){
+                var img = 'yes.png';
+            }
+            else{
+                var img = 'cancel.png';
+            }
+            return '<img width="20" height="20" src="__PUBLIC__/images/'+img+'" />';
+              
+        }
+
+        //初始化表格打勾
+        $('.table').on('load-success.bs.table', function (rows) {
+                var ids = $('#goods_ids').val();
+                var ar=new Array();
+                 ar = ids.split(',');//注split可以用字符或字符串分割
+                 $('input[name=btSelectItem]').each(function(index){
+                    var id = $(this).closest('td').next('td').text();
+                            if($.inArray(id, ar)>=0){
+                               $(this).prop('checked', true);
+                            }
+                        });
+            });
+        //全不选 
+        $('.table').on('uncheck-all.bs.table', function (rows) {
+                $('input[name=btSelectItem]').each(function(){
+                    var id = $(this).closest('td').next('td').text();
+                    deletegoods(id);
+                });
+            });
+        //全选 
+            $('.table').on('check-all.bs.table', function (rows) {
+                $('input[name=btSelectItem]').each(function(){
+                    var id = $(this).closest('td').next('td').text();
+                    var goods_name = $(this).closest('td').next('td').next('td').text();
+                    var shop_price = $(this).closest('td').next('td').next('td').next('td').text();
+                    addgoods(id, shop_price, goods_name);
+                });
+            });
+            //checkbox单选 
+            $('.table').on('check.bs.table', function (row, $element) {
+                var id = $element.goods_id;
+                var goods_name = $element.goods_name;
+                var shop_price = $element.shop_price;
+                addgoods(id, shop_price, goods_name);
+            });
+            //checkbox取消
+            $('.table').on('uncheck.bs.table', function (row, $element) {
+                var id = $element.goods_id;
+                deletegoods(id);
+            });
+
+            //点击所在的行选择，更改checkbox状态
+            $('.table').on('click-row.bs.table', function (row, $element, field) {
+                var t = field.closest('tr').find('input[name=btSelectItem]');
+                if(t.prop('checked')){
+                    var id = t.closest('td').next('td').text();
+                    deletegoods(id);
+                    t.prop('checked', false);
+                }
+                else{
+                    var id = t.closest('td').next('td').text();
+                    var goods_name = t.closest('td').next('td').next('td').text();
+                    var shop_price = t.closest('td').next('td').next('td').next('td').text();
+                    addgoods(id, shop_price, goods_name);
+                    t.prop('checked', true);
+                    
+                }
+            });
+            //增加选择商品
+            function addgoods(goods_id, shop_price, goods_name){
+                    var goods_ids = $('#goods_ids').val()+',';
+                    var id = ','+goods_id+',';
+                    var t = goods_ids.indexOf(id);
+                    if(t =='-1'){
+                        
+                        //删除字符串最后一个字符的
+                        goods_ids = goods_ids.substring(0, goods_ids.length-1);
+                        goods_ids += ','+goods_id;
+
+                        var users = $('#users').html();
+                        users += '<span class="btn btn-sm btn-default user" data-id="'+goods_id+'">'+goods_name+'('+shop_price+')<i class="glyphicon glyphicon-remove" onclick="deletegoods('+goods_id+')"></i></span>';
+
+                        $('#goods_ids').val(goods_ids);
+                        //$('#users').html(users);
+                    }
+                  
+            }
+            //删除选择商品
+            function deletegoods(goods_id){
+                var goods_ids = $('#goods_ids').val()+',';
+                var id = ','+goods_id+',';
+                goods_ids = goods_ids.replace(',,', ",");
+                goods_ids = goods_ids.replace(id, ",");
+                //删除字符串最后一个字符的
+                goods_ids = goods_ids.substring(0, goods_ids.length-1);
+
+                $('#goods_ids').val(goods_ids);
+                //$('#users').find('span[data-id='+goods_id+']').remove();
+
+                $('.bs-checkbox').each(function(index){
+                    var id = $(this).closest('td').next().text();
+                    if(id == goods_id){
+                        $(this).find('input').prop('checked', false);
+                    }
+                });
+
+            }
+
+
+        $(document).ready(function(){
+            //初始化选择
+            /* var u = parent.$('#users').html();
+            $("#users").html(u);*/
+            var goods_ids = parent.$('#goods_content').val()
+            $('#goods_ids').val(goods_ids);
+            //全清空
+            $('.myclearall').on('click', function(){
+                var goods_ids = $('#goods_ids').val();
+                var ar = new Array();
+                ar = goods_ids.split(',');
+                for (var i = 0; i < ar.length; i++) {
+                    if(ar[i]>0){
+                        deletegoods(ar[i]);
+                    }
+                }
+            });
+            $('.mycancel').on('click', function(){
+                parent.layer.closeAll();
+            });
+            //提交
+            $('.mysubmit').on('click', function(){
+                /*var u = $('#users').html();
+                parent.$("#users").html(u);*/
+                var goods_ids = $('#goods_ids').val()
+                parent.$('#goods_content').val(goods_ids);
+                $.ajax({
+                    url: "{:url('updatecombocontent', ['id' => $id, 'return' => 1])}",
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {goods_content:goods_ids},
+                    success: function(data){
+                        if( data.code ){
+                            if(data.data.length<1){
+                                layer.msg('请选择至少一个商品', {icon: 2}); 
+                                return ;
+                            }
+                            var goods_list = '';
+                            for (var i = 0; i < data.data.length; i++) {
+                                
+                                goods_list += '<tr>';
+                                goods_list += '    <td style="display:none"><input type="checkbox" name="goods_id[]" checked="checked" value="'+data.data[i]['goods_id']+'}"/></td>';
+                                goods_list += '    <td class="text-left">'+data.data[i]['goods_name']+'</td>';            
+                                goods_list += '    <td class="text-left">'+data.data[i]['shop_price']+'</td>';
+                                goods_list += '    <td class="text-left"><a class="goods-delete" href="javascript:void(0)" onclick="javascript:$(this).parent().parent().remove();" data-id="'+data.data[i]['goods_id']+'">删除</a></td>';
+                                goods_list += '</tr>';
+                            }
+                            parent.$("#goods_list").html(goods_list);
+                            //console.log(data.data.length);
+                            //console.log(data.data);
+                            parent.layer.closeAll();
+                        }else{
+                            layer.msg(data.msg, {icon: 2}); 
+                        }
+
+                    }
+                });
+
+                
+
+            });
+
+            /*var p = parent.$("#users").html();
+            console.log(p);*/
+            
+
+            $('#add_time').daterangepicker({
+                format:"YYYY/MM/DD",
+                singleDatePicker: false,
+                showDropdowns: true,
+                minDate:'2017/01/01',
+                maxDate:'2030/01/01',
+                startDate:'<?=date("Y/m/d", strtotime("-7 days"))?>',
+                ranges: {
+                   '今天': [moment(), moment()],
+                   '昨天': [moment().subtract('days', 1), moment().subtract('days', 1)],
+                   '最近7天': [moment().subtract('days', 6), moment()],
+                   '最近30天': [moment().subtract('days', 29), moment()],
+                   '上一个月': [moment().subtract('month', 1).startOf('month'), moment().subtract('month', 1).endOf('month')]
+                },
+                locale : {
+                    applyLabel : '确定',
+                    cancelLabel : '取消',
+                    fromLabel : '起始时间',
+                    toLabel : '结束时间',
+                    customRangeLabel : '自定义',
+                    daysOfWeek : [ '日', '一', '二', '三', '四', '五', '六' ],
+                    monthNames : [ '一月', '二月', '三月', '四月', '五月', '六月','七月', '八月', '九月', '十月', '十一月', '十二月' ],
+                    firstDay : 1
+                }
+            });
+        });
+        
+
+
+
+            $(".mysearch_btn").click(function(event) {
+
+                var search = $("#mysearch").serialize();
+                var url = "{:url('book/search_goods')}"+"?"+search;
+                $(".table").bootstrapTable('refresh', {
+                    url: url
+                });
+
+            });
+
+            //收缩表单
+            $('.panel-heading').click(function(){
+                $(".panel-body").toggle(1000);
+                $(".panel-heading i").toggleClass("fa-chevron-up").toggleClass("fa-chevron-down");
+            });
+
+        
+            
+
+    
+
+
+           
+
+
+    </script>
+</body>
+</html>

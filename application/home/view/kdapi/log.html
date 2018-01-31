@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>信息管理平台</title>
+	{include file="public:css" /}
+	<style type="text/css">
+        html{background-color: #f5f5f5}
+		.btn-icon{ font-size: 12px; margin: 0px 5px; }
+	</style>
+</head>
+<body>
+	<div class="well well-sm" >
+		<div id="toolbar">
+            <!-- <button id="delete_more" class="btn btn-danger">
+                <i class="glyphicon glyphicon-remove"></i> 批量删除
+            </button> -->
+        </div>
+		<table class="table text-center table-hover table-condensed" data-toolbar="#toolbar" data-toggle="table" data-sort-name="id" data-sort-order="desc" data-url="{:url('log')}" data-side-pagination="server" data-pagination="true" data-page-list="[10, 20, 50, 100, 200]" data-show-refresh="true" data-search="true" data-show-export="true" data-filter-control="true" data-filter-show-clear="true" >
+            <thead>
+                <tr>
+                    <th data-halign="center" data-field="state" data-checkbox="true" ></th>
+                    <th data-halign="center" data-field="id" data-filter-control="input" >ID</th>
+                    <th data-halign="center" data-field="generalize_id" data-filter-control="input" >账号ID</th>
+                    <th data-halign="center" data-field="content" data-filter-control="input" >更改内容</th>
+                    <th data-halign="center" data-field="update_time" data-filter-control="input" >更改时间</th>
+                    <th data-halign="center" data-field="update_userid" data-filter-control="input" >更改人</th>
+                    <th data-halign="center" data-field="operate" data-formatter="operateFormatter" data-events="operateEvents" >操作</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+	{include file="public:js" /}
+	<script type="text/javascript">
+		function operateFormatter(value, row, index) {
+			return [
+                    '<a href="javascript:void(0);" class="btn-icon edit btn btn-sm btn-primary" title="账号历史记录"><i class="fa fa-list"></i>账号历史记录</a>',
+                ].join('');
+            
+        }
+
+        window.operateEvents = {
+        	
+        	// 账号历史记录
+            'click .edit': function (e, value, row, index) {
+                //var url = $(this).data('url');
+                var url = "{:url('logOne')}"+"?generalize_id="+row.generalize_id;
+                var title = row.generalize_id+"账号历史记录";
+                var arr = new Array();
+                
+                $(window.parent.document).find(".page-tabs-content a").each(function(index){
+                    arr[index] = $(this).data('id');
+                });
+                //获取导航index    
+                var weizhi = $.inArray( url, arr );
+                if(weizhi < 0 ){
+
+                    $(window.parent.document).find(".page-tabs-content a").removeClass('active');
+                    $(window.parent.document).find(".page-tabs-content").append('<a href="javascript:;" class="J_menuTab active" data-id="'+url+'">'+title+' <i class="fa fa-times-circle"></i></a>');
+
+                    $(window.parent.document).find(".J_mainContent iframe").css('display','none');
+                    $(window.parent.document).find(".J_mainContent").append('<iframe class="J_iframe" name="iframeUid0" width="100%" height="100%" src="'+url+'" frameborder="0" data-id="'+url+'" seamless></iframe>');
+                }
+                else{
+                    $(window.parent.document).find(".page-tabs-content a").removeClass('active');
+                    $(window.parent.document).find(".J_mainContent iframe").css('display','none');
+                    $(window.parent.document).find(".J_mainContent iframe:eq("+weizhi+")").css('display','block');
+                    $(window.parent.document).find(".page-tabs-content a:eq("+weizhi+")").addClass('active');
+                }
+            	/*layer.open({
+                    title:'编辑',
+                    type: 2,
+                    area: ['400px', '300px'],
+                    fix: false, //不固定
+                    maxmin: true,
+                    content: "{:url('edit')}"+"?id="+row.id,
+                    end: function(){
+                        $(".table").bootstrapTable('refresh');
+                    }
+                });*/
+            },
+            // 删除
+            'click .remove': function (e, value, row, index) {
+            	$.ajax({
+            		url: "{:url('deleteLog')}",
+            		type: 'POST',
+            		dataType: 'json',
+            		data: {id: row.generalize_id},
+            		success: function(data){
+            			if( data.code ){
+                            $(".table tr[data-index="+index+"]").remove();
+            			}else{
+            				layer.msg(data.msg, {icon: 2}); 
+            			}
+
+            		}
+            	})
+            },
+        };
+
+        $(function(){
+        	$('#add').click(function(event) {
+        		layer.open({
+                    title:'新增用户',
+                    type: 2,
+                    area: ['400px', '300px'],
+                    fix: false, //不固定
+                    maxmin: true,
+                    content: "{:url('edit')}",
+                    end: function(){
+                        $(".table").bootstrapTable('refresh');
+                    }
+                });
+        	});
+
+            //批量删除
+            $("#delete_more").click(function(event) {
+              var obj = $(".table").bootstrapTable('getSelections');
+              var str = '';
+              for ( var o in obj) {
+                str = str + obj[o].generalize_id + ",";        
+              };  
+
+
+         
+
+              if( str!='' ){
+                //询问框
+                layer.confirm('您确定要批量删除么？', {
+                  btn: ['确定','取消'] //按钮
+                }, function(index){
+                    layer.close(index);
+
+                    $.ajax({
+                        url: "{:url('deleteLog')}",
+                        type: 'POST',
+                        dataType: 'json',
+                        data: {id: str},
+                        success: function(data){
+                            if( data.code ){
+                                
+                                $(".table").bootstrapTable('refresh');
+                            }else{
+                                layer.msg(data.msg, {icon: 2}); 
+                            }
+
+                        }
+                    })
+                }, function(){
+                  
+                });
+
+                
+              }else{
+                layer.alert('请选择需要删除的!');
+              }
+            });
+
+            
+            $('input[name=btSelectAll]').after(" 全选 ");
+
+            //添加到导航上面
+            $('.J_menuItem').click(function(){
+                var url = $(this).data('url');
+                var title = $(this).data('title');
+                var arr = new Array();
+                
+                $(window.parent.document).find(".page-tabs-content a").each(function(index){
+                    arr[index] = $(this).data('id');
+                });
+                //获取导航index    
+                var weizhi = $.inArray( url, arr );
+                if(weizhi < 0 ){
+
+                    $(window.parent.document).find(".page-tabs-content a").removeClass('active');
+                    $(window.parent.document).find(".page-tabs-content").append('<a href="javascript:;" class="J_menuTab active" data-id="'+url+'">'+title+' <i class="fa fa-times-circle"></i></a>');
+
+                    $(window.parent.document).find(".J_mainContent iframe").css('display','none');
+                    $(window.parent.document).find(".J_mainContent").append('<iframe class="J_iframe" name="iframeUid0" width="100%" height="100%" src="'+url+'" frameborder="0" data-id="'+url+'" seamless></iframe>');
+                }
+                else{
+                    $(window.parent.document).find(".page-tabs-content a").removeClass('active');
+                    $(window.parent.document).find(".J_mainContent iframe").css('display','none');
+                    $(window.parent.document).find(".J_mainContent iframe:eq("+weizhi+")").css('display','block');
+                    $(window.parent.document).find(".page-tabs-content a:eq("+weizhi+")").addClass('active');
+                }
+
+            });
+        })
+
+	</script>
+</body>
+</html>

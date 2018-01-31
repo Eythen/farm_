@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>客户反馈表</title>
+    <link href="__PUBLIC__/css/bootstrap.min.css?v=3.3.5" rel="stylesheet">
+	<script src="__PUBLIC__/js/jquery.min.js?v=2.1.4" ></script>
+	<script type="text/javascript" src="__PUBLIC__/js/plugins/js_to_excel/swfobject.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/js/plugins/js_to_excel/downloadify.min.js"></script>
+</head>
+<body>
+	{volist name="data" id="v" key="k" }
+	<div class="panel panel-default" style="width:1000px; margin:0px auto" >
+	    <div class="panel-heading text-primary text-center">
+	    	<h3>乐欣 可爱可亲客户反馈表</h3>
+	    </div>
+	    <div class="panel-body" style="font-size:18px" id="data_{$v.id}">
+	    	<table class="table table-bordered text-center" id="contract" >
+		        <tr>
+		          <td class="col-xs-2" >业主姓名</td>
+		          <td class="col-xs-2" >{$v.customer}</td>
+		          <td class="col-xs-2" >电话</td>
+		          <td class="col-xs-2" >{$v.tel}</td>
+		          <td class="col-xs-2" >反馈人</td>
+		          <td class="col-xs-2" >{$v.feedback_name}</td>
+		        </tr>
+		        <tr>
+		          <td class="col-xs-2" >地址</td>
+		          <td class="col-xs-10" colspan="5" >{$v.address}</td>
+		        </tr>
+		        <tr>
+		          <td class="col-xs-2" >招商经理</td>
+		          <td class="col-xs-2" >{$v.zhaoshang_manager}</td>
+		          <td class="col-xs-2" >区域经理</td>
+		          <td class="col-xs-2" >{$v.quyu_manager}</td>
+		          <td class="col-xs-2" >运营助理</td>
+		          <td class="col-xs-2" >{$v.yunying_manager}</td>
+		        </tr>
+		        <tr>
+		          <td class="col-xs-2" >反馈描述</td>
+		          <td class="col-xs-10" colspan="5" >{$v.content}</td>
+		        </tr>
+		        <tr>
+		          <td class="col-xs-10" colspan="6" >接收人反馈</td>
+		        </tr>
+		        {foreach name="v.reply" item="val"}
+			       	<tr>
+			          <td class="col-xs-2" >{$val.position}-{$val.username}</td>
+			          <td class="col-xs-8" colspan="4" >{$val.content}</td>
+			          <td class="col-xs-2">{$val.time}</td>
+			        </tr>
+		        {/foreach}
+		        <tr>
+		          <td class="col-xs-2" >反馈添加时间</td>
+		          <td class="col-xs-10" colspan="5" >{$v.add_time}</td>
+		        </tr>
+		      </table>
+	    </div>
+	    	<p id="downloadify{$v.id}">
+				请升级flash版本到10以上
+			</p>
+	</div>
+	{if condition="count($v) neq $k"}
+		<div style="page-break-after:always" ></div>
+	{/if}
+	{/volist}
+	<div class="col-xs-2 col-xs-offset-5 well-xs" >
+	    <button type="button" class="btn btn-warning btn-block" id="print" onClick="dayin()" >打　印</button>
+	    <input type="hidden" name="qingkongyema" id="qingkongyema" class="tab" value="清空页码" onClick="pagesetup_null()">
+	</div>
+</body>
+<script type="text/javascript">
+	function dayin(){
+		document.all('qingkongyema').click();
+		$("#print").hide();
+		$("#think_page_trace_open").hide();
+		window.print();
+		$("#print").show();
+	}
+</script>
+<!-- 以下代码是导出excel的 -->
+		<script type="text/javascript">
+		{volist name="data" id="v" key="k" }
+			Downloadify.create('downloadify{$v.id}',{
+				filename:"{$v.customer}"+'.xls',
+				data: function(){
+					return $('#data_{$v.id}').html();
+				},
+				transparent: false,
+				swf: '__PUBLIC__/js/plugins/js_to_excel/downloadify.swf',
+				downloadImage: '__PUBLIC__/js/plugins/js_to_excel/download.png',
+				width: 100,
+				height: 30,
+				transparent: true,
+				append: false
+			});
+		{/volist}
+		</script>
+<!-- 以下代码是导出excel的end -->
+
+<script language="VBScript">
+	dim hkey_root,hkey_path,hkey_key
+	hkey_root="HKEY_CURRENT_USER"
+	hkey_path="/Software/Microsoft/Internet Explorer/PageSetup"
+	'//设置网页打印的页眉页脚为空
+	function pagesetup_null()
+	on error resume next
+	Set RegWsh = CreateObject("WScript.Shell")
+	hkey_key="/header" 
+	RegWsh.RegWrite hkey_root+hkey_path+hkey_key,""
+	hkey_key="/footer"
+	RegWsh.RegWrite hkey_root+hkey_path+hkey_key,""
+	end function
+</script>
+</html>

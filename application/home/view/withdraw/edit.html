@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>信息管理平台</title>
+	{include file="public:css" /}
+</head>
+<body>
+<div class="well-lg" >
+    <form class="form-horizontal" id="info">
+        <div class="form-group">
+           <label for="username" class="col-xs-4 control-label text-right">银行名称</label>
+           <div class="col-xs-7">
+               <input type="text" class="form-control" value="{$data.bank}" readonly>
+           </div>
+       </div>
+       <div class="form-group">
+           <label for="username" class="col-xs-4 control-label text-right">开户行:</label>
+           <div class="col-xs-7">
+               <input type="text" class="form-control" value="{$data.openbank}" readonly>
+           </div>
+       </div>
+       <div class="form-group">
+           <label for="username" class="col-xs-4 control-label text-right">银行卡号:</label>
+           <div class="col-xs-7">
+               <input type="text" class="form-control" value="{$data.number}" readonly>
+           </div>
+       </div>
+       <div class="form-group">
+           <label for="username" class="col-xs-4 control-label text-right">手机号:</label>
+           <div class="col-xs-7">
+               <input type="text" class="form-control" value="{$data.mobile}" readonly>
+           </div>
+       </div>
+       <div class="form-group">
+           <label for="username" class="col-xs-4 control-label text-right">姓名:</label>
+           <div class="col-xs-7">
+               <input type="text" class="form-control" value="{$data.name}" readonly>
+           </div>
+       </div>
+
+        <div class="form-group">
+            <label for="username" class="col-xs-4 control-label text-right">审核状态:</label>
+            <div class="col-xs-7">
+                <select class="form-control" name="status">
+                    {volist name="status" id="v"}
+                    <option value="{$key}" {eq name="data['status']" value="$key"}selected{/eq}>{$v}</option>
+                    {/volist}
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="username" class="col-xs-4 control-label text-right">备注:</label>
+            <div class="col-xs-7">
+                <textarea class="form-control" id="remark" rows="5" name="remark">{$data.remark}</textarea>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-xs-4 col-xs-offset-4">
+                <button type="button" class="btn btn-primary pull-right" id='submit' >保存</button>
+                <input type="hidden" id="id" name="id" value="{$data.id}" >
+            </div>
+        </div>
+    </form>
+</div>
+	{include file="public:js" /}
+    <script type="text/javascript">
+        var index = parent.layer.getFrameIndex(window.name);
+        parent.layer.iframeAuto(index);//调整高度自适应
+
+        $(function(){
+            $('#submit').click(function(event) {
+
+                $.ajax({
+                    url: "{:url('edit')}",
+                    type: 'POST',
+                    dataType: 'json',
+                    data: $('#info').serialize(),
+                    success: function(data){
+                        if( data.code ){
+                            parent.window.location.reload();
+                            //var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                            //parent.layer.close(index); //再执行关闭
+                        }else{
+                            layer.msg(data.msg, {icon: 2}); 
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>回访数据分析</title>
+ <link href="__PUBLIC__/img/favicon.ico" rel="shortcut icon" >
+ <link href="__PUBLIC__/css/bootstrap.min.css?v=3.3.5" rel="stylesheet">
+ <link href="__PUBLIC__/css/bootstrap-theme.min.css?v=3.3.5" rel="stylesheet">
+ <link href="__PUBLIC__/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+ <link href="__PUBLIC__/css/animate.min.css" rel="stylesheet">
+ <link href="__PUBLIC__/css/plugins/hdjs/hdjs.css" rel="stylesheet" type="text/css" />
+ <link href="__PUBLIC__/css/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css">
+<style>
+.container{width:100%;padding-top:15px;}
+.wdate{width:220px !important;height:auto !important;}
+.warning{border-color:#f00;}
+.pages a{display:inline-block;width:25px;line-height:25px;margin-right:10px;border:1px solid #ccc;text-align:center;}
+.pages a:hover{text-decoration:none;}
+.top2{vertical-align: middle;}
+.container-fluid, table{margin-top:8px;font-size: 12px;}
+</style>
+</head>
+<body>
+<div class="container-fluid">
+        <form class="form-inline" method="get">
+            <div style="padding-bottom:10px">
+                <div class="input-prepend input-group">
+                    <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                    <input class="form-control Wdate wdate" type="text" name="date" value="{$date}"> 
+                </div>&nbsp;
+                <button class="btn btn-primary"><span class="glyphicon glyphicon-search"></span>查询</button>&nbsp;
+                <div class="pull-right">
+                    <button class="btn btn-info" type="button" onclick="goto(0)">所有</button>&nbsp;
+                    <button class="btn btn-info" type="button" onclick="goto(1)">今天</button>&nbsp;
+                    <button class="btn btn-info" type="button" onclick="goto(2)">昨天</button>&nbsp;
+                    <button class="btn btn-info" type="button" onclick="goto(3)">过去7天</button>&nbsp;
+                    <button class="btn btn-info" type="button" onclick="goto(4)">过去14天</button>&nbsp;
+                    <button class="btn btn-info" type="button" onclick="goto(5)">过去30天</button>&nbsp;
+                    <button class="btn btn-info" type="button" onclick="goto(6)">上个月</button>
+                </div>
+            </div>
+        </form>
+</div>
+<br>
+<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+<br>
+
+{include file="public:js" /}
+<script src="__PUBLIC__/js/plugins/daterangepicker/moment.min.js" ></script>
+<script src="__PUBLIC__/js/plugins/daterangepicker/daterangepicker.min.js" ></script>
+<script src="__PUBLIC__/js/plugins/Highcharts/highcharts.js"></script>
+<script src="__PUBLIC__/js/plugins/Highcharts/exporting.js"></script>
+<script src="__PUBLIC__/js/plugins/Highcharts/highcharts-3d.js" ></script>
+
+<script type="text/javascript">
+
+$(function () {
+    Highcharts.setOptions({
+        lang:{
+           contextButtonTitle:"图表导出菜单",
+           decimalPoint:".",
+           downloadJPEG:"下载JPEG图片",
+           downloadPDF:"下载PDF文件",
+           downloadPNG:"下载PNG文件",
+           downloadSVG:"下载SVG文件",
+           printChart:"打印图表",
+        }
+    });
+    tubiao();
+/*    $("#search").click(function(event) {
+        var search = $("#search_from").serialize();
+        var url = "{:url('chart_tel')}"+"?"+search;
+        window.location.href=url;
+    });*/
+
+    $('.Wdate').daterangepicker(); //双日历
+    
+});
+
+function tubiao(){    
+
+      $('#container').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: '短信回访客户满意度数据图'
+        },
+        subtitle: {
+            text: ''
+        },
+        xAxis: {
+            categories: [  {$name}  ]
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: '客户短信满意度数量'
+            }
+        },
+        tooltip: {
+            headerFormat: '<span style="font-size:10px">{point.key}</span>',
+            pointFormat: '' +'',
+            footerFormat: '<table><tbody><tr><td style="padding:0"><b>{point.y:.1f} </b></td></tr></tbody></table>',
+            shared: true,
+            useHTML: true
+        },
+        plotOptions: {
+            column: {
+                pointPadding: 0.2,
+                borderWidth: 0
+            }
+        },
+        series: [{
+            name: '客户短信满意度数量',
+            data: [{$num}]
+
+        }]
+    }); 
+}
+
+////////////////////////////////////////////////快捷按钮////////////////////////////////////////////////
+    function goto(index){
+        var date = new Date();
+        //var today       = date.toLocaleDateString().replace(/\/(\d)$/, "/0$1").replace(/\/(\d)\//, "/0$1/");
+        var today       = "{:date('Y/m/d', strtotime('+1 day'))}";
+        var yesterday   = "{:date('Y/m/d', strtotime('-1 day'))}";
+        var last_week   = "{:date('Y/m/d', strtotime('-7 day'))}";
+        var last_week2  = "{:date('Y/m/d', strtotime('-14 day'))}";
+        var last_month  = "{:date('Y/m/d', strtotime('-30 day'))}";
+        var prev_month1 = "{:date('Y/m/01', strtotime('-1 Month'))}";
+        var prev_month2 = "{:date('Y/m/t', strtotime('-1 Month'))}";
+
+        var url = window.location.pathname + '?';
+        if(index == 0){
+            url += 'date=';
+        }
+        else{
+            switch(index){
+                case 1:var start = today,       end = today;break;       //今天
+                case 2:var start = yesterday,   end = yesterday;break;   //昨天
+                case 3:var start = last_week,   end = yesterday;break;   //过去7天
+                case 4:var start = last_week2,  end = yesterday;break;   //过去14天
+                case 5:var start = last_month,  end = yesterday;break;   //过去30天
+                case 6:var start = prev_month1, end = prev_month2;break; //上个月
+            }; 
+            url += 'date='+start+' - '+end
+        }
+        window.location.href = url+'&isMonth='+$(':checked').val();
+    }
+</script>
+</body>
+</html>

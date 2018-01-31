@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>防伪码</title>
+<link href="__PUBLIC__/moni/css/style.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/moni/css/fw.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+<form name="form1" id="form_info" enctype="multipart/form-data">
+<div class="top">
+	<div class="login"><a href="#"><img src="__PUBLIC__/moni/images/fw_02.jpg" /></a></div>
+</div>
+<div class="fw">
+	<div class="cenner">
+    	<div class="fw_k">
+        	<div class="fw_k_n"> <input type="text" name="sn" id="sn" class="b" />
+        	  <span name="button" type="image" class="c" id="up" value="提交"><img src="__PUBLIC__/moni/images/input_a_03.jpg" /></span>
+        	</div>
+        </div>
+        <div class="fw_bz"><img src="__PUBLIC__/moni/images/fw_10.jpg"  /></div>
+    </div>
+</div>
+</form>
+
+
+
+<script type="text/javascript">
+	var publicUrl = '__PUBLIC__';
+	var imgUrl    = '__PUBLIC__/img/';
+	var jsUrl     = '__PUBLIC__/js/';
+</script>
+<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js?v=1.9"></script>
+<script type="text/javascript" src="__PUBLIC__/js/plugins/layer/layer.js?v=2.2"></script>
+<script type="text/javascript">
+$('#up').click(function(){
+        if( check() ){
+            var url = "{:url('index')}";
+            $.ajax({
+                  type: 'POST',
+                  url: url,
+                  data: $('#form_info').serialize(),
+                  dataType: 'JSON',
+                  async: false,
+                  success: function(data) {
+                    if(data.code){
+                        layer.msg(data.msg, {
+                            icon: 1,
+                            time: 3000
+                        }, function(){
+                            parent.location.reload();
+                            var index = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(index);
+                        });
+                    }else{
+                        layer.alert(data.msg);
+                    }
+                  }
+            });
+        }
+    });
+    function check(){
+        var msg = '';
+        if($.trim($('#sn').val()) == ''){
+        	msg += '-请输入验证码<br />';
+        }
+		if($("#sn").val().length<3){
+				msg = '-防伪码长度不对,请输入完整的防伪码<br />';
+		}
+        
+        if( msg ){
+            msg ="<br>"+msg
+            /*layer.open({
+                type: 1,
+                area: ['300px', '250px'],
+                offset: '20px',
+                title: '必填的内容',
+                shade: 0.6,
+                skin: 'layui-layer-task',
+                content: msg,
+            });*/
+            //layer.msg(msg,{time:50000});
+            layer.alert(msg);
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+
+</script>    
+</body>
+</html>

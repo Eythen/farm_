@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+	
+	<head>
+		<meta charset="UTF-8">
+		<title>付款详情</title>
+		<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport" />
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+		<meta content="telephone=no" name="format-detection" />
+		
+		<!-- 引入YDUI样式 -->
+		<link rel="stylesheet" href="__PUBLIC__/css/ydui.css" />
+		<link rel="stylesheet" href="__PUBLIC__/font/iconfont.css" />
+		<link rel="stylesheet" href="__PUBLIC__/css/animate.min.css" />
+		<link rel="stylesheet" href="__PUBLIC__/css/style.css" />
+
+		<!-- 引入YDUI自适应解决方案类库 -->
+		<script src="__PUBLIC__/js/ydui.flexible.js"></script>
+		
+	</head>
+	
+	<body>
+        
+        <header class="navheader">
+		    <a class="icon-jiantou-copy" href="javascript:history.go(-1)"></a>
+		    <h1 class="mui-title">付款详情</h1>
+		</header>
+		
+		<div class="animated bounceInLeft">
+			<section class="g-flexview">
+				<div class="tp-bt btoom">
+					
+					<ul class="payment">
+						<li class="list">
+							<div class="list-info">订单编号</div>
+							<div class="col-xs-6">{$order.order_sn}</div>
+						</li>
+						<li class="list">
+							<div class="list-info">订单积分</div>
+							<div class="list-more">{$order.total_amount}积分</div>
+						</li>
+						<li class="list">
+							<div class="list-info">积分余额</div>
+							<div class="col-xs-6">
+								<div class="list-moree">{$user_money}积分</div>
+								<a href="{:url('Integral/recharge')}" class="list-recharge">余额不足</a>
+							</div>
+						</li>
+						<div class="weui-btn-area">
+						    <a href="{:url('Integral/recharge')}" class="btn-block btn-primary">点击充值</a>
+						</div>
+					</ul>
+
+				</div>
+			</section>
+		</div>
+		
+
+		<script src="__PUBLIC__/js/jquery.min.js"></script>
+		<script src="__PUBLIC__/js/ydui.js"></script>
+		<script src="__PUBLIC__/js/fastclick.js"></script>
+		<script>
+			$(function() {
+				//消除IOS延迟
+				FastClick.attach(document.body);
+			});
+		</script>
+		<script src="__PUBLIC__/js/mui.min.js"></script>
+		<script>
+            mui.init({
+                keyEventBind:{
+                    backbutton:false
+                }
+            })
+		</script>
+		<script src="__PUBLIC__/js/common.js"></script>
+	</body>
+	
+</html>

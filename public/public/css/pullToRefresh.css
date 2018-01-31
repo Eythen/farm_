@@ -1,0 +1,19 @@
+@charset "utf-8";
+/*!
+ * pull to refresh v3.0
+ *author:wallace
+ *2015-10-15
+ *qq447363121
+ *陈国华
+ */
+
+.pullDown, .pullUp {
+	text-align: center;
+	font-size: 12px;
+	line-height: 20px;
+	height: 20px;
+	color: #888;
+	font-family: Arial, Microsoft YaHei;
+
+}
+

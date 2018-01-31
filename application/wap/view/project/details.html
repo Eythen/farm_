@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>项目详情</title>
+	<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport" />
+	<meta content="yes" name="apple-mobile-web-app-capable" />
+	<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+	<meta content="telephone=no" name="format-detection" />
+
+	<!-- 引入YDUI样式 -->
+	<link rel="stylesheet" href="__PUBLIC__/css/ydui.css" />
+	<link rel="stylesheet" href="__PUBLIC__/font/iconfont.css" />
+	<link rel="stylesheet" href="__PUBLIC__/css/animate.min.css" />
+	<link rel="stylesheet" href="__PUBLIC__/css/style.css" />
+	
+	<style>
+		.iconfont {
+			font-family:"iconfont" !important;
+			font-size:16px;
+			font-style:normal;
+			-webkit-font-smoothing: antialiased;
+			-moz-osx-font-smoothing: grayscale;
+		}
+		.btn-bar{
+			width: 100%;
+			position: absolute;
+			left: 0;
+			top: 0;
+		}
+		button {
+			display: inline-block;
+			width: 20%;
+			height: 1.7rem;
+			margin: 0;
+			padding: 0;
+			border: 0;
+			float: left;
+		}
+		.content-details p img{
+			width: 100%;
+		}
+	</style>
+	 <script src="__PUBLIC__/js/hm.js">
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?d69321757dcfbfbe09dbddd4dca87b28";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+	</script> 
+	
+	 <!--引入YDUI自适应解决方案类库--> 
+	<script src="__PUBLIC__/js/ydui.flexible.js"></script>
+</head>
+<body>
+
+<header class="navheader">
+	<a class="icon-jiantou-copy" href="{:url('Index/index')}"></a>
+	<h1 class="mui-title">项目详情</h1>
+</header>
+
+<section class="g-flexview">
+	<div class="animated bounceInLeft">
+		<div class="tp-bt">
+
+			<section class="projectDetails">
+				<div {if condition="$help['status'] eq '1'"} class="unfinished" {else/} class="finished" {/if}>
+					<img src="{$help.pic}" />
+				</div>
+				<div class="txet">
+					<strong>{$help.title}</strong>
+					<span>——{$help.desc}</span>
+				</div>
+				<p>
+					<span>已捐积分{$help.points_num}人次</span>
+					<span>志愿者报名{$help.people_num}人</span>
+					<span>车辆帮扶{$help.car_num}辆</span>
+				</p>
+			</section>
+
+			<!--正文  精准扶贫 手风琴效果-->
+			<div class="content-box">
+				<div class="content-details" style="line-height:25px;">
+					{$help.content}
+				</div>
+				<span class="more" id="more" onclick="readmore()">阅读全文</span>
+			</div>
+
+			<div class="g-viewa">
+				<strong>发起信息</strong>
+				<p class="text-bar">
+					发起机构：<span>{$help.name}</span>
+					<a href="{:url('organize',array('org_id'=>$help['org_id']))}"><span>查看详情&gt;&gt;</span></a>
+				</p>
+				<p class="text-bar">
+					募集善款：<span>{$help.points}积分</span>
+					<a href="{:url('organize',array('org_id'=>$help['org_id']))}"><span>查看详情&gt;&gt;</span></a>
+				</p>
+				<p class="text-bar">
+					项目执行：<span>{$help.title}</span>
+					<a href="{:url('organize',array('org_id'=>$help['org_id']))}"><span>查看详情&gt;&gt;</span></a>
+				</p>
+			</div>
+
+			<div class="Progress">
+				<strong>进展报告</strong>
+				<div class="progress-box">
+					{volist name="progress" id="progress"}
+					<a href="{:url('progress',array('help_id'=>$progress['help_id']))}" class="part">
+						<h3>{$progress.title}</h3>
+						<p class="title">
+							<span>{$progress.add_time|date="Y年m月d日",###}由项目工作人员发布</span>
+							<span class="fr">进展详情&gt;&gt;</span>
+						</p>
+						<div class="imgbox">
+							{volist name="$progress['images']" id="images"}
+							<span><img src="{$images}" alt=""></span>
+							{/volist}
+						</div>
+					</a>
+					<div class="laud">
+						<i data-id="{$progress.help_id}">{$progress.zan}</i>
+						<button class="iconfont">&#xe61e;</button>
+					</div>
+					{/volist}
+				</div>
+				<!--<div class="content-box">-->
+					<!--<span class="more">查看更多</span>-->
+				<!--</div>-->
+			</div>
+
+			<div class="earlytime">
+				<strong>最新动态</strong>
+				<div class="info-box clearfix">
+					{volist name="news" id="vo"}
+					<p>
+						<span>{$vo.nickname}</span><span>捐助{$vo.points_pay}积分</span><span>{if condition="$vo['time'] neq '' "}{$vo.time}{else/}{$vo.add_time|date="Y-m-d",###}{/if}</span>
+					</p>
+					{/volist}
+				</div>
+				<div class="content-box" >
+					<span class="more">查看更多</span>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</section>
+
+
+<footer class="m-tabbar">
+
+	<a href="#" class="tabbar-item" class="tabbar-item" {if condition="$help['status'] eq '2'"} style="display: none" {/if}>
+		<span class="" id="Btn01">我捐款99</span>
+	</a>
+	<a href="{:url('people',array('help_id'=>$help['help_id']))}" class="tabbar-item" {if condition="$help['status'] eq '2'"} style="display: none" {/if}>
+		<span class="" id="Btn02">参加志愿者</span>
+	</a>
+	<a href="{:url('car',array('help_id'=>$help['help_id']))}" class="tabbar-item" {if condition="$help['status'] eq '2'"} style="display: none" {/if}>
+		<span class="" id="Btn03">请用我的车</span>
+	</a>
+	<a href="" class="tabbar-item" {if condition="$help['status'] eq '1'"} style="display: none" {/if}>
+		<span class="javascript:void(0)">项目已完结</span>
+	</a>
+	<a href="javascript:;" id="J_ShowActionSheet" class="tabbar-item">
+		<span class="tabbar-icon" id="Btn04">
+			<i class="icon-iconshare"></i>
+		</span>
+	</a>
+
+</footer>
+
+<!-- 我捐款 -->
+<div class="mask"></div>
+	<div class="m-actionsheet" id="J_ActionSheet1">
+		<a href="#" class="actionsheet-item">请输入捐赠积分</a>
+		<a href="#" class="actionsheet-item" id="Radio">
+			<button class="btn-active">99积分</button>
+			<button>198积分</button>
+			<button>297积分</button>
+			<button>396积分</button>
+		</a>
+		<div class="m-cell">
+			<div class="cell-item">
+				<div class="cell-left font">99x</div>
+				<div class="cell-right"><input type="number" pattern="[0-9]*" id="Multi" name="Multi" class="cell-input" placeholder="自定义数字" autocomplete="off" /></div>
+			</div>
+		</div>
+		<button type="button" class="btn-block btn-primary" id="ido">立即捐赠</button>
+		<a href="javascript:;" class="actionsheet-action J_Cancel1" id="J_Cancel1"><i class="icon-guanbi"></i></a>
+	</div>
+
+
+ <!--分享弹窗--> 
+ <div class="m-actionsheet" id="J_ActionSheet">
+	<ul class="share">
+		<li><a href=""><span class="icon-weixin"></span><span class="nav-label">微信</span></a></li>
+		<li><a href=""><span class="icon-pengyouquan"></span><span class="nav-label">朋友圈</span></a></li>
+		<li><a href=""><span class="icon-qqq"></span><span class="nav-label">QQ好友</span></a></li>
+		<li><a href=""><span class="icon-qqkongjian"></span><span class="nav-label">QQ空间</span></a></li>
+		<li><a href=""><span class="icon-shoucang1"></span><span class="nav-label">新浪微博</span></a></li>
+	</ul>
+	<div class="btn-bar">
+		<button onclick="call(&#39;wechatFriend&#39;)"></button>
+		<button onclick="call(&#39;wechatTimeline&#39;)"></button>
+		<button onclick="call(&#39;qqFriend&#39;)"></button>
+		<button onclick="call(&#39;qZone&#39;)"></button>
+		<button onclick="call(&#39;weibo&#39;)"></button>
+	</div>
+	<a href="javascript:;" class="actionsheet-action" id="J_Cancel">取消</a>
+</div> 
+
+
+
+	<script src="__PUBLIC__/js/jquery.min.js"></script>	
+ <script src="__PUBLIC__/js/ydui.js"></script>
+<script src="__PUBLIC__/js/fastclick.js"></script>
+<script src="__PUBLIC__/js/plugins/layer/layer.js"></script>
+
+<?php
+$agent = $_SERVER['HTTP_USER_AGENT'];
+if(stripos($agent, 'html5plus')){
+?>
+<script src="__PUBLIC__/js/soshm.js" type="text/javascript" charset="utf-8"></script>
+<script src="__PUBLIC__/js/mui.min.js"></script>
+<script src="__PUBLIC__/js/mui.zoom.js"></script>
+<script src="__PUBLIC__/js/mui.previewimage.js"></script>
+<?php
+}
+else{
+?>
+<script src="__PUBLIC__/js/mui.min.js"></script>
+<script src="__PUBLIC__/js/mui.zoom.js"></script>
+<script src="__PUBLIC__/js/mui.previewimage.js"></script>
+<script src="__PUBLIC__/js/soshm.js" type="text/javascript" charset="utf-8"></script>
+<?php	
+}
+?>
+
+<script type="text/javascript">
+	//	我要捐99
+  function BottomBtnFn(obj, openbtn, closebtn) {
+      openbtn.on('click', function() {
+          obj.actionSheet('open');
+      });
+      obj.on('open.ydui.actionsheet', function() {
+          $('#Radio button').eq(0).addClass('btn-active').siblings('button').removeClass('btn-active');
+          $('.mask').show()
+
+      }).on('close.ydui.actionsheet', function() {
+          $('.mask').hide()
+      });
+      closebtn.on('click', function() {
+          obj.actionSheet('close');
+      });
+  }
+  BottomBtnFn($('#J_ActionSheet1'),$('#Btn01'),$('.J_Cancel1'));
+
+
+  var integral = 0;
+  function btn1Fn(){
+      $('#Multi').on('click',function(){
+          $('#Radio button').removeClass('btn-active');
+      })
+      if($('#Multi').val()){
+          integral = parseInt($('#Multi').val())*99;
+      }else{
+          $('#Radio button').on('click',function(){
+              $('#Multi').val(null);
+              $(this).addClass('btn-active').siblings('button').removeClass('btn-active');
+          })
+          integral = parseInt($('.btn-active').text());
+          return integral;
+      }
+  }
+  btn1Fn();
+
+  $('#ido').on('click', function() {
+      btn1Fn();
+      $.ajax({
+		  url: "{:url('donate')}",
+		  type: "post",
+          dataType: "json",
+          data: {'integral':integral,'help_id':"{$help.help_id}"},
+		  success: function (data) {
+			  if (data.status == 1){
+                  $('.mask').hide();
+                  $('#J_ActionSheet1').actionSheet('close');
+                  layer.msg(data.msg);
+			  }else{
+                  layer.msg(data.msg);
+			  }
+          }
+	  });
+  })
+
+//    //最新动态
+//    var earlyText = '';
+//    //渲染页面，一次10条数据
+//    function addmore() {
+//        for(var i = 0; i < 10; i++) {
+//            earlyText += '<p>'
+//						+'<span>用户${i+1}</span>'
+//						+'<span>捐助500积分</span>'
+//						+'<span>30秒前</span>'
+//						'</p>';
+//        }
+//        $('.info-box').html(earlyText)
+//    }
+//    addmore();
+
+    //最新动态----查看更多
+    var page = 2;
+	$('.earlytime .more').on('click', function() {
+        $.ajax({
+            url: "{:url('ajaxMore')}",
+            type: "post",
+            dataType: "json",
+            data: {'page':page,'help_id':"{$help.help_id}"},
+            success: function (data) {
+                if (data.length > 1){
+                    page++;
+                    var earlyText = "";
+                    for(var i = 0; i < data.length; i++){
+                        earlyText += '<p>'
+										+'<span>'+data[i].nickname+'</span>'
+										+'<span>捐助'+data[i].points_pay+'积分</span>'
+										+'<span>'+data[i].add_time+'</span>'
+									'</p>';
+					}
+                    $('.info-box').append(earlyText);
+                }else{
+                    $(".earlytime .content-box").html("<span style='color: #999999;position: relative;left: 40%;'>暂无数据</span>");
+                }
+            }
+        });
+    })
+</script>
+<script src="__PUBLIC__/js/tools.js" ></script> 
+
+
+		 <script>
+
+			mui.init({
+                swipeBack:true, //启用右滑关闭功能
+				keyEventBind:{
+					backbutton:false
+				}
+            });
+
+            var Intent = null,
+                File = null,
+                Uri = null,
+                main = null;
+            var shares = null;
+            var shareImageUrl = '';
+            mui.plusReady(function() {
+                updateSerivces();
+                if (plus.os.name == "Android") {
+                    Intent = plus.android.importClass("android.content.Intent");
+                    File = plus.android.importClass("java.io.File");
+                    Uri = plus.android.importClass("android.net.Uri");
+                    main = plus.android.runtimeMainActivity();
+                }
+            }) 
+
+            /**
+             * 更新分享服务
+             */
+            function updateSerivces() {
+                plus.share.getServices(function(s) {
+                    shares = {};
+                    for (var i in s) {
+                        var t = s[i];
+                        shares[t.id] = t;
+                    }
+                    outSet("获取分享服务列表成功");
+                }, function(e) {
+                    outSet("获取分享服务列表失败：" + e.message);
+                });
+            }
+            /**
+             * 分享操作
+             */
+            function shareAction(id, ex) {
+                var s = null;
+                if (!id || !(s = shares[id])) {
+                    outLine("无效的分享服务！");
+                    return;
+                }
+                if (s.authenticated) {
+                    outSet("---已授权---");
+                    shareMessage(s, ex);
+                } else {
+                    outSet("---未授权---");
+                    s.authorize(function() {
+                        shareMessage(s, ex);
+                    }, function(e) {
+                        outLine("认证授权失败");
+                    });
+                }
+            }
+            /**
+             * 发送分享消息
+             */
+            function shareMessage(s, ex) {
+                var msg = {
+                    content: '分享-详情',
+                    href: "{$host}/index.php/wap/project/details.html?help_id={$help.help_id}&tguid={$user_id}",
+                    title: '向日葵爱心商城',
+                    content: '您的好友正在使用向日葵爱心商城APP，现邀请您一起注册下载！！',
+                    thumbs: ['http://www.csshmd.com/public/img/logo.png'],
+                    pictures: ['http://www.csshmd.com/public/img/logo.png'],
+                    extra: {
+                        scene: ex
+                    }
+                };
+                s.send(msg, function() {
+                    outLine("分享成功!");
+                }, function(e) {
+                    outLine("分享失败!");
+                });
+            }
+            /**
+             * 分享按钮点击事件
+             */
+   			document.getElementById('J_ShowActionSheet').addEventListener('click', function() {
+            	var user_id = "{$user_id}";
+	                if(user_id == ""){
+	                    layer.msg("您还未登陆，请登陆后再分享！");
+	                    return;
+	                }
+				var ua = window.navigator.userAgent.toLowerCase();
+				//alert(ua.indexOf('html5plus'))
+				if(ua.indexOf('html5plus') > 1){
+					
+	                var ids = [{
+	                        id: "weixin",
+	                        ex: "WXSceneSession"  /*微信好友*/
+	                    }, {
+	                        id: "weixin",
+	                        ex: "WXSceneTimeline" /*微信朋友圈*/
+	                    }, {
+	                        id: "qq"   /*QQ好友*/
+	                    }],
+	                    bts = [{
+	                        title: "发送给微信好友"
+	                    }, {
+	                        title: "分享到微信朋友圈"
+	                    }, {
+	                        title: "分享到QQ"
+	                    }];
+	                plus.nativeUI.actionSheet({
+	                        cancel: "取消",
+	                        buttons: bts
+	                    },
+	                    function(e) {
+	                        var i = e.index;
+	                        if (i > 0) {
+	                            shareAction(ids[i - 1].id, ids[i - 1].ex);
+	                        }
+	                    }
+	                );
+				}else{
+					//分享弹窗
+		                soshm.popIn({
+		                    title: '分享-详情',
+		                    // 分享的链接，默认使用location.href
+		                    url: "{$host}/index.php/wap/project/details.html?help_id={$help.help_id}&tguid={$user_id}",
+		                    sites: ['weixin', 'weixintimeline', 'weibo','qq','qzone']
+		                });
+		           
+				}
+            },false);	
+            
+            
+           
+       		//点击阅读全文
+            function readmore() {
+            	var btnmore = document.getElementById('more');
+            	if(btnmore.innerHTML == '阅读全文'){
+		            $('.content-details').animate({"height":"100%"},1000);
+		           btnmore.innerHTML = '收起全文';
+		        }else if(btnmore.innerHTML == '收起全文'){
+		            $('.content-details').animate({"height":"3.5rem"},1000);
+		           btnmore.innerHTML = '阅读全文';
+		        }
+            }
+            
+		    //点赞
+		    function laud() {
+		        $('.laud .iconfont').on('click', function() {
+		            //点完赞之后的效果
+		            $(this).html("&#xe69e;");
+		            $(this).attr("disabled","disabled");
+		            var laudValue = $(this).siblings().text();
+		            laudValue++;
+		            $(this).siblings().text(laudValue);
+		            var help_id = $(this).siblings().attr('data-id');
+		            $.ajax({
+		                type : "POST",
+		                url:"{:url('Project/zan')}",
+		                data : {'help_id':help_id},
+		                dataType:'json',
+		                success: function(data){
+		                }
+		            });
+		        })
+		    }
+		    laud();
+		    
+		    
+    //进展报告--- 查看更多
+    var progressText = '';
+    function lookmore(){
+
+    	 $('.Progress .more').on('click', function() {
+
+//             $.ajax({
+//                 type : "POST",
+//                 url:"{:url('Project/zan')}",
+//                 data : {'help_id':help_id},
+//                 dataType:'json',
+//                 success: function(data){
+//                 }
+//             });
+
+			 progressText += '<a href="Progress.html" class="part">'+
+             '<h3>标题</h3>'+
+             '<p class="title">'+
+             '<span>2017年8月14日由项目工作人员发布</span>'+
+             '<span class="fr">进展详情&gt;&gt;</span>'+
+             '</p>'+
+             '<div class="imgbox">'+
+             '<span><img src="/public/img/banner.jpg" alt=""></span>'+
+             '<span><img src="/public/img/banner.jpg" alt=""></span>'+
+             '<span><img src="/public/img/banner.jpg" alt=""></span>'+
+             '</div>'+
+             '</a>'+
+             '<div class="laud">'+
+             '<i>0</i>'+
+             '<i class="iconfont">&#xe61e;</i>'+
+             '</div>';
+
+			 $('.progress-box').html(progressText);
+			 laud();
+   	 	})
+    	
+    }
+   lookmore()
+	
+
+	
+            
+            // 控制台输出日志
+            function outSet(msg) {
+                console.log(msg);
+            }
+            // 界面弹出吐司提示
+            function outLine(msg) {
+                mui.toast(msg);
+            }
+		</script> 
+		
+		<script src="__PUBLIC__/js/common.js"></script>
+	</body>
+</html>

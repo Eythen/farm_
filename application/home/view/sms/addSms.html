@@ -1,0 +1,272 @@
+{include file="public:yunying_header" /}
+<link href="__PUBLIC__/css/sms.css" rel="stylesheet">
+<link href="__PUBLIC__/css/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet">
+<style>
+.bootstrap-select.btn-group .dropdown-menu li {
+    float: none;
+}
+</style>
+</head>
+<body>
+<div class="sms_info ">
+    <div class="sms-header">
+        <div class="title">
+            {eq name="data.id" value=""}创建短信{else /}编辑短信{/eq}
+        </div>
+        <div class="right-close closed"></div>
+    </div>
+<!-- 基本信息开始 -->
+    <form class="form-horizontal" id="form_info" >
+    <div class="base col-sm-12 col-md-12">
+
+        <div class="col-sm-8 pull-left">
+            <li class="col-sm-12 col-md-12 col-xs-12">
+                    <label class="col-sm-2 col-xs-12">发送人</label>
+                    <div class="col-sm-4  col-xs-12"><input type="text" name="user_name" id="user_name" class="form-control" value="{$data.user_name}" readonly></div>
+
+                    <label class="col-sm-2 col-xs-12">发送时间</label>
+                    <div class="input-group date form_date" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                        <input class="form-control" size="12" type="text" name="send_time" id="send_time" value="{if condition="strtotime($data['send_time']) gt 0"}{$data.send_time|strtotime|date='Y-m-d',###}{/if}" readonly  placeholder="不填为立刻发送">
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                    </div>
+            </li>
+            
+            <li class="col-sm-12 col-md-12 col-xs-12">
+                <label class="col-sm-2 col-xs-12">客户号码</label>
+                <div class="col-sm-10 col-xs-12 tel">
+                    <div class="customer"><span class="glyphicon glyphicon-user"></span></div>
+                    <textarea name="connect" id="connect" class="form-control must" rows="5" placeholder="可手动输入号码，多个用逗号隔开。或者选择客户和导入模版">{$data.tel}</textarea>
+                </div>
+            </li>
+            <li class="col-sm-12 col-md-12 col-xs-12">
+                <label class="col-sm-2 col-xs-12">短信内容</label>
+                <div class="col-sm-10 col-xs-12"><textarea name="content" id="content" class="form-control must" rows="5" placeholder="短信内容">{$data.content}</textarea></div>
+            </li>
+            <li class="col-sm-12 col-md-12 col-xs-12">
+                <label class="col-sm-2 col-xs-12">短信预览</label>
+                <div class="col-sm-10 col-xs-12"><p id="show"></p></div>
+            </li>
+            
+        </div>
+        <div class="col-sm-4 col-xs-12 pull-right">
+            <ul>
+                <li class="col-sm-12 col-md-12 col-xs-12">
+                    <label class="col-sm-6 col-md-6 col-xs-12">审核人</label>
+                    <div class="col-sm-6 col-md-6 col-xs-12">
+                        <select name="supervise_id" class="selectpicker show-tick form-control {eq name='data.model' value='1'}must{/eq}" data-live-search="true" placeholder="审核人">
+                            <option value="">请选择</option>
+                            {foreach name="users" item="val"}
+                              <option value="{$val.uid}" {eq name="data.supervise_id" value="$val.uid"}selected{/eq}>{$val.username}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+                </li>
+                <li class="col-sm-12 col-md-6 col-xs-12">
+                    <a class="btn btn-success col-sm-12 col-xs-12" href="__PUBLIC__/短信群发.xls" target="_blank">下载联系人模板</a>
+                </li>
+                <li class="col-sm-12 col-md-6 col-xs-12">
+                    <span class=" col-sm-12 col-xs-12"><span class="btn btn-warning"  id="telup22">导入联系人模板</span></span>
+                </li>    
+                <li class="col-sm-12 col-md-12 col-xs-12">
+                    <span class="btn col-sm-12 col-xs-12 set_sms">新增个人模板</span>
+                </li>
+                <li class="col-sm-12 col-md-12 col-xs-12">
+                   
+                    <div class="col-sm-12 col-md-12 col-xs-12 sms_config">
+                        {foreach name="sms_config" item="v"}
+                            <p class="">{$v.sms}</p>
+                        {/foreach}</div>
+                </li>
+
+               
+
+                
+            </ul>
+        </div>
+        <div class="col-md-12 col-sm-12 col-xs-12 ">
+            <ul>
+             <li class="col-sm-12 col-md-12 col-xs-12">
+                    <div class="submit col-xs-12  col-sm-12 col-md-12">
+                        {if condition='$data.status eq "" || $data.status eq "3"'}
+                            <input type="hidden" name="status" value='{eq name="data.status" value="3"}2{/eq}'>
+                            {neq name="data.id" value=""}
+                                <input type="hidden" name="id" value='{$data.id}'>
+                            {/neq}
+                            <span class="btn btn-success" id="up">提交</span>
+                            <span class="btn btn-primary closed">取消</span>
+                        {/if}
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+
+    </div>
+<!-- 基本信息结束 -->
+
+    
+</form>
+</div>
+{include file="public:js" /}
+<script type="text/javascript">
+    $('.form_date').datetimepicker({
+        language: 'zh-CN',
+        autoclose: true,
+        format: 'yyyy-mm-dd hh:ii',
+        minuteStep: 30,
+        startDate: '<?php echo date("Y-m-d H:i",strtotime("+2 hours")); ?>',
+    });
+    $(".closed").click(function(){
+        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+        parent.layer.close(index); //再执行关闭
+    });
+    $('.selectpicker').selectpicker({
+      'selectedText': 'cat',
+      'noneSelectedText' :'请选择审核人',
+    });
+    //选择客户
+    $('.customer').click(function(){
+        parent.layer.open({
+            type: 2,
+            area: ['90%', '100%'],
+            offset: '2px',
+            title: false,
+            shade: 0.6,
+            skin: 'layui-layer-list',
+            content: '{:url('Record/getList')}',
+        });
+    });
+    //短信预览
+   
+    showSms();
+
+    function showSms(){
+        $('#show').text($('#content').val()+"{$data.sign}");
+    }
+    $('#content').keyup(function(){
+        showSms();
+    });
+    //选择短信模板
+    $(document).on('click','.sms_config p',function(){
+        var sms = $(this).text();
+        $('#content').val(sms);
+        showSms();
+        $(this).addClass('on').siblings().removeClass('on');
+
+    });
+
+    
+    //上传
+    var blayer = 0;
+    var txt = $('#telup22').text();
+    var id = <?php echo session('uid'); ?>;
+    $('#telup22').uploadify({
+        'swf' : '__PUBLIC__/js/plugins/upload/uploadify.swf',
+        'uploader' : '{:url("Upload/uploadTel")}',
+        'buttonText' : txt,
+        'buttonClass' : 'btn btn-warning telup22',
+        //'buttonClass' : 'attachment_bg glyphicon glyphicon-plus',
+        ////'width' : '84',
+        //'height' : '84',
+        'formData' : { 'session_id' : id },
+        'fileTypeExts': '*.xls;*.xlsx',
+        'onUploadStart': function(res){
+            blayer = layer.load(1);
+        },
+        'onUploadComplete': function(a){
+            layer.close(blayer);
+        },
+        'onUploadSuccess': function (file, data, response) {
+            var data = $.parseJSON(data);
+            if(data.status){
+                $("#connect").val(data.info);
+            }else{
+                layer.alert(res.info);
+            }
+        }
+    });
+    
+
+    $('#up').click(function(){
+        if( check() ){
+            {empty name="data.id"}
+                var url = "{:url('addSms')}";
+            {else /}
+                var url = "{:url('updataSms')}";
+            {/empty}
+            $.ajax({
+                  type: 'POST',
+                  url: url,
+                  data: $('#form_info').serialize(),
+                  dataType: 'JSON',
+                  async: false,
+                  success: function(data) {
+                    if(data.code){
+                        layer.msg(data.msg, {
+                            icon: 1,
+                            time: 3000
+                        }, function(){
+                            parent.location.reload();
+                            var index = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(index);
+                        });
+                    }else{
+                        layer.alert(data.msg);
+                    }
+                  }
+            });
+        }
+    });
+    function check(){
+        var msg = '';
+        $("input").each(function() {
+            if ($(this).hasClass("must") && $.trim($(this).val()) == '') {
+                msg += '-'+$(this).attr('placeholder')+'<br /><br />';
+            }
+        });
+        $("textarea").each(function() {
+            if ($(this).hasClass("must") && $.trim($(this).val()) == '') {
+                msg += '-'+$(this).attr('placeholder')+'<br /><br />';
+            }
+        });
+        $("select").each(function() {
+            if ($(this).hasClass("must") && $.trim($(this).val()) == '') {
+                msg += '-'+$(this).attr('placeholder')+'<br /><br />';
+            }
+        });
+        if( msg ){
+            msg ="<br><br>"+msg
+            layer.open({
+                type: 1,
+                area: ['300px', '250px'],
+                offset: '20px',
+                title: '必填的内容',
+                shade: 0.6,
+                skin: 'layui-layer-task',
+                content: msg,
+            });
+            //layer.msg(msg,{time:5000});
+            return false;
+        }else{
+            return true;
+        }
+    }
+    
+
+    //查看短信
+    $(document).on("click",'.set_sms',function(){
+        layer.open({
+            type: 2,
+            area: ['450px', '400px'],
+            offset: '20px',
+            title: false,
+            shade: 0.6,
+            closeBtn:false,
+            skin: 'layui-layer-task',
+            content: '{:url('setSms')}',
+        });
+    });
+
+</script>
+</body>
+</html>

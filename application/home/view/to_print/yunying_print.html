@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>新客户基本情况表</title>
+    <link href="__PUBLIC__/css/bootstrap.min.css?v=3.3.5" rel="stylesheet">
+	<script src="__PUBLIC__/js/jquery.min.js?v=2.1.4" ></script>
+	<script type="text/javascript" src="__PUBLIC__/js/plugins/js_to_excel/swfobject.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/js/plugins/js_to_excel/downloadify.min.js"></script>
+</head>
+<body>
+	{volist name="data" id="v" key="k" }
+	<div class="panel panel-default" style="width:1000px; margin:0px auto" >
+	    <div class="panel-heading text-primary text-center">
+	    	{eq name="v.brand" value="1"}<h3>可爱可亲{else /}小狮贝恩{/eq}新客户基本情况表</h3>
+	    </div>
+	    <div class="panel-body" style="font-size:18px" id="data_{$v.id}" >
+	    	<div class="form-inline text-right" >*合同编号:{$v.contract_sn}</div>
+	    	<table class="table table-bordered " id="contract"  border="1">
+	    		<tr>
+	    			<td class="col-xs-2 primary" >*姓名</td>
+	    			<td class="col-xs-4" colspan="2" >{$v.name}</td>
+	    			<td class="col-xs-2 primary" >*身份证号</td>
+	    			<td class="col-xs-2" colspan="2" >{$v.id_no}</td>
+	    		</tr>
+	    		<tr>
+	    			<td class="col-xs-2 primary" >*身份证地址</td>
+	    			<td class="col-xs-4" colspan="2" >{$v.domicile}</td>
+	    			<td class="col-xs-2 primary" >*联系电话</td>
+	    			<td class="col-xs-4" colspan="2" >{$v.tel}</td>
+	    		</tr>
+	    		<tr>
+	    			<td class="col-xs-2 primary" >*签约日期</td>
+	    			<td class="col-xs-2" >{$v.sign_time|strtotime|date='Y-m-d',###}</td>
+	    			<td class="col-xs-2 primary" >QQ邮箱</td>
+	    			<td class="col-xs-2" >{$v.email}</td>
+	    			<td class="col-xs-2 primary" >*加盟级别</td>
+	    			<td class="col-xs-2" >{$v.shop_rank}</td>
+	    		</tr>
+	    		<tr>
+	    			<td class="col-xs-2 primary" >*合同有效期</td>
+	    			<td class="col-xs-2" >{$v.expire_time|strtotime|date='Y-m-d',###}</td>
+	    			<td class="col-xs-2 primary" >职业</td>
+	    			<td class="col-xs-2" >{$v.profession}</td>
+	    			<td class="col-xs-2 primary" >*店铺情况</td>
+	    			<td class="col-xs-2" >{$v.shop_desc}</td>
+	    		</tr>
+	    		<tr>
+	    			<td class="col-xs-2 primary" >经营方式</td>
+	    			<td class="col-xs-4" colspan="2" >{$v.operation_mode}</td>
+	    			<td class="col-xs-2 primary" >客户级别</td>
+	    			<td class="col-xs-10" colspan="2" >{$v.level}</td>
+	    		</tr>
+	    		<tr>
+	    			<td class="col-xs-2 primary" >店铺面积</td>
+	    			<td class="col-xs-4" colspan="2">{$v.area}</td>
+	    			<td class="col-xs-2 primary" >店铺地址</td>
+	    			<td class="col-xs-10" colspan="2" >{$v.store_address}</td>
+	    		</tr>
+	    		<tr>
+	    			<td class="col-xs-2 primary" >收货地址</td>
+	    			<td class="col-xs-6" colspan="3" >{$v.shipping_address}</td>
+	    			<td class="col-xs-2 primary" >是否询问自采权</td>
+	    			<td class="col-xs-2" >
+	    				{$v.purchase_right}
+	    			</td>
+	    		</tr>
+	    		<tr>
+	    			<td class="col-xs-2 primary" >主招商经理</td>
+	    			<td class="col-xs-2" >{$v.zhaoshang_manager}</td>
+	    			<td class="col-xs-2 primary" >副招商经理</td>
+	    			<td class="col-xs-2" >{$v.zhaoshang_manager2}</td>
+	    			<td class="col-xs-2 primary" >有无打印授权书</td>
+	    			<td class="col-xs-2" >
+	    				{eq name="v.credential" value="0"}无{else /}有{/eq}
+	    			</td>
+	    		</tr>
+	    		<tr>
+	    			<td class="col-lg-2 col-md-2 col-sm-2 primary" >区域经理</td>
+	    			<td class="col-lg-2 col-md-2 col-sm-2" >{$data.quyu_manager}</td>
+	    			<td class="col-lg-2 col-md-2 col-sm-2 primary" >运营助理</td>
+	    			<td class="col-lg-2 col-md-2 col-sm-2" >{$data.yunying_manager}</td>
+	    			<td class="col-lg-2 col-md-2 col-sm-2 primary" >运营督导</td>
+	    			<td class="col-lg-2 col-md-2 col-sm-2" >{$data.yunying_supervisor}</td>
+	    		</tr>
+	    		<tr>
+	    			<td class="col-xs-2 primary" >*项目仪器</td>
+	    			<td class="col-xs-10" colspan="5" >{$v.yiqi}</td>
+	    		</tr>
+	    		<tr>
+	    			<td class="col-xs-2 primary" >客户情况</td>
+	    			<td class="col-xs-10" colspan="5" >{$v.desc}</td>
+	    		</tr>
+	    		<tr>
+	    			<td class="col-xs-2 primary" >*合作协议<br />(补充条款)</td>
+	    			<td class="col-xs-10" colspan="5" >{$v.agreement}</td>
+	    		</tr>
+	    		<tr>
+                                <td class="col-sm-4" colspan="2" >货柜方面</td>
+                                <td class="col-sm-4" colspan="2" >预算方面</td>
+                                <td class="col-sm-4" colspan="2" >星级赠送</td>
+                            </tr>
+                            <tr>
+                                <td class="col-sm-2" >有无提及可自行制作</td>
+                                <td>
+                                    {eq name="v.huogui" value="1"}有{else /}无{/eq}
+                                </td>
+                                <td class="col-sm-2" >预算金额多少（除房租装修货柜）<spen style="color:red" >(单位：万元)</spen></td>
+                                <td>{$v.yusuan}</td>
+                                <td class="col-sm-2" >有无提及星级赠送可以自选</td>
+                                <td>
+                                    {eq name="v.zixuan" value="1"}有{else /}无{/eq}　　
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="" colspan="6" >货品价格</td>
+                            </tr>
+                            <tr>
+                                <td class="col-sm-2 ">价格折扣有无承诺多少</td>
+                                <td class="col-sm-2">{$v.zhekou}</td>
+                                <td class="col-sm-2 ">首批货品如何铺垫</td>
+                                <td class="col-sm-2">{$v.puhuo}</td>
+                                <td class="col-sm-2 ">有无承诺调换货内容</td>
+                                <td class="col-sm-2">{$v.huanhuo}</td>
+                            </tr>
+                            <tr>
+                                <td class="" colspan="6" >其他</td>
+                            </tr>
+                            <tr>
+                                <td class="col-sm-2" >有无承诺帮扫街选址</td>
+                                <td class="col-sm-4" colspan="2" >
+                                   {eq name="v.xuanzhi" value="1"}有{else /}无{/eq}　　
+                                </td>
+                                <td class="col-sm-2" >有无承诺区域保护或独家</td>
+                                <td class="col-sm-4" colspan="2" >
+                                    {eq name="v.dujia" value="1"}有{else /}无{/eq}
+                            </tr>
+                            <tr>
+                                <td class="col-sm-2" >来源</td>
+                                <td class="col-sm-10" colspan="5" >{$v.source}</td>
+                            </tr>
+	    		<tr>
+	    			<td class="col-xs-2 primary" >备注</td>
+	    			<td class="col-xs-10" colspan="5" >{$v.remark}</td>
+	    		</tr>
+	    	</table>
+	    </div>
+	    	<p id="downloadify{$v.id}">
+				请升级flash版本到10以上
+			</p>
+	</div>
+	{if condition="count($data) neq $k"}
+		<div style="page-break-after:always" ></div>
+	{/if}
+	{/volist}
+	<div class="col-xs-2 col-xs-offset-5 well-sm" >
+	    <button type="button" class="btn btn-warning btn-block" id="print" onClick="dayin()" >打　印</button>
+	    <input type="hidden" name="qingkongyema" id="qingkongyema" class="tab" value="清空页码" onClick="pagesetup_null()">
+	</div>
+</body>
+<script type="text/javascript">
+	function dayin(){
+		document.all('qingkongyema').click();
+		$("#print").hide();
+		$("#think_page_trace_open").hide();
+		window.print();
+		$("#print").show();
+	}
+</script>
+<!-- 以下代码是导出excel的 -->
+		<script type="text/javascript">
+		{volist name="data" id="v" key="k" }
+			Downloadify.create('downloadify{$v.id}',{
+				filename:"合同编号"+"{$v.contract_sn}"+'.xls',
+				data: function(){
+					return $('#data_{$v.id}').html();
+				},
+				transparent: false,
+				swf: '__PUBLIC__/js/plugins/js_to_excel/downloadify.swf',
+				downloadImage: '__PUBLIC__/js/plugins/js_to_excel/download.png',
+				width: 100,
+				height: 30,
+				transparent: true,
+				append: false
+			});
+		{/volist}
+		</script>
+<!-- 以下代码是导出excel的end -->
+
+<script language="VBScript">
+	dim hkey_root,hkey_path,hkey_key
+	hkey_root="HKEY_CURRENT_USER"
+	hkey_path="/Software/Microsoft/Internet Explorer/PageSetup"
+	'//设置网页打印的页眉页脚为空
+	function pagesetup_null()
+	on error resume next
+	Set RegWsh = CreateObject("WScript.Shell")
+	hkey_key="/header" 
+	RegWsh.RegWrite hkey_root+hkey_path+hkey_key,""
+	hkey_key="/footer"
+	RegWsh.RegWrite hkey_root+hkey_path+hkey_key,""
+	end function
+</script>
+</html>

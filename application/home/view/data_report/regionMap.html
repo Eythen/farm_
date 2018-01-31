@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>客户分布表</title>
+<link href="__PUBLIC__/css/style.min.css" rel="stylesheet">
+<link href ="__PUBLIC__/css/bootstrap.min.css" rel="stylesheet">  
+<link  href="__PUBLIC__/css/plugins/bootstraptable/bootstrap-table.min.css" rel="stylesheet">
+<style type="text/css">
+     .container{width:100%;}
+</style>
+</head>
+<body>
+
+<div class="col-sm-12 well-lg" >
+    <div class="panel panel-default">
+    	<div id="region_map" data="main" style="height:400px;"></div>
+    </div>
+</div>
+<div class="container">
+	<div class="tips">提示:在地图上点击鼠标左键进行省市切换</div>
+</div>
+<div class="container">
+    <div id="province_div" style="display:block;">
+        <table  class="hd-table hd-table-form hd-table-list table-bordered text-center hannels" width="100%">
+            <thead>
+                <tr>
+                    <td>省份</td>
+                     {foreach name="provinceJoinCounts" item="provinceJoinCount"}
+                           <td>{$provinceJoinCount.province}</td>
+                      {/foreach}
+                </tr>
+            </thead>
+            <tbody>               
+                  <tr>
+                     <td>门店数量</td>
+                      {foreach name="provinceJoinCounts" item="provinceJoinCount"}
+                           <td>{$provinceJoinCount.join_count}</td>
+                      {/foreach}
+                  </tr>
+            </tbody>
+        </table>
+      </div>
+      <div id="city_div" style="display:block;">
+         
+      </div>
+      
+</div>
+
+{include file="public:js" /}
+<script src="__PUBLIC__/js/plugins/echarts-2.2.7/dist/echarts.js" type="text/javascript"></script>
+<script type="text/javascript">
+	require.config({
+        paths: {echarts: '__PUBLIC__/js/plugins/echarts-2.2.7/dist'}
+    });
+    require(
+        [
+			'echarts',
+			'echarts/chart/map',
+        ],
+        function (echarts) {
+			var ecConfig = require('echarts/config');
+			var zrEvent = require('zrender/tool/event');
+			var curIndx = 0;
+			var mapType = [
+			    'china',
+			    // 23个省
+			    '广东256', '青海', '四川', '海南', '陕西', 
+			    '甘肃', '云南', '湖南', '湖北', '黑龙江',
+			    '贵州', '山东', '江西', '河南', '河北',
+			    '山西', '安徽', '福建', '浙江', '江苏', 
+			    '吉林', '辽宁', '台湾',
+			    // 5个自治区
+			    '新疆', '广西', '宁夏', '内蒙古', '西藏', 
+			    // 4个直辖市
+			    '北京', '天津', '上海', '重庆',
+			    // 2个特别行政区
+			    '香港', '澳门'
+			];
+        	
+        	var chartOptions = { // 图表配置
+        		region_map: { // 商品消费地区分析
+        			title: {
+				        text : '全国34个省市自治区',
+				        // subtext : '中国 （点击切换省份）'
+				    },
+				    tooltip : {
+				        trigger: 'item',
+				        // formatter: '滚轮切换或点击进入该省<br/>{b}: {c}'
+				    },
+				   /* legend: {
+				        orient: 'vertical',
+				        x:'left',
+				        data:['pm2.5']
+				    },*/
+				    
+				    dataRange: {
+				        min : 0,
+				        max : {$max_count},
+				        calculable : true,
+				        color: ['maroon','purple','red','orange','yellow','lightgreen']
+				    },
+				    toolbox: {
+				        show : true,
+				        orient : 'vertical',
+				        x: 'right',
+				        y: 'center',
+				        feature : {
+				            mark : {show: true},
+				            dataView : {show: true, readOnly: false},
+				            restore : {show: true},
+				            saveAsImage : {show: true}
+				        }
+				    },
+				    series : [
+				        {
+				            name: '数量',
+				            type: 'map',
+				            mapType: 'china',
+				            selectedMode : 'single',
+				            itemStyle:{
+				                normal:{label:{show:true}},
+				                emphasis:{label:{show:true}}
+				            },
+				            // hoverable: false,
+				            roam:true,
+				            data:[
+			                	{foreach name="provinceJoinCounts" item="provinceJoinCount"}
+			                    	{name: "{$provinceJoinCount.province}", value: {$provinceJoinCount.join_count}},
+			                    {/foreach}
+				            	{foreach name="regionJoinCounts" item="regionJoinCount"}
+			                    	{name: "{$regionJoinCount.city}市", value: {$regionJoinCount.join_count}},
+			                    {/foreach}
+				            ],
+
+				        },
+				    ]
+				}
+        	};
+
+        	var divCharts = $("[data='main']");
+        	var myChart = {};
+        	var i = 0;
+        	for(var key in chartOptions){
+        		myChart[key] = echarts.init(divCharts[i]);
+				myChart[key].setOption(chartOptions[key]);
+
+				myChart[key].on(ecConfig.EVENT.MAP_SELECTED, function (param) {
+				    var len = mapType.length;
+				    var mt = mapType[curIndx % len];
+				    var new_option = chartOptions[key];
+				    if (mt == 'china') {
+				        // 全国选择时指定到选中的省份
+				        var selected = param.selected;
+				        for (var i in selected) {
+				        
+				            if (selected[i]) {
+				                mt = i;
+				                while (len--) {
+				                    if (mapType[len] == mt) {
+				                        curIndx = len;
+				                    }
+				                }
+				                break;
+				            }
+				        }
+				        // new_option.tooltip.formatter = '点击返回全国<br/>{b}: {c}';
+				    }else {
+				        curIndx = 0;
+				        mt = 'china';
+				        //new_option.tooltip.formatter = '点击进入该省<br/>{b}: {c}';
+				    }
+				    
+
+				    if(mt!='china'){
+				    	$("#province_div").hide();
+				    	
+				    	
+						var url = "{:url('getDatabyProvince')}";
+						$.ajax({
+							url: url,
+							type: 'POST',
+							dataType: 'JSON',
+							data: {'province':mt},  // 无法处理
+							success: function(data){
+						         // alert(JSON.stringify(data));
+						         //alert(data);
+						        var str1 = "<table class='hd-table hd-table-form hd-table-list table-bordered text-center hannels' width='100%' ><tr>";
+						         var    str2 ="<tr>";
+								 var	 str3 ="<tr>";
+								  $.each(data,function(idx,item){  
+								    if(idx==0){  
+								         return true;//同continue，返回false同break  
+								    }  
+								     // console.log("name:"+item.name+",value:"+item.value);  
+								     str2 += "<td>"+ item.city + "</td>";
+									 
+									 str3 += "<td>"+ item.join_count + "</td>";
+								     
+								  }); 
+								  
+								  str2 += "</tr>";
+								  str3 +="</tr>";
+								  
+								  str =str1 + str2 + str3 + "</table>";
+								  $("#city_div").html(str);  
+								  $("#city_div").show();
+								  
+							}
+						});
+						
+		
+				    }else{
+
+				    	$("#province_div").show();
+				    	$("#city_div").hide();
+				    }
+				    
+				    new_option.series[0].mapType = mt;
+				    new_option.title.subtext = mt + ' （点击切换省份）';
+				    myChart[key].setOption(new_option, true); 
+				    //alert(JSON.stringify(new_option));
+				});
+				i++;
+        	}
+        }
+     );
+</script>
+</body>
+</html>

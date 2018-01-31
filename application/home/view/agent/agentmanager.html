@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>信息管理平台</title>
+    {include file="public:css" /}
+    <style type="text/css">
+        html{background-color: #f5f5f5}
+        .table thead {background-color: #ccc;}
+
+
+    </style>
+</head>
+<body>
+    <div class="panel panel-info well">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <b class="replyform">查询</b>
+            </h4>
+        </div>
+        <div class="panel-body">
+            <div class="col-sm-12">
+                <form class="form-horizontal" id="mysearch">
+                    <div class="form-group">
+                        <div class="col-sm-4">
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" name="key_word" id="key_word" placeholder="代理商" value="">
+                            </div>
+                        </div> 
+                        <div class="col-sm-4">
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" name="mobile" id="mobile" placeholder="请输入手机号" value="">
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="col-sm-12">
+                                <select name="is_lock" id="is_lock" class="form-control">
+                                    <option value="">全部锁定状态</option>                  
+                                    <option value="1">锁定</option>
+                                    <option value="0">不锁定</option>
+                                </select>
+                            </div>    
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-4">
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" name="reg_time" id="reg_time" placeholder="请选择注册时间" value="" readonly="">
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" name="manager_name" id="manager_name" placeholder="请输入业务员" value="">
+                            </div>
+                        </div> 
+                        <div class="col-sm-4">
+                            <div class="col-sm-12">
+                                <select name="level_id" id="level_id" class="form-control">
+                                    <option value="">全部级别</option> 
+                                    {volist name="level" id="vo"}                 
+                                    <option value="{$key}">{$vo}</option>
+                                    {/volist}
+                                </select>
+                            </div>    
+                        </div>
+                    </div>
+
+                    
+
+                    <div class="form-group">
+                        <div class="col-sm-6 col-sm-offset-3">
+                            <button type="reset" class="col-sm-5 btn btn-danger">重置</button>
+                            <span class="pull-right col-sm-5 btn btn-primary mysearch_btn">搜索</span>
+                        </div> 
+                          
+                    </div>
+
+                </form>    
+            </div>
+        </div>
+    </div>
+
+    <div class="well well-sm" >
+        <div id="toolbar">
+            <!-- <button id="add" class="btn btn-success">
+                <i class="glyphicon glyphicon-plus"></i> 导入数据
+            </button> -->
+            <div style="width:180px;float:left;margin-right: 6px;">
+                <select name="uid" id="uid" class="form-control">
+                    <option value="">请选择业务员</option> 
+                    {volist name="manager" id="vo"}                 
+                    <option value="{$key}">{$vo}</option>
+                    {/volist}
+                </select>
+            </div>    
+            <button id="change_manager" class="btn btn-warning">
+                批量更换业务员
+            </button>
+            <!--<a href="{:url('index/Goods/index')}" target="_blank" id="myhome" class="btn btn-info">-->
+                <!--<i class="glyphicon glyphicon-home"></i> 网站首页-->
+            <!--</a>-->
+            <!-- <button type="button" onclick="location.href='{:url('addEditPig')}'" class="btn btn-primary"><i class="fa fa-plus"></i> 添加新花猪</button> -->
+            
+        </div>
+        <table class="table text-center table-hover table-condensed" data-toolbar="#toolbar" data-toggle="table" data-sort-name="id" data-sort-order="desc" data-url="{$url}" data-side-pagination="server" data-pagination="true" data-page-list="[10, 20, 50, 100, 200]" data-show-refresh="true" data-search="false" data-show-export="true" data-filter-control="true" data-filter-show-clear="true" >
+            <thead>
+                <tr>
+                    <th data-halign="center" data-field="state" data-checkbox="true" ></th>
+                    <th data-halign="center" data-field="user_id" data-filter-control="input" >ID</th>
+                    <th data-halign="center" data-field="nickname" data-filter-control="input" >代理商</th>
+                    <th data-halign="center" data-field="mobile" data-filter-control="input" >手机号码</th>
+                    <th data-halign="center" data-field="level" data-filter-control="input">等级</th>
+                    <th data-halign="center" data-field="reg_time" data-filter-control="input">注册时间</th>
+                    <th data-halign="center" data-field="manager_name" data-filter-control="input">业务员</th>
+                    <!-- <th data-halign="center" data-field="level" data-filter-control="input">级别</th> -->
+                   
+                    <th data-halign="center" data-field="is_lock" data-formatter="is_lock_Formatter" >是否限登陆</th>
+                    <!--<th data-halign="center" data-field="is_new" data-formatter="is_new_Formatter" >新品</th>-->
+                    <!-- <th data-halign="center" data-field="is_recommend" data-formatter="is_recommend_Formatter" >推荐</th> -->
+                    <!--<th data-halign="center" data-field="is_hot"  data-formatter="is_hot_Formatter" >热卖</th>-->
+                    <th data-halign="center" data-field="operate" data-formatter="operateFormatter" data-events="operateEvents" >操作</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    {include file="public:js" /}
+    <link href="__PUBLIC__/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />
+    <script src="__PUBLIC__/plugins/daterangepicker/moment.min.js" type="text/javascript"></script>
+    <script src="__PUBLIC__/plugins/daterangepicker/daterangepicker.js" type="text/javascript"></script>
+    <script type="text/javascript">
+    
+        function is_lock_Formatter(value, row, index) {
+            if(value){
+                var img = 'yes.png';
+            }
+            else{
+                var img = 'cancel.png';
+            }
+            return '<img width="20" height="20" src="__PUBLIC__/images/'+img+'" onclick="changeTableVal(\'users\',\'user_id\','+row.user_id+',\'is_lock\',this)"/>';
+              
+        }
+       
+
+        function operateFormatter(value, row, index) {
+            
+            return [
+                //'<a href="javascript:void(0);" class="btn-icon view btn btn-sm btn-info" title="查看">查看</a>',
+                     '  <a href="javascript:void(0);" class="btn-icon edit btn btn-sm btn-primary" title="查看更换日志">查看更换日志</a>'
+                ].join('');
+              
+        }
+
+        window.operateEvents = {
+            // 查看
+//            'click .view': function (e, value, row, index) {
+//                //var url = $(this).data('url');
+//                var url = "{:url('wap/Goods/show')}"+"?goods_id="+row.goods_id;
+//                window.open(url);
+//            },
+            /*'click .delImgCache': function (e, value, row, index) {
+
+            },
+            'click .delHtmlCache': function (e, value, row, index) {
+
+            },*/
+            // 详情
+            'click .edit': function (e, value, row, index) {
+                var url = "{:url('agentmanagerlog')}"+"?user_id="+row.user_id;
+                location.href=url;
+
+            },
+
+            // 删除
+            'click .remove': function (e, value, row, index) {
+                $.ajax({
+                    url: "{:url('delPig')}",
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {id: row.pig_id},
+                    success: function(data){
+                        if( data.status == 1 ){
+                            $(".table tr[data-index="+index+"]").remove();
+                        }else{
+                            layer.msg(data.msg, {icon: 2}); 
+                        }
+
+                    }
+                })
+            },
+        };
+
+        $(function(){
+            //注册时间
+            $('#reg_time').daterangepicker({
+                format:"YYYY/MM/DD",
+                singleDatePicker: false,
+                showDropdowns: true,
+                minDate:'2017/01/01',
+                maxDate:'2030/01/01',
+                startDate:'<?=date("Y/m/d", strtotime("-7 days"))?>',
+                ranges: {
+                   '今天': [moment(), moment()],
+                   '昨天': [moment().subtract('days', 1), moment().subtract('days', 1)],
+                   '最近7天': [moment().subtract('days', 6), moment()],
+                   '最近30天': [moment().subtract('days', 29), moment()],
+                   '上一个月': [moment().subtract('month', 1).startOf('month'), moment().subtract('month', 1).endOf('month')]
+                },
+                locale : {
+                    applyLabel : '确定',
+                    cancelLabel : '取消',
+                    fromLabel : '起始时间',
+                    toLabel : '结束时间',
+                    customRangeLabel : '自定义',
+                    daysOfWeek : [ '日', '一', '二', '三', '四', '五', '六' ],
+                    monthNames : [ '一月', '二月', '三月', '四月', '五月', '六月','七月', '八月', '九月', '十月', '十一月', '十二月' ],
+                    firstDay : 1
+                }
+            });
+
+            $('.form_date').datetimepicker({
+                language: 'zh-CN',
+                weekStart: 1,
+                todayBtn: 1,
+                autoclose: 1,
+                todayHighlight: 1,
+                startView: 2,
+                minView: 2,
+                forceParse: 0
+            });
+
+            $(".mysearch_btn").click(function(event) {
+
+                var search = $("#mysearch").serialize();
+                var url = "{:url('userslist')}"+"?"+search;
+                $(".table").bootstrapTable('refresh', {
+                    url: url
+                });
+
+            });
+
+            //收缩表单
+            $('.panel-heading').click(function(){
+                $(".panel-body").toggle(1000);
+                $(".panel-heading i").toggleClass("fa-chevron-up").toggleClass("fa-chevron-down");
+            });
+
+            $('#add').click(function(event) {
+                layer.open({
+                    title:'新增',
+                    type: 2,
+                    area: ['400px', '300px'],
+                    fix: false, //不固定
+                    maxmin: true,
+                    content: "{:url('moreAdd')}",
+                    end: function(){
+                        $(".table").bootstrapTable('refresh');
+                    }
+                });
+            });
+
+            //更新
+            $('.myrefresh').click(function(event) {
+                $(".table").bootstrapTable('refresh');
+            });
+
+            //批量更换业务员
+            $("#change_manager").click(function(event) {
+              var obj = $(".table").bootstrapTable('getSelections');
+              var str = '';
+              for ( var o in obj) {
+                str = str + obj[o].user_id + ",";        
+              };  
+
+              var uid = $('select[name=uid]').val();
+  
+
+              if( str!='' ){
+                //询问框
+                layer.confirm('您确定要批量业务员么？', {
+                  btn: ['确定','取消'] //按钮
+                }, function(index){
+                    layer.close(index);
+
+                    $.ajax({
+                        url: "{:url('changeManager')}",
+                        type: 'POST',
+                        dataType: 'json',
+                        data: {ids: str, uid: uid},
+                        success: function(data){
+                            if( data.code ){
+                                $(".table").bootstrapTable('refresh');
+                            }else{
+                                layer.msg(data.msg, {icon: 2}); 
+                            }
+
+                        }
+                    })
+                }, function(){
+                  
+                });
+
+                
+              }else{
+                layer.alert('请选择需要更换业务员的代理商!');
+              }
+            });
+
+            
+            $('input[name=btSelectAll]').after(" 全选 ");
+
+           
+        })
+
+    </script>
+</body>
+</html>

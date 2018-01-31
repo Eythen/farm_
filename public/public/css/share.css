@@ -1,0 +1,55 @@
+*,
+*:before,
+*:after{box-sizing: border-box; outline: none;}
+html,
+body{height: 100%; margin: 0; padding: 0;}
+body{background-color: #F5F5F5; font-size: 14px; -webkit-font-smoothing: antialiased; font-family: arial, sans-serif;}
+ol,
+ul,
+li{list-style: none; margin: 0; padding: 0;}
+a{text-decoration: none; color: inherit;}
+a:hover{text-decoration: none;}
+
+
+.my-flexview{margin: 0 auto; max-width: 640px; min-width: 300px;}
+.app_top{position: relative; background: #FF5722; text-align: center; overflow: hidden;}
+.app_top .user-notif{position: absolute; top: 14px; right: -10px; width: 2rem; height: .5rem; border-radius: .5rem; line-height: .5rem; text-align: center; background: #e83f0a; color: #fff; font-size: .25rem;}
+.app_top .app_user{background: #fff; position: relative; margin: .8rem auto .2rem; width: 2rem; height: 2rem; border-radius: 50%;}
+.app_top .app_user img{width: 2rem; height: 2rem; border-radius: 50%;}
+.app_top .txte{font-size: .3rem; color: #fff; padding-bottom: .5rem;}
+
+
+#swiper{-webkit-flex-shrink: 0; -ms-flex: 0 0 auto; flex-shrink: 0; width: 100%; height: 100%; position: relative;}
+.Cservice{width: 100%;}
+.Cservice li{overflow: hidden; background: #fff; margin-top: .3rem; position: relative; border-top: 1px solid #e6e5e5; border-bottom: 1px solid #e6e5e5; list-style: none;}
+.service{overflow: hidden; display: block; width: 100%; padding: .3rem; position: relative;}
+.service .imgdi{margin-right: .3rem; width: 25%; float: left;}
+.service .imgdi img{width: 100%;}
+.service .txte{float: left; width: 70%;}
+.service .txte h3{font-size: .3rem; margin-top: 0.5rem; text-align: left; color: #232326; margin-bottom: .2rem; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical;}
+.service .txte time{color: #777;}
+.service .txte p{font-size: .25rem; margin-top: .2rem; text-align: left; color: #666; margin-bottom: .2rem; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;}
+.service .txte .luse{color: #4bc804; font-size: .3rem;}
+
+
+.dropload-up,.dropload-down{position: relative; height: 0; overflow: hidden; font-size: .25rem; /* 开启硬件加速 */ -webkit-transform:translateZ(0); transform:translateZ(0);}
+.dropload-down{height: .6rem;}
+.dropload-refresh,.dropload-update,.dropload-load,.dropload-noData{height: .6rem; line-height: .6rem; text-align: center;color: #999;}
+.dropload-load .loading{display: inline-block; height: .3rem; width: .3rem; border-radius: 100%; margin: 6px; border: 2px solid #666; border-bottom-color: transparent; vertical-align: middle; -webkit-animation: rotate 0.75s linear infinite; animation: rotate 0.75s linear infinite;}
+@-webkit-keyframes rotate{0%{-webkit-transform: rotate(0deg);} 50%{-webkit-transform: rotate(180deg);} 100%{-webkit-transform: rotate(360deg);}}
+@keyframes rotate{0%{transform: rotate(0deg);} 50%{transform: rotate(180deg);} 100%{transform: rotate(360deg);}}
+
+
+.aui-col {width: 100%;position: relative;}
+.aui-col img{width: 100%;display: block;}
+
+/*顶部导航*/
+.navheader{background: rgba(255, 255, 255, 0.96); position: fixed; z-index: 10; right: 0; left: 0; height: 1rem; line-height: 1rem; padding: 0rem 0.3rem; border-bottom: 0; background-color: #fff; top: 0; border-bottom: 1px solid #e1e1e1; -webkit-backface-visibility: hidden; backface-visibility: hidden;}
+.navheader .icon-jiantou-copy{font-size: 0.45rem; position: relative; margin-left: -0.1rem; float: left; margin-top: -.04rem;}
+.navheader .icon-next{float: right;font-size: 0.45rem; position: relative; margin-right: -0.1rem;}
+.navheader .icon-fenxiang1{float: right;font-size: 0.45rem; position: relative; margin-right: -0.1rem;}
+.navheader .mui-title{right: 40px; left: 40px; overflow: hidden; width: auto; margin: 0; text-overflow: ellipsis;}
+.navheader .mui-title{font-size: 0.35rem; font-weight: 500; position: absolute; display: block; padding: 0; text-align: center; white-space: nowrap; color: #000;}
+.navheader .edit{ float: right; font-size: 0.25rem;}
+
+.shanre{ padding: 1.2rem  0.2rem  0.2rem;}

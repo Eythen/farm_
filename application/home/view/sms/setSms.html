@@ -1,0 +1,123 @@
+{include file="public:yunying_header" /}
+<link href="__PUBLIC__/css/sms.css" rel="stylesheet">
+
+</head>
+<body>
+<div class="sms_info">
+    <div class="sms-header">
+        <div class="title">增加个人模板</div>
+        <div class="right-close closed"></div>
+    </div>
+    <!-- 基本信息开始 -->
+    <form class="form-horizontal" id="form_info" >
+        <div class="base">
+
+            <ul class="col-sm-12 col-md-12 ">
+                <!-- <li class="col-sm-12 col-md-12 col-xs-12">
+                    <label class="col-sm-4 col-xs-5">审核人</label>
+                    <div class="col-sm-8 col-xs-7">
+                        <input type="text" name="supervise_id" class="form-control must" value="{$data.supervise_id}" placeholder="审核人"></div>
+                </li> -->
+                <li class="col-sm-12 col-md-12 col-xs-12">
+                    <div class="col-sm-12 col-xs-12"><textarea name="sms" id="sms" class="form-control must" rows="8" placeholder="请输入短信模板"></textarea></div>
+                </li>
+                <li class="submit col-sm-12 col-md-12 col-xs-12">
+                    <span class="btn btn-success" id="up">提交</span>
+                    <span class="btn btn-primary closed">取消</span>
+                </li>
+    
+            </ul>
+        </div>
+<!-- 基本信息结束 -->
+
+<!-- <div class="submit col-sm-12 col-md-12">
+    <input type="hidden" name="status" value="{$data.status}">
+<span class="btn btn-success" id="up">提交</span>
+<span class="btn btn-primary closed">取消</span>
+</div> -->
+</form>
+</div>
+{include file="public:js" /}
+<script type="text/javascript">
+    $('.form_date').datetimepicker({
+        language: 'zh-CN',
+        weekStart: 1,
+        todayBtn: 1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    });
+    $(".closed").click(function(){
+        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+        parent.layer.close(index); //再执行关闭
+    });
+    
+    
+        
+
+     $('#up').click(function() {
+        if (check()) { 
+            var url = "{:url('setSms')}"; 
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: $('#form_info').serialize(),
+                dataType: 'JSON',
+                async: false,
+                success: function(data) {
+                    if (data.code) {
+                        var str = '<p>'+$('#sms').val()+'</p>';
+                        //alert(str);
+                        parent.$('.sms_config').prepend(str);
+
+                        var index = parent.layer.getFrameIndex(window.name);
+                        parent.layer.close(index);
+                        //parent.layer.msg(data.info,{
+                            //icon: 1,
+                            //time: 2000
+                        //}, function(){
+                            //parent.location.reload();
+                            //var index = parent.layer.getFrameIndex(window.name);
+                           // parent.layer.close(index);
+                        //});
+                    } else {
+                        parent.layer.msg(data.msg);
+                    }
+                }
+            });
+        }
+    });
+    
+    function check() {
+        var msg = '';
+        $("input[class='form-control must']").each(function() {
+            if( $.trim($(this).val())=='' ){
+                msg += '-请输入' + $(this).attr('placeholder') + '<br>';
+            }
+        });
+
+        $("select[class='form-control must']").each(function() {
+            var id = $(this).attr('id');
+            if( $('#'+id+' option:selected').val()=='' ){
+                msg += '-' + $('#'+id+' option:selected').text() + '<br/>';
+            }
+        });
+        $("textarea[class='form-control must']").each(function() {
+           if( $.trim($(this).val())=='' ){
+                msg += '-请输入' + $(this).attr('placeholder') + '<br>';
+            }
+        });
+
+        if (msg) {
+            parent.layer.alert(msg, {icon: 3,title:'必须输入以下内容'}); 
+            return false;
+        } else {
+            return true;
+        }
+
+    }
+</script>
+</body>
+</html>

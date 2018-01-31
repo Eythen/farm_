@@ -1,0 +1,182 @@
+/**  添加日工作报表   **/
+.title{height:40px;padding:20px 0 40px 30px;font-size:20px;border-bottom:4px solid #428bca;}
+.content{padding: 10px 25px 0; }
+.tab_div{
+  width:90%;
+  min-height: 145px;
+  height:auto;
+  border:1px solid #86ceed;
+  margin:10px auto;
+  -moz-border-radius:5px;     /* Gecko browsers */
+  -webkit-border-radius:15px;   /* Webkit browsers */
+  border-radius:5px;            /* W3C syntax */
+}
+
+
+.tab_div_top{
+  width:90%;
+  height:auto;
+  margin:10px auto;
+}
+
+.tab_div_top .tr_1{
+	width:100%;
+}
+
+.tab_div_top .tr_2{
+	margin-top:20px;
+	width:100%;
+	float:left;
+}
+
+.tab_div_top .control-label{padding-top:0px;}
+
+.tab_div_top .tr_2 .tb_1{
+	width:50px;
+	float:left;
+	height:40px;
+	line-height:40px;
+}
+
+
+.tab_div_top .tr_2 .tb_2{
+	width:80%;
+	float:left;
+	height:40px;
+	line-height:40px;
+}
+
+
+
+
+.tab_div_top .tr_1 .tb_1{
+	width:33.3%;
+	float:left;
+	height:40px;
+	line-height:40px;
+}
+
+.tab_div_top .tr_1 .tb_2{
+	width:33.3%;
+	float:left;
+	height:40px;
+	line-height:40px;
+}
+
+.tab_div_top .tr_1 .tb_3{
+	width:33.3%;
+	float:left;
+    height:40px;
+	line-height:40px;
+}
+
+
+
+
+.title_div{
+   background:#86ceed;
+   height:45px;
+   width:100%;
+   line-height:45px;
+   text-align:center;
+   font-weight:bold;
+   font-size:16px;
+   color:#fff;
+   -moz-border-radius:5px 5px 0px 0px;     /* Gecko browsers */
+   -webkit-border-radius:5px 5px 0px 0px;   /* Webkit browsers */
+   border-radius:5px 5px 0px 0px;            /* W3C syntax */
+}
+
+.tr_div{
+	width:100%;
+	height:100px;
+}
+
+.td1_div{
+	width:90%;
+	height:100px;
+	float:left;
+	border-top:1px solid #86ceed;
+	border-right:1px solid #86ceed;
+}
+
+.td2_div{
+	width:10%;
+	height:100px;
+	float:left;
+	border-top:1px solid #86ceed;
+	padding-top:10px;
+}
+
+.tdd_half{
+	width:50%;
+	height:100px;
+	float:left;
+}
+
+
+.tdd_half  .small_tt {
+	width:100%;
+	height:30px;
+	line-height:30px;
+	text-align:center;
+	font-size:16px;
+}
+
+.tdd_half  .td_content{
+	padding:0px 10px;
+	height:70px;
+	text-align:center;
+	overflow:hidden;
+}
+
+.td2_div p {
+	text-align:center;
+}
+
+.reply_div{ width:96%; margin:10px 5px auto;}
+
+.reply_content{
+	background:#c0e2f1;
+	display:inline-block; 
+	border-radius:5px;
+	max-width:100%;
+	padding:8px 8px;
+	margin-top:5px;  
+	margin-bottom:5px;
+}
+
+.reply_content span{
+	 word-wrap:break-word;
+	 word-break:break-all;
+	 height:20px;
+	 line-height:20px;
+}
+
+
+
+/*
+.reply_person{ margin-top:8px;}
+.reply_person{
+   padding:8px 8px;
+   background:#c0e2f1;
+   -moz-border-radius:5px;     
+   -webkit-border-radius:5px;   
+   border-radius:5px;         
+   margin-top:8px;
+   margin-bottom:8px;
+	
+}
+*/
+
+
+textarea {
+    resize: none;
+}
+
+
+
+
+
+
+

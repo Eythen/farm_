@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+		<meta content="telephone=no" name="format-detection" />
+		<title>审核</title>
+
+		<link href="__PUBLIC__/skin/css/ydui.css" rel="stylesheet">
+		<link href="__PUBLIC__/skin/css/dropload.css" rel="stylesheet">
+		<link href="__PUBLIC__/skin/css/app.css" rel="stylesheet">
+		<style>
+			.g-flexview {
+				height: 100%;
+				margin: 0 auto;
+				max-width: 750px;
+				min-width: 300px;
+				padding-top: 1rem;
+			}
+		</style>
+
+		<script src="__PUBLIC__/skin/js/ydui.flexible.js"></script>
+	</head>
+
+	<body>
+
+		<header class="m-navbar">
+			<a href="{:url('examine')}" class="navbar-item"><i class="back-ico"></i></a>
+			<div class="navbar-center"><span class="navbar-title">审核</span></div>
+		</header>
+
+		<div class="g-flexview">
+
+			<div class="tab">
+				<a href="javascript:;" class="item cur">未审核</a>
+				<a href="javascript:;" class="item" id="done">已审核</a>
+			</div>
+			<ul class="tab-txte">
+				<li>级别</li>
+				<li>电话</li>
+				<li>时间</li>
+				<li>金额</li>
+			</ul>
+			<div class="content">
+				<ul class="lists">
+					<!--<li>
+			    		<div class="shujun">
+				    		<span>白银</span>
+							<span>12345678910</span>
+							<span>2017-10-10</span>
+							<span>1000.00</span>
+			    		</div>
+			    		<div class="via">
+			    			<a href="javascript:;" class="input refuse">拒绝</a>
+			    			<a href="javascript:;" class="input pass">通过</a>
+			    		</div>
+			    	</li>-->
+				</ul>
+
+			</div>
+
+		</div>
+
+		<script src="__PUBLIC__/skin/js/jquery.min.js"></script>
+		<script src="__PUBLIC__/skin/js/dropload.min.js"></script>
+		<script src="__PUBLIC__/skin/js/ydui.js"></script>
+		<script src="__PUBLIC__/skin/js/app.js"></script>
+		<script>
+
+			! (function(win, $) {
+
+
+				var dialog = win.YDUI.dialog;
+				//拒绝
+				$(document).on('click','.refuse',function(){
+					var order_id = $(this).data('id');
+					var li = $(this).closest("li");
+					$.ajax({
+		            	type:"post",
+		                url: '{:url("examineHandle")}',
+		                dataType: 'json',
+		                data: { paystatus:2, order_id:order_id },
+		                success: function (data) {
+		                	if(data.code){
+		                		dialog.toast('审核完成', 'success', 1500);
+		                		li.remove();
+		                	}
+		                	else{
+		                		dialog.toast(data.msg, 'error', 1500);
+		                	}
+	                    },
+	                    error:function(data){
+					   			dialog.toast('请求失败', 'none', 2000);
+					   		}
+	                });
+					
+				});
+				//通过
+				$(document).on('click','.pass',function(){
+					var order_id = $(this).data('id');
+					var li = $(this).closest("li");
+					$.ajax({
+		            	type:"post",
+		                url: '{:url("examineHandle")}',
+		                dataType: 'json',
+		                data: { paystatus:1, order_id:order_id },
+		                success: function (data) {
+		                	if(data.code){
+		                		dialog.toast('审核成功', 'success', 1500);
+		                		li.remove();
+		                	}
+		                	else{
+		                		//dialog.toast(data.msg, 'error', 1500);
+		                		dialog.confirm('提示', data.msg, [
+					                {
+					                    txt: '取消',
+					                    color: false, /* false:黑色  true:绿色 或 使用颜色值 */
+					                    callback: function () {
+					                        //dialog.toast('你点了取消', 'none', 1000);
+					                    }
+					                },
+					                {
+					                    txt: '兑换',
+					                    stay: true, /* 是否保留提示框 */
+					                    color: '#CCC', /* 使用颜色值 */
+					                    callback: function () {
+					                        window.location.href="{:url('integral/exchange')}";
+					                    }
+					                },
+					                {
+					                    txt: '充值',
+					                    color: true,
+					                    callback: function () {
+					                        window.location.href="{:url('integral/recharge')}";
+					                    }
+					                }
+					            ]);
+		                	}
+	                    },
+	                    error:function(data){
+					   			dialog.toast('请求失败', 'none', 2000);
+					   		}
+	                });
+				});
+
+
+				
+				$('.tab .item').click(function(){
+					$('.lists').html('');
+					var index = $(this).index();
+					if(index == 1){
+						addpage2();
+					}
+					else{
+						addpage(index);
+					}
+					$('.tab .item').siblings().removeClass('cur').eq(index).addClass('cur');
+					//$('.lists').eq(index).show().siblings('.lists').hide();
+					//$('.tab-panel-item').siblings().removeClass('cur').eq(index).addClass('cur');
+
+				});
+
+				//根据cookie加载哪个tab
+				var checktype = YDUI.util.cookie.get('checktype');
+				if(checktype==1){
+					$('.tab .item').siblings().removeClass('cur').eq(1).addClass('cur');
+					$('.lists').html('');
+					addpage2();
+				}
+				else{
+
+					addpage(0);
+
+				}
+				
+				
+				function addpage(navindex) {
+					var  result = "";
+					var page = 1,
+						pageSize = 12,
+						type = 0;
+						YDUI.util.cookie.set('checktype', '0', 3600);
+	
+						$('.lists').html('');
+						$('.list-donetip, .list-loading, .J_InfiniteScrollTag').remove();
+
+					$('.content').infiniteScroll({
+						binder: '.content',
+						pageSize: pageSize,
+						initLoad: true,
+						//backposition: true,
+						//jumpLink: '.J_Link',
+						loadingHtml: '正在加载……', //<img src="__PUBLIC__/skin/img/loading.gif"/>
+						loadListFn: function() {
+							var def = $.Deferred();
+							var url = '{:url("examine2")}?type='+{$type};
+							$.ajax({
+								type: 'post',
+								url: url,
+								dataType: 'json',
+								data: {
+									page: page,
+									pagesize: pageSize,
+								},
+								success: function(listArr) {
+									//console.log('ret=' + ret)
+									//typeof callback == 'function' && callback(ret);
+									listArr.page = page;
+									if(listArr.lists.length<1){
+										$('.list-loading').remove();
+										$('<div class="list-donetip">已加载全部！</div>').insertAfter(".J_InfiniteScrollTag");
+										return false;
+									}
+									for (var i = 0; i < listArr.lists.length; i++) {
+				                    	
+					                    result += '<li>' +
+														'<div class="shujun">' +
+														'<span>' + listArr.lists[i].level + '</span>' +
+														'<span>' + listArr.lists[i].phone + '</span>' +
+														'<span>' + listArr.lists[i].time + '</span>' +
+														'<span>' + listArr.lists[i].money + '</span>' +
+														'</div>' +
+														'<div class="via">';
+														if(listArr.lists[i].user_id == <?=session('user_id');?>){
+															result += '待上级审批';
+														}
+														else{
+															result += '<button type="button" data-id="'+listArr.lists[i].order_id + '" class="input refuse">拒绝</button>' +
+																			'<button type="button" data-id="'+listArr.lists[i].order_id + '" class="input pass">通过</button>' ;
+															result += '</div>';
+														}
+														result += '</li>';
+
+									}
+
+				                    $('.lists').append(result);
+									
+									//$('#J_ListContent').append(html);
+									def.resolve(listArr.lists, page);
+									++page;
+								}
+							});
+							
+							return def.promise();
+						}
+					});
+				}
+
+				function addpage2() {
+					var  result = "";
+					var page2 = 1,
+						pageSize2 = 12,
+						type = 1;
+						YDUI.util.cookie.set('checktype', '1', 3600);
+						$('.lists').html('');
+						$('.list-donetip, .list-loading, .J_InfiniteScrollTag').remove();
+
+					$('.content').infiniteScroll({
+						binder: '.content',
+						pageSize: pageSize2,
+						initLoad: true,
+						//backposition: true,
+						//jumpLink: '.J_Link',
+						loadingHtml: '正在加载……',
+						loadListFn: function() {
+							var def2 = $.Deferred();
+							var url = '{:url("examine2")}?pay_status=1&type='+{$type}; //, ["type"=>{$type},"pay_status" =>1 ]
+							$.ajax({
+								url: url,
+								type:"post",
+								dataType: 'json',
+								data: {
+									page: page2,
+									pagesize: pageSize2,
+								},
+								success: function(listArr) {
+									//console.log('ret=' + ret)
+									//typeof callback == 'function' && callback(ret);
+									if(listArr.lists.length<1){
+										$('.list-loading').remove();
+										$('<div class="list-donetip">已加载全部！</div>').insertAfter(".J_InfiniteScrollTag");
+										return false;
+									}
+									listArr.page = page2;
+
+									for (var i = 0; i < listArr.lists.length; i++) {
+				                    	
+					                    result += '<li>' +
+														'<div class="shujun">' +
+														'<span>' + listArr.lists[i].level + '</span>' +
+														'<span>' + listArr.lists[i].phone + '</span>' +
+														'<span>' + listArr.lists[i].time + '</span>' +
+														'<span>' + listArr.lists[i].money + '</span>' +
+														'</div>' ;
+														if(listArr.lists[i].pay_status==1){
+															result += '<div class="via">状态：通过</div>' ;
+														}
+														if(listArr.lists[i].pay_status==2){
+															result += '<div class="via">状态：拒绝</div>' ;
+														}
+														result += '</li>';
+
+									}
+
+				                    $('.lists').append(result);
+					                
+				                    /* 获取数据，并插入页面后，调用resole，并传入当前获取的记录列表集合 */
+				                    def2.resolve(listArr.lists, page2);
+									++page2;
+								}
+							});
+							
+							return def2.promise();
+						}
+					});
+				}
+
+				
+			})(window, jQuery);
+			
+		</script>
+		<script src="__PUBLIC__/js/mui.min.js"></script>
+		<script>
+            mui.init({
+                keyEventBind:{
+                    backbutton:false
+                }
+            })
+		</script>
+		<script src="__PUBLIC__/js/common.js"></script>
+	</body>
+
+</html>

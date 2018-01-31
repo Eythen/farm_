@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+	<head>
+	  <meta charset="UTF-8">
+	  <title>信息管理平台</title>
+	  {include file="public:css" /}
+	  <style type="text/css">
+			body{background-color: #eee}
+		.btn-icon{ font-size: 12px; margin: 0px 5px; }
+	  </style>
+	</head>
+	<body>
+	<!--------头部开始-------------->
+
+		<div class="well">
+
+			<div class="panel panel-primary">
+
+				<div class="panel-heading">
+					<div class="panel-title text-center">志愿者详情</div>
+				</div>
+
+				<div class="panel-body">
+					<table class="table table-bordered">
+						<tr>
+							<th>姓名：</th>
+							<td>{$res.name}</td>
+						</tr>
+						<tr>
+							<th>性别：</th>
+							<td>
+								{if condition="$res['sex'] eq '1'"}
+								男
+								{else/}
+								女
+								{/if}
+							</td>
+						</tr>
+						<tr>
+							<th>手机号码：</th>
+							<td>{$res.mobile}</td>
+						</tr>
+						<tr>
+							<th>身份证：</th>
+							<td>{$res.id_card}</td>
+						</tr>
+						<tr>
+							<th style="line-height: 120px;">上半身照片：</th>
+							<td><img width="150px;" src="{$res.pic}" alt=""></td>
+						</tr>
+					</table>
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

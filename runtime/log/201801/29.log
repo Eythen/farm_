@@ -1,0 +1,211 @@
+---------------------------------------------------------------
+[ 2018-01-29T09:24:10+08:00 ] 127.0.0.1 127.0.0.1 GET /
+[ info ] farm.com/ [运行时间：0.711116s][吞吐率：1.41req/s] [内存消耗：3,118.75kb] [文件加载：64]
+[ info ] [ LANG ] /Applications/MAMP/htdocs/farm/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => '',
+    1 => NULL,
+    2 => NULL,
+  ),
+)
+[ info ] [ HEADER ] array (
+  'host' => 'farm.com',
+  'connection' => 'keep-alive',
+  'user-agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36',
+  'upgrade-insecure-requests' => '1',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'accept-encoding' => 'gzip, deflate',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ SESSION ] INIT array (
+  'id' => '',
+  'var_session_id' => '',
+  'prefix' => 'think',
+  'type' => '',
+  'auto_start' => true,
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ RUN ] app\wap\controller\Index->index[ /Applications/MAMP/htdocs/farm/application/wap/controller/Index.php ]
+[ info ] [ VIEW ] /Applications/MAMP/htdocs/farm/public/../application/wap/view/index/index.html [ array (
+  0 => 'banner',
+  1 => 'ads',
+  2 => 'cate',
+  3 => 'goods',
+  4 => 'hot',
+  5 => 'log',
+  6 => 'carts',
+) ]
+[ info ] [ LOG ] INIT File
+[ sql ] [ DB ] CONNECT:[ UseTime:0.016506s ] mysql:host=192.168.1.193;port=3306;dbname=farm;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `yq_wx_user` [ RunTime:0.003168s ]
+[ sql ] [ SQL ] SELECT * FROM `yq_wx_user` [ RunTime:0.001541s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `yq_ad` [ RunTime:0.001986s ]
+[ sql ] [ SQL ] SELECT `ad_link`,`ad_code` FROM `yq_ad` WHERE  `pid` = 1  AND `enabled` = 1  AND `end_time` > 1517189050 ORDER BY start_time desc,orderby LIMIT 5 [ RunTime:0.001046s ]
+[ sql ] [ SQL ] SELECT `ad_link`,`ad_code` FROM `yq_ad` WHERE  `pid` = 7 LIMIT 3 [ RunTime:0.000775s ]
+[ sql ] [ SQL ] SELECT `ad_code` FROM `yq_ad` WHERE  `ad_id` = 16 ORDER BY ad_id asc LIMIT 1 [ RunTime:0.000694s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `yq_goods` [ RunTime:0.002670s ]
+[ sql ] [ SQL ] SELECT * FROM `yq_goods` WHERE  `cat_id` = 2  AND `is_on_sale` = 1  AND `is_recommend` = 1 LIMIT 5 [ RunTime:0.001464s ]
+[ sql ] [ SQL ] SELECT keywords FROM yq_users_search AS t1 JOIN (SELECT ROUND(RAND() * ((SELECT MAX(id) FROM yq_users_search)-(SELECT MIN(id) FROM yq_users_search))+(SELECT MIN(id) FROM yq_users_search)) AS id) AS t2 WHERE t1.id >= t2.id ORDER BY t1.id LIMIT 5; [ RunTime:0.001027s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `yq_users_search` [ RunTime:0.001366s ]
+[ sql ] [ SQL ] SELECT `keywords` FROM `yq_users_search` WHERE  `user_id` IS NULL LIMIT 5 [ RunTime:0.000630s ]
+[ sql ] [ SQL ] SELECT * FROM `yq_wx_user` [ RunTime:0.001008s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `yq_cart` [ RunTime:0.002142s ]
+[ sql ] [ SQL ] SELECT `c`.`id`,`c`.`goods_id`,`c`.`goods_name`,`c`.`goods_num`,`c`.`selected`,`g`.`original_img`,`g`.`store_count`,`g`.`shop_price` FROM `yq_cart` `c` INNER JOIN `yq_goods` `g` ON `c`.`goods_id`=`g`.`goods_id` WHERE  `user_id` IS NULL [ RunTime:0.000887s ]
+[ error ] [8]A session had already been started - ignoring session_start()[/Applications/MAMP/htdocs/farm/application/wap/controller/Base.php:20]
+[ error ] [8]Constant SESSION_ID already defined[/Applications/MAMP/htdocs/farm/application/wap/controller/Base.php:22]
+---------------------------------------------------------------
+[ 2018-01-29T09:24:10+08:00 ] 127.0.0.1 127.0.0.1 GET /public/skin/favicon.ico
+[ info ] farm.com/public/skin/favicon.ico [运行时间：0.094265s][吞吐率：10.61req/s] [内存消耗：1,848.00kb] [文件加载：43]
+[ info ] [ LANG ] /Applications/MAMP/htdocs/farm/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'public',
+    1 => 'skin',
+    2 => 'favicon.ico',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'host' => 'farm.com',
+  'connection' => 'keep-alive',
+  'user-agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36',
+  'accept' => 'image/webp,image/apng,image/*,*/*;q=0.8',
+  'referer' => 'http://farm.com/',
+  'accept-encoding' => 'gzip, deflate',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8',
+  'cookie' => 'PHPSESSID=e0c3bccb944eb37280a45cd2fea0e29c; is_mobile=0',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ LOG ] INIT File
+---------------------------------------------------------------
+[ 2018-01-29T09:24:13+08:00 ] 127.0.0.1 127.0.0.1 GET /public/skin/js/swiper.min.js.map
+[ info ] farm.com/public/skin/js/swiper.min.js.map [运行时间：0.068769s][吞吐率：14.54req/s] [内存消耗：1,847.70kb] [文件加载：43]
+[ info ] [ LANG ] /Applications/MAMP/htdocs/farm/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'public',
+    1 => 'skin',
+    2 => 'js',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'host' => 'farm.com',
+  'connection' => 'keep-alive',
+  'user-agent' => 'Mozilla/5.0 (iPhone; CPU iPhone OS 10_3 like Mac OS X) AppleWebKit/602.1.50 (KHTML, like Gecko) CriOS/56.0.2924.75 Mobile/14E5239e Safari/602.1',
+  'cache-control' => 'no-cache',
+  'accept-encoding' => 'gzip, deflate',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8',
+  'cookie' => 'PHPSESSID=e0c3bccb944eb37280a45cd2fea0e29c; is_mobile=0',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ LOG ] INIT File
+---------------------------------------------------------------
+[ 2018-01-29T09:24:30+08:00 ] 127.0.0.1 127.0.0.1 GET /wap/shop/index.html
+[ info ] farm.com/wap/shop/index.html [运行时间：0.134859s][吞吐率：7.42req/s] [内存消耗：3,126.34kb] [文件加载：64]
+[ info ] [ LANG ] /Applications/MAMP/htdocs/farm/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'wap',
+    1 => 'shop',
+    2 => 'index',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'host' => 'farm.com',
+  'connection' => 'keep-alive',
+  'pragma' => 'no-cache',
+  'cache-control' => 'no-cache',
+  'upgrade-insecure-requests' => '1',
+  'user-agent' => 'Mozilla/5.0 (iPhone; CPU iPhone OS 10_3 like Mac OS X) AppleWebKit/602.1.50 (KHTML, like Gecko) CriOS/56.0.2924.75 Mobile/14E5239e Safari/602.1',
+  'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+  'referer' => 'http://farm.com/',
+  'accept-encoding' => 'gzip, deflate',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8',
+  'cookie' => 'PHPSESSID=e0c3bccb944eb37280a45cd2fea0e29c; is_mobile=0',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ SESSION ] INIT array (
+  'id' => '',
+  'var_session_id' => '',
+  'prefix' => 'think',
+  'type' => '',
+  'auto_start' => true,
+)
+[ info ] [ DB ] INIT mysql
+[ info ] [ RUN ] app\wap\controller\Shop->index[ /Applications/MAMP/htdocs/farm/application/wap/controller/Shop.php ]
+[ info ] [ VIEW ] /Applications/MAMP/htdocs/farm/public/../application/wap/view/shop/index.html [ array (
+  0 => 'banner',
+  1 => 'recommends',
+  2 => 'cate',
+  3 => 'freshs',
+  4 => 'greens',
+  5 => 'package',
+  6 => 'carts',
+) ]
+[ info ] [ LOG ] INIT File
+[ sql ] [ DB ] CONNECT:[ UseTime:0.002052s ] mysql:host=192.168.1.193;port=3306;dbname=farm;charset=utf8
+[ sql ] [ SQL ] SHOW COLUMNS FROM `yq_wx_user` [ RunTime:0.003243s ]
+[ sql ] [ SQL ] SELECT * FROM `yq_wx_user` [ RunTime:0.001143s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `yq_ad` [ RunTime:0.001973s ]
+[ sql ] [ SQL ] SELECT `ad_link`,`ad_code` FROM `yq_ad` WHERE  `pid` = 2  AND `enabled` = 1  AND `end_time` > 1517189070 ORDER BY start_time desc,orderby LIMIT 6 [ RunTime:0.001012s ]
+[ sql ] [ SQL ] SELECT `ad_link`,`ad_code` FROM `yq_ad` WHERE  `pid` = 3  AND `enabled` = 1 ORDER BY orderby desc LIMIT 6 [ RunTime:0.000801s ]
+[ sql ] [ SQL ] SELECT `ad_code` FROM `yq_ad` WHERE  `pid` = 5 ORDER BY ad_id asc LIMIT 3 [ RunTime:0.000728s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `yq_goods` [ RunTime:0.002610s ]
+[ sql ] [ SQL ] SELECT `goods_id`,`original_img`,`goods_name`,`weight`,`shop_price` FROM `yq_goods` WHERE  `is_on_sale` = 1  AND `is_recommend` = 1  AND `cat_id` = 2 ORDER BY on_time desc LIMIT 5 [ RunTime:0.001082s ]
+[ sql ] [ SQL ] SELECT `goods_id`,`original_img`,`goods_name`,`weight`,`shop_price` FROM `yq_goods` WHERE  `is_on_sale` = 1  AND `is_recommend` = 1  AND `cat_id` = 3 ORDER BY on_time desc LIMIT 5 [ RunTime:0.001018s ]
+[ sql ] [ SQL ] SELECT `goods_id`,`original_img`,`goods_name`,`weight`,`shop_price` FROM `yq_goods` WHERE  `is_on_sale` = 1  AND `is_recommend` = 1  AND `cat_id` = 1 ORDER BY on_time desc LIMIT 5 [ RunTime:0.000966s ]
+[ sql ] [ SQL ] SELECT * FROM `yq_wx_user` [ RunTime:0.001158s ]
+[ sql ] [ SQL ] SHOW COLUMNS FROM `yq_cart` [ RunTime:0.002199s ]
+[ sql ] [ SQL ] SELECT `c`.`id`,`c`.`goods_id`,`c`.`goods_name`,`c`.`goods_num`,`c`.`selected`,`g`.`original_img`,`g`.`store_count`,`g`.`shop_price` FROM `yq_cart` `c` INNER JOIN `yq_goods` `g` ON `c`.`goods_id`=`g`.`goods_id` WHERE  `user_id` IS NULL [ RunTime:0.000832s ]
+[ error ] [8]A session had already been started - ignoring session_start()[/Applications/MAMP/htdocs/farm/application/wap/controller/Base.php:20]
+[ error ] [8]Constant SESSION_ID already defined[/Applications/MAMP/htdocs/farm/application/wap/controller/Base.php:22]
+[ error ] [8]未定义数组索引: id[/Applications/MAMP/htdocs/farm/runtime/temp/8d26c64c448d59f04d5a6c99fb864c5b.php:168]
+[ error ] [8]未定义数组索引: image[/Applications/MAMP/htdocs/farm/runtime/temp/8d26c64c448d59f04d5a6c99fb864c5b.php:169]
+[ error ] [8]未定义数组索引: image[/Applications/MAMP/htdocs/farm/runtime/temp/8d26c64c448d59f04d5a6c99fb864c5b.php:169]
+[ error ] [8]未定义数组索引: mobile_name[/Applications/MAMP/htdocs/farm/runtime/temp/8d26c64c448d59f04d5a6c99fb864c5b.php:170]
+[ error ] [8]未定义数组索引: id[/Applications/MAMP/htdocs/farm/runtime/temp/8d26c64c448d59f04d5a6c99fb864c5b.php:168]
+[ error ] [8]未定义数组索引: image[/Applications/MAMP/htdocs/farm/runtime/temp/8d26c64c448d59f04d5a6c99fb864c5b.php:169]
+[ error ] [8]未定义数组索引: image[/Applications/MAMP/htdocs/farm/runtime/temp/8d26c64c448d59f04d5a6c99fb864c5b.php:169]
+[ error ] [8]未定义数组索引: mobile_name[/Applications/MAMP/htdocs/farm/runtime/temp/8d26c64c448d59f04d5a6c99fb864c5b.php:170]
+[ error ] [8]未定义数组索引: id[/Applications/MAMP/htdocs/farm/runtime/temp/8d26c64c448d59f04d5a6c99fb864c5b.php:168]
+[ error ] [8]未定义数组索引: image[/Applications/MAMP/htdocs/farm/runtime/temp/8d26c64c448d59f04d5a6c99fb864c5b.php:169]
+[ error ] [8]未定义数组索引: image[/Applications/MAMP/htdocs/farm/runtime/temp/8d26c64c448d59f04d5a6c99fb864c5b.php:169]
+[ error ] [8]未定义数组索引: mobile_name[/Applications/MAMP/htdocs/farm/runtime/temp/8d26c64c448d59f04d5a6c99fb864c5b.php:170]
+---------------------------------------------------------------
+[ 2018-01-29T09:24:31+08:00 ] 127.0.0.1 127.0.0.1 GET /public/skin/js/swiper.min.js.map
+[ info ] farm.com/public/skin/js/swiper.min.js.map [运行时间：0.072882s][吞吐率：13.72req/s] [内存消耗：1,847.70kb] [文件加载：43]
+[ info ] [ LANG ] /Applications/MAMP/htdocs/farm/thinkphp/lang/zh-cn.php
+[ info ] [ ROUTE ] array (
+  'type' => 'module',
+  'module' => 
+  array (
+    0 => 'public',
+    1 => 'skin',
+    2 => 'js',
+  ),
+)
+[ info ] [ HEADER ] array (
+  'host' => 'farm.com',
+  'connection' => 'keep-alive',
+  'user-agent' => 'Mozilla/5.0 (iPhone; CPU iPhone OS 10_3 like Mac OS X) AppleWebKit/602.1.50 (KHTML, like Gecko) CriOS/56.0.2924.75 Mobile/14E5239e Safari/602.1',
+  'cache-control' => 'no-cache',
+  'accept-encoding' => 'gzip, deflate',
+  'accept-language' => 'zh-CN,zh;q=0.9,en;q=0.8',
+  'cookie' => 'PHPSESSID=e0c3bccb944eb37280a45cd2fea0e29c; is_mobile=1',
+)
+[ info ] [ PARAM ] array (
+)
+[ info ] [ LOG ] INIT File

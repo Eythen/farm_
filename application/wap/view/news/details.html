@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>新闻详情</title>
+		<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport" />
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+		<meta content="telephone=no" name="format-detection" />
+
+         <!-- 引入YDUI样式 -->
+		<link rel="stylesheet" href="__PUBLIC__/css/ydui.css" />
+		<link rel="stylesheet" href="__PUBLIC__/font/iconfont.css" />
+		<link rel="stylesheet" href="__PUBLIC__/css/animate.min.css" />
+		<link rel="stylesheet" href="__PUBLIC__/css/style.css" />
+		
+		<!-- 引入YDUI自适应解决方案类库 -->
+		<script src="__PUBLIC__/js/ydui.flexible.js"></script>
+		
+	</head>
+
+	<body>
+		
+        <header class="navheader">
+        	<a class="icon-jiantou-copy" href="{:url('Lst')}"></a>
+		    <h1 class="mui-title">新闻详情</h1>
+		    <a class="icon-fenxiang1" href="javascript:;" id="J_ShowActionSheet"></a>
+		</header>
+		
+		<section class="g-flexview">
+			<div class="topbt2">
+                
+                <div class="animated bounceInLeft">
+
+					<div class="newsdetails">
+						<h2>{$new.title}</h2>
+						<time>{$new.add_time|date="Y-m-d H:i:s",###}</time>
+	                	<div class="imgbox">
+							<img src="{$new.thumb}" alt="">
+						</div>
+						{$new.content}
+					</div>
+					
+                </div>
+            </div>
+        </section>
+        
+
+		
+ <script src="__PUBLIC__/js/jquery.min.js"></script>
+ <script src="__PUBLIC__/js/ydui.js"></script>
+<script src="__PUBLIC__/js/fastclick.js"></script>
+<script src="__PUBLIC__/js/plugins/layer/layer.js"></script>
+
+<?php
+$agent = $_SERVER['HTTP_USER_AGENT'];
+if(stripos($agent, 'html5plus')){
+?>
+<script src="__PUBLIC__/js/soshm.js" type="text/javascript" charset="utf-8"></script>
+<script src="__PUBLIC__/js/mui.min.js"></script>
+<script src="__PUBLIC__/js/mui.zoom.js"></script>
+<script src="__PUBLIC__/js/mui.previewimage.js"></script>
+<?php
+}
+else{
+?>
+
+<script src="__PUBLIC__/js/mui.min.js"></script>
+<script src="__PUBLIC__/js/mui.zoom.js"></script>
+<script src="__PUBLIC__/js/mui.previewimage.js"></script>
+<script src="__PUBLIC__/js/soshm.js" type="text/javascript" charset="utf-8"></script>
+<?php	
+}
+
+?>
+<script src="__PUBLIC__/js/tools.js" ></script> 
+<script>
+
+			mui.init({
+                swipeBack:true, //启用右滑关闭功能
+				keyEventBind:{
+					backbutton:false
+				}
+            });
+
+            var Intent = null,
+                File = null,
+                Uri = null,
+                main = null;
+            var shares = null;
+            var shareImageUrl = '';
+            mui.plusReady(function() {
+                updateSerivces();
+                if (plus.os.name == "Android") {
+                    Intent = plus.android.importClass("android.content.Intent");
+                    File = plus.android.importClass("java.io.File");
+                    Uri = plus.android.importClass("android.net.Uri");
+                    main = plus.android.runtimeMainActivity();
+                }
+            }) 
+
+            /**
+             * 更新分享服务
+             */
+            function updateSerivces() {
+                plus.share.getServices(function(s) {
+                    shares = {};
+                    for (var i in s) {
+                        var t = s[i];
+                        shares[t.id] = t;
+                    }
+                    outSet("获取分享服务列表成功");
+                }, function(e) {
+                    outSet("获取分享服务列表失败：" + e.message);
+                });
+            }
+            /**
+             * 分享操作
+             */
+            function shareAction(id, ex) {
+                var s = null;
+                if (!id || !(s = shares[id])) {
+                    outLine("无效的分享服务！");
+                    return;
+                }
+                if (s.authenticated) {
+                    outSet("---已授权---");
+                    shareMessage(s, ex);
+                } else {
+                    outSet("---未授权---");
+                    s.authorize(function() {
+                        shareMessage(s, ex);
+                    }, function(e) {
+                        outLine("认证授权失败");
+                    });
+                }
+            }
+            /**
+             * 发送分享消息
+             */
+            function shareMessage(s, ex) {
+                var msg = {
+                    content: '分享-详情',
+                    href: "{$host}/index.php/wap/news/details.html?article_id={$new.article_id}&tguid={$user_id}",
+                    title: '向日葵爱心商城',
+                    content: '您的好友正在使用向日葵爱心商城APP，现邀请您一起注册下载！！',
+                    thumbs: ['http://www.csshmd.com/public/img/logo.png'],
+                    pictures: ['http://www.csshmd.com/public/img/logo.png'],
+                    extra: {
+                        scene: ex
+                    }
+                };
+                s.send(msg, function() {
+                    outLine("分享成功!");
+                }, function(e) {
+                    outLine("分享失败!");
+                });
+            }
+            /**
+             * 分享按钮点击事件
+             */
+   			document.getElementById('J_ShowActionSheet').addEventListener('click', function() {
+            	var user_id = "{$user_id}";
+	                if(user_id == ""){
+	                    layer.msg("您还未登陆，请登陆后再分享！");
+	                    return;
+	                }
+				var ua = window.navigator.userAgent.toLowerCase();
+				//alert(ua.indexOf('html5plus'))
+				if(ua.indexOf('html5plus') > 1){
+					
+	                var ids = [{
+	                        id: "weixin",
+	                        ex: "WXSceneSession"  /*微信好友*/
+	                    }, {
+	                        id: "weixin",
+	                        ex: "WXSceneTimeline" /*微信朋友圈*/
+	                    }, {
+	                        id: "qq"   /*QQ好友*/
+	                    }],
+	                    bts = [{
+	                        title: "发送给微信好友"
+	                    }, {
+	                        title: "分享到微信朋友圈"
+	                    }, {
+	                        title: "分享到QQ"
+	                    }];
+	                plus.nativeUI.actionSheet({
+	                        cancel: "取消",
+	                        buttons: bts
+	                    },
+	                    function(e) {
+	                        var i = e.index;
+	                        if (i > 0) {
+	                            shareAction(ids[i - 1].id, ids[i - 1].ex);
+	                        }
+	                    }
+	                );
+				}else{
+					//分享弹窗
+		                soshm.popIn({
+		                    title: '分享-详情',
+		                    // 分享的链接，默认使用location.href
+		                    url: "{$host}/index.php/wap/news/details.html?article_id={$new.article_id}&tguid={$user_id}",
+		                    sites: ['weixin', 'weixintimeline', 'weibo','qq','qzone']
+		                });
+		           
+				}
+            },false);
+            
+            // 控制台输出日志
+            function outSet(msg) {
+                console.log(msg);
+            }
+            // 界面弹出吐司提示
+            function outLine(msg) {
+                mui.toast(msg);
+            }
+		</script> 		
+		
+
+	<script src="__PUBLIC__/js/common.js"></script>
+	</body>
+
+</html>

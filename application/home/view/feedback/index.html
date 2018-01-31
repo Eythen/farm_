@@ -1,0 +1,343 @@
+{include file="public:yunying_header" /}
+<link href="__PUBLIC__/css/record_list.css" rel="stylesheet">
+<style type="text/css">
+body{padding:0;}
+a{text-decoration: none;}
+p{margin: 0	;}
+.btn-success,.btn-all{padding-left:20px;padding-right:20px;}
+.box-control{padding:5px 30px 0 30px;clear:both;min-height: 1px;min-height: 48px;}
+.box-control input {height: 28px;}
+.box-contents {margin:10px 80px;}
+.box-contents ul{padding-left: 14px;}
+.box-contents li {list-style: none;margin-bottom:40px;padding: 0;z-index: 222;min-width:310px;}
+.finish {background:#dedede;border:1px solid #c5c5c5;}
+.finish .tc {background:#d1d1d1;}
+.finish .tc a:hover {background:#d1d1d1;}
+.wait {background:#fffedc;border:1px solid #e9e8b8;}
+.wait .tc {background:#e4e2a0;}
+.wait .tc a:hover {background:#e4e2a0;}
+.working {background:#c0e2f1;border:1px solid #a9d5e9;}
+.working .tc {background:#86ceed;}
+.working .tc a:hover {background:#74c8ec;}
+.box{width:300px;height:108px;border-radius:5px;box-sizing:border-box;position:absolute;float:left;transition:all 0.5s;-webkit-transition:all 0.5s;}
+.box_mini_bk{display:none;width:300px;height:108px;background:url(__PUBLIC__/img/record/select.png) no-repeat;background-position:0 0;border:1px solid #f6b37f;box-sizing:border-box;border-radius:5px;position:absolute;left:-1px;top:-1px;transition:all 0.5s;-webkit-transition:all 0.5s;}
+.fd {width:108px;height:108px;position:relative;float:left;}
+.tx{width:79px;height:79px;background:url(__PUBLIC__/img/record/avatar.jpg) no-repeat center;border-radius:100px;margin-top:14.5px;margin-left:14.5px;float:left;}
+.bk{width:79px;height:79px;background:url(__PUBLIC__/img/record/avatar.jpg) no-repeat center;background-size:79px 79px;border-radius:100px;position:absolute;left:14.5px;top:14.5px;border:3px solid #86ceed;box-sizing:border-box;z-index:-1;transition:all 0.5s;-webkit-transition:all 0.5s;}
+.tc{width:300px;height:35px;border-radius:0 0 5px 5px;display:none;position:absolute;left:-1px;top:107px;line-height:35px;}
+.tc img{display:block;margin-top:7px;margin-left:110px;margin-right:5px;float:left;}
+.tc a{display:block;width:300px;height:35px;margin-top:-20px;border-radius:0 0 5px 5px;opacity:0;transition:all 0.5s;-webkit-transition:all 0.5s;}
+.tc p{float:left;color:#fff;}
+.txt {height:88px;padding:15px 10px 5px 10px;float:left;margin-left:-15px;font-size:12px;}
+.txt p {line-height: 20px;}
+.box:hover{height:143px;box-shadow:0 0 10px #909090;}
+.box:hover .box_mini_bk {height:143px;}
+.box:hover .bk {width:108px;height:108px;background-size:108px 108px;left:0;top:0;opacity:0;z-index:1;}
+.box:hover .tc a {margin-top:0px;opacity:1;}
+.box_box{width:300px;height:108px;position:relative;float:left;}.box-stats{width:100%;position:absolute;bottom:0px;right:20px;border:0;background:none;}
+.box-stats{width:100%;position:absolute;bottom:0px;right:20px;border:0;background:none;}
+.box-stats input{height: 20px; width: 20px!important;}
+.page-pre,.page-next{height:58px;width:58px;background-color: #c0e2f1;border-radius: 50%;text-align: center;cursor:pointer;position: absolute;top: 50%;z-index: 999;}
+.page-pre{left: 58px;transform: translate(-50%, -50%);}
+.page-next{right: 0px;transform: translate(-50%, -50%);}
+.page-pre span,.page-next span{font-size: 35px;padding-top: 10px;color: #FFF;}
+.max-add{max-height: 650px;}
+.max-record{max-height: 820px;}
+label{float: left;padding-left:7px;padding-top: 7px;}
+</style>
+</head>
+<body class="animated fadeInRight">
+	<div class="box-control">
+        <div class="pull-left">
+            <button class="btn btn-success btn-add">新增</button>&nbsp;
+            &nbsp;&nbsp;<button class="btn btn-warning btn-all">全选</button>
+            &nbsp;&nbsp;<button class="btn btn-print">打印反馈表</button>
+        </div>
+        <div class="pull-left">
+            <label>处理状态：</label>
+            <select class="form-control border-radius" name="status" id="status" placeholder="全部" style="width:120px;" >
+              <option value="">全部</option>
+              <option value="0">等待接收人回复</option>
+              <option value="2">反馈进行中</option>
+              <option value="1">反馈流程完结</option>
+            </select>
+        </div>
+        <div class="pull-right">
+            <div class="form-inline">
+                <div class="form-group">
+                    <input type="text" name="search" id="searchkw" class="form-control border-radius" style="width:130px;" placeholder="Search">&nbsp;
+                    <button class="btn btn-select search-go">搜索</button>
+                </div>
+            </div>
+        </div>
+	</div>
+    <div class="box-contents">
+        <ul class="record_list"></ul>
+    </div>
+	<div class="page-pre pull-left"><span class="glyphicon glyphicon-chevron-left"></span></div>
+	<div class="page-next pull-right"><span class="glyphicon glyphicon-chevron-right"></span></div>
+    <div class="box-stats">
+        <div class="stats_page pull-right">
+            <div class="form-inline">
+	            <span class="page_total"></span>&nbsp;
+	            <span class="page_now">0</span>/<span class="page_count">0</span> 页&nbsp;跳转到&nbsp;&nbsp;
+                <input type="text" class="form-control border-radius page-value">&nbsp;
+                <button class="btn btn-select page-jump" type="button">GO</button>
+            </div>
+        </div>
+    </div>
+	{include file="public:js" /}
+	<script type="text/javascript" src="__PUBLIC__/js/plugins/easing/jquery.easing.1.3.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/js/plugins/qrcode/jquery.qrcode.min.js" ></script>
+	<script type="text/javascript">
+        var page_offset = 0;                                //初始页码
+        var page_kw = '';                                   //初始搜索
+        var page_count = 0;                                 //初始总数
+        var page_status = '';                               //初始状态
+        var page_type = '{$Think.get.type}';                //类型
+        var select_all = 0;                                 //判断全选
+        init();                                             //初始参数
+        function init(){
+            iWidth = $(window).width();                     //窗口宽度
+            iHeight = $(window).height();                   //窗口高度
+            layerWidth = '96%';                             //打开档案窗口宽度
+            layerHeight = '92%';                            //打开档案高度
+            boxWidth = 330;                                 //box宽度
+            boxHeight = 130;                                //box高度
+            dataCol = parseInt((iWidth - 50) / boxWidth);   //窗口可显示列数
+            dataRow = parseInt((iHeight - 100) / boxHeight);//窗口可显示行数
+            dataCol = dataCol > 4 ? 4 : dataCol;
+            page_limit = dataCol * dataRow;                 //分页数
+	        if(page_offset == 0){
+                getData();
+            }
+        }
+        $(window).resize(function() {
+            init();                                         //窗口改变时调整参数
+        });
+        //获取档案数据
+        function getData(pageStart){
+            if (pageStart >= 0) {
+                page_offset = pageStart;
+            }
+            var blayer = layer.load();
+            page_now = page_offset + 1;                         //当前页数
+            $.ajax({
+               type: 'POST',
+                url: '{:url('index')}',
+               data: {
+                    offset: page_offset * page_limit,
+                    limit: page_limit,
+                    search: page_kw,
+                    type: page_type,
+                    status: page_status
+                },
+                success:function(res){
+                    var rankstr = '';
+                    if(res.total > 0){
+                        page_total = res.total;                             //总记录数
+                        page_count = Math.ceil(page_total/ page_limit);     //统计页数
+                        if (page_offset > page_count) {
+                            getData(0);
+                        }
+                        $('.page_total').text('共'+page_total+'条');
+                        $('.page_count').text(page_count);
+                        $('.page_now').text(page_now);
+                        list_data = ''
+                        for(var key in res.rows){
+                            list_data +='<li class="col-xs-12 col-sm-6 col-md-4 col-lg-3">';
+                            list_data +='<div class="box_box">';
+                            list_data +='<div class="box';
+                            if (res.rows[key].status == 0) {
+                                list_data +=' wait';
+                            }else{
+                                if (res.rows[key].status == 100) {
+                                    list_data +=' finish';
+                                }else{
+                                    list_data +=' working';
+                                }
+                            }
+                            list_data +='" data-id="'+res.rows[key].id+'">';
+                            list_data +='<div class="box_mini">';
+                            list_data +='<div class="fd">';
+                            list_data +='<div class="tx"></div>';
+                            list_data +='<div class="bk"></div>';
+                            list_data +='</div>';
+                            list_data +='<div class="txt">';
+                            list_data +='<p>登记时间：'+res.rows[key].add_time+'</p>';
+                            list_data +='<p>业主姓名：'+res.rows[key].customer+'</p>';
+                            list_data +='<p>反 馈 人 ：'+res.rows[key].feedback_name+'</p>';
+                            list_data +='<p>处理状态：';
+                            if (res.rows[key].status == 0) {
+                                list_data +='等待接收人回复';
+                            }else{
+                                if (res.rows[key].status == 100) {
+                                    list_data +='反馈流程完结';
+                                }else{
+                                    list_data +='第'+ res.rows[key].status +'接收人已回复';
+                                }
+                            }
+                            list_data +='</p>';
+                            list_data +='</div>';
+                            list_data +='<div class="box_mini_bk"></div>';
+                            list_data +='</div>';
+                            list_data +='<div class="tc">';
+                            list_data +='<a href="#"><img src="__PUBLIC__/img/record/icon_file.png"/><p>查看详情</p></a>';
+                            list_data +='</div>';
+                            list_data +='</div>';
+                            list_data +='</div>';
+                            list_data +='</li>';
+                        }
+                        $('.record_list').html(list_data);
+                    }else{
+                       clean_page();
+                    }
+                    if(res.rank_total){
+                        rankstr ='<strong>统计：</strong>'
+                        for(var k in res.rank_total){
+                          rankstr += res.rank_total[k]['shop_rank'] + " <i>" + res.rank_total[k]['count'] + "</i> 家 ";
+                        }
+                    }
+                    $('.record_stats').html(rankstr);
+                    layer.close(blayer);
+                },
+                error:function(){
+                    clean_page();
+                    layer.close(blayer);
+                }
+            });
+        }
+        //清理记录
+        function clean_page(){
+            $('.page_total').text('共0条');
+            $('.page_count').text(0);
+            $('.page_now').text(0);
+            $('.record_list').text('没有找到匹配的记录');
+            $('.record_stats').text('');
+        }
+        //上一页
+        $('.page-pre').click(function(){
+            if (page_offset == 0) {
+                layer.msg('已经是第一页了！');
+                return;
+            }
+            page_offset--;
+            getData(page_offset);
+
+        })
+        //下一页
+        $('.page-next').click(function(){
+            if (page_offset+1 >= page_count) {
+                layer.msg('已经是最后一页了！');
+                return;
+            }
+            page_offset++;
+            getData(page_offset);
+        })
+        //跳转
+        $('.page-jump').click(function(){
+            jump_page();
+        })
+        $('.page-value').on('keypress',function(event){
+            if(event.keyCode == "13"){
+                jump_page();
+            }
+        })
+        function jump_page() {
+            go_page = $('.page-value').val() - 1;
+            if (go_page >= page_count || go_page < 0) {
+                layer.msg('超过总页数');
+                return;
+            }
+            getData(go_page);
+        }
+        //关键词搜索
+        $('.search-go').click(function(){
+            search_go();
+        })
+        $('#searchkw').on('keypress',function(event){
+            if(event.keyCode == "13"){
+                search_go();
+            }
+        })
+        function search_go(){
+            page_kw = $('#searchkw').val();
+            page_offset = 0;
+            page_count = 0;
+            getData();
+        }
+        //新建
+        $(document).on("click",'.btn-add',function(){
+            layer.open({
+                type: 2,
+                area: ['930px', '100%'],
+                offset: '2px',
+                title: false,
+                shade: 0.6,
+                skin: 'layui-layer-record max-add',
+                content: '{:url('add')}',
+            });
+        });
+        //查看
+        $(document).on("click",'.tc',function(event){
+	        var url ="{:url('updateFeedback')}?id="+$(this).parent().data('id');
+	        layer.open({
+                type: 2,
+                area: ['930px', '98%'],
+                offset: '2px',
+                title: false,
+                shade: 0.6,
+                skin: 'layui-layer-record max-record',
+                content: url,
+            });
+        });
+        // 打印
+        $(".btn-print").click(function(event) {
+            var str = unable = '';
+            $(".box_mini_bk").each(function(){
+                if ($(this).css('display')=='block') {
+                    str += $(this).parent().parent().data('id') + ",";
+                }
+            });
+            if(str){
+                window.open("{:url('ToPrint/print_table')}?temp=feedback&id="+str);
+            }else{
+                layer.msg('请选择需要打印的内容!');
+            }
+        });
+        //选定档案
+        $(document).on('click','.box_mini',function(){
+            var aa=$(this).find('.box_mini_bk').css('display');
+            var bb=$(this).find('.box_mini_bk');
+            if(aa=="none"){
+                bb.css({"z-index":"3","display":"block"});
+            }else{
+                bb.css({"z-index":"1","display":"none"});
+            }
+        })
+        //鼠标进入
+        $(document).on("mouseenter",'.box',function(event){
+            $(this).find('.tc').stop(true,true).slideToggle();
+        });
+        //鼠标离开
+        $(document).on("mouseleave",'.box',function(event){
+            $(this).find('.tc').stop(true,true).slideToggle();
+        });
+        //全选档案
+        $(document).on("click",'.btn-all',function(){
+            if(select_all){
+                $('.box_mini').find('.box_mini_bk').css({"z-index":"1","display":"none"});
+                select_all = 0;
+            }else{
+                $('.box_mini').find('.box_mini_bk').css({"z-index":"3","display":"block"});
+                select_all = 1;
+            }
+        });
+        //选择状态
+        $('#status').change(function(){
+            page_status= $('#status').val();
+            getData();
+        });
+	</script>
+	</body>
+</html>

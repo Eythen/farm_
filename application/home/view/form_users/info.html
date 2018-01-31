@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta name="renderer" content="webkit" />
+		<link href="__PUBLIC__/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+		<title>个人关系表</title>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				border: 0;
+				outline: 0;
+				font-size: 100%;
+				vertical-align: baseline;
+			}
+			
+			table {
+				border-collapse: collapse;
+				border-spacing: 0;
+			}
+			
+			.c-100 {
+				width: 100%;
+			}
+			
+			.c-t-center {
+				text-align: center;
+			}
+			
+			.c-main {
+				width: 98%;
+				margin: 0 auto;
+			}
+			
+			.c-main h3 {
+				margin: 15px 0;
+			}
+			/* table
+		-----------------------------------------------------------------------------*/
+			
+			.tb th {
+				padding: 10px 5px;
+				font-size: 14px;
+				font-weight: normal;
+				border-top: 1px solid #ccc;
+				border-bottom: 1px solid #ccc;
+				background-color: #f4f5f6;
+				line-height: 20px;
+				color: #333;
+				vertical-align: middle;
+			}
+			
+			.tb td {
+				padding: 10px 5px;
+				line-height: 25px;
+				background-color: #fff;
+				border-bottom: 1px solid #ddd;
+				word-wrap: break-word;
+				word-break: break-all;
+				color: #666;
+				vertical-align: middle;
+			}
+			
+			.tb th.small {
+				padding: 5px;
+			}
+			
+			.tb .hover td {
+				background-color: #fafafa;
+			}
+			
+			.tb-b {
+				border: 1px solid #ddd;
+			}
+			
+			.tb-b th,
+			.tb-b td {
+				border-color: #ddd;
+				border-left: 1px solid #ddd;
+			}
+			
+			.tb-n th,
+			.tb-n td {
+				border: 0;
+				background: none;
+				vertical-align: middle;
+				padding: 10px;
+				color: #666;
+			}
+			
+			.tb-s {
+				border-left: 1px solid #ddd;
+				border-top: 1px solid #ddd;
+			}
+			
+			td.accordion {
+				padding: 0;
+				width: 100%;
+				border: solid 1px #ddd;
+				background: #FFF;
+			}
+			
+			.tb-s th {
+				background-color: #F8F8F8;
+				color: #333;
+				border-bottom: 1px solid #ddd;
+				border-right: 1px solid #ddd;
+				padding: 15px 10px;
+				width: 120px;
+			}
+			
+			.tb-s td {
+				border-bottom: 1px solid #ddd;
+				border-right: 1px solid #ddd;
+				padding: 15px 10px;
+			}
+			
+			.tb-skin1 th {
+				position: relative;
+				padding: 5px;
+				border-top: 0 none;
+				border-bottom: 0 none;
+				background-color: #f4f5f6;
+			}
+			
+			.tb-skin1 th:before {
+				content: '';
+				position: absolute;
+				right: -1px;
+				top: 5px;
+				bottom: 5px;
+				display: block;
+				width: 1px;
+				background-color: #ddd;
+				font-size: 0;
+				z-index: 1;
+			}
+			
+			.tb-skin1 th:last-child {
+				overflow: hidden;
+				*zoom: 1;
+			}
+			
+			.tb-min th,
+			.tb-min td {
+				padding: 1px 4px;
+				list-style-type: none;
+			}
+			
+			ul,li {
+				list-style-type: none;
+			}
+			
+			.xwe {
+				width: 100%;
+			}
+			
+			.xwe>td {
+				width: 16.66%;
+				text-align: center;
+				padding: 0px;
+				line-height: 44px;
+			}
+			.menuTree {
+				margin-left: 0px;
+			}
+			
+			.menuTree .Tree {
+				width: 100%;
+				overflow: hidden;
+				display: block;
+				cursor: pointer;
+			}
+			
+			.menuTree .Tree ul {
+				width: 100%;
+				float: left;
+				overflow: hidden;
+				display: none;
+				/*height: auto;*/
+				margin: 0;
+				padding: 0;
+			}
+
+			.menuTree .Tree:hover {
+				background: #ddd;
+			}
+			
+			.menuTree span {
+				border-bottom: 1px solid #ddd;
+				width: 16.66666%;
+				display: inline-block;
+				text-align: center;
+				padding: 10px 0px;
+				line-height: 25px;
+				float: left;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<div class="c-main">
+			<div style="margin: 10px;float: right;">
+				<a href="javascript:history.go(-1)" data-toggle="tooltip" title="" class="btn btn-default" data-original-title="返回"><i class="fa fa-reply"></i></a>
+			</div>
+			<table class="tb tb-b c-100 c-t-center">
+				<thead>
+					<tr>
+						<th colspan="6">【{$info.nickname}】个人关系表</th>
+					</tr>
+					<tr>
+						<th colspan="6" style="background: none;">会员信息栏</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>手机号</td>
+						<td>{$info.mobile}</td>
+						<td>昵称</td>
+						<td>{$info.nickname}</td>
+						<td>会员ID</td>
+						<td>{$user_id}</td>
+					</tr>
+					<tr>
+						<td>会员类型</td>
+						<td>{$info.level_name}</td>
+						<td>返利比例</td>
+						<td>{$info.points_pusher}</td>
+						<td>推荐者</td>
+						<td>{$info.first_leader_name}</td>
+					</tr>
+					<tr>
+						<td>累计充值</td>
+						<td>{$info.counts}</td>
+						<td>累计业绩</td>
+						<td>{$info.pay_money_used}</td>
+						<td>累计消费</td>
+						<td>{$info.user_money_used}</td>
+					</tr>
+					<tr>
+						<td>返利币余额</td>
+						<td>{$info.rebate_money}</td>
+						<td>报单币余额</td>
+						<td>{$info.pay_money}</td>
+						<td>购物币余额</td>
+						<td>{$info.user_money}</td>
+					</tr>
+					<tr>
+						<td colspan="6" style="background-color: #f4f5f6;">推荐会员</td>
+					</tr>
+					<tr class="xwe">
+						<td>序号</td>
+						<td>会员手机号</td>
+						<td>会员昵称</td>
+						<td>会员类型</td>
+						<td>累计业绩</td>
+						<td>累计消费</td>
+					</tr>
+					<tr>
+						<td colspan="6" id="menuTree" class="menuTree" style="padding: 0;"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<script src="__PUBLIC__/skin/js/jquery.min.js"></script>
+		<script type="text/javascript">
+
+            $(document).ready(function() {
+                var json = {$list};
+                $("#menuTree").html(forTree(json));
+
+//                $("#menuTree").find(".Tree span").click(function() {
+//                    var ul = $(this).siblings("ul");
+//                    var spanStr = $(this).html();
+//                    var spanContent = spanStr.substr(3, spanStr.length);
+//                    if(ul.find(".Tree").html() != null) {
+//                        if(ul.css("display") == "none") {
+//                            ul.show(300);
+//                        } else {
+//                            ul.hide(300);
+//                        }
+//                    }else{
+//                        var user_id = $(this).parent().attr("data-id");
+//                        var pid = $(this).siblings("ul").attr("class");
+//                        $.ajax({
+//                            url:"{:url('gerChildren')}",
+//                            data:{"user_id":user_id},
+//                            dataType:"JSON ",
+//                            type:"post",
+//                            success:function (data) {
+//                                if(data.length > 0){
+//                                    $("."+pid).html(forTree(data));
+//                                }
+//                            },
+//                        });
+//					}
+//                });
+			});
+
+            function addChildren(even) {
+                var ul = $(even).siblings("ul");
+                var spanStr = $(even).html();
+                var spanContent = spanStr.substr(3, spanStr.length);
+                if(ul.find(".Tree").html() != null) {
+                    if(ul.css("display") == "none") {
+                        ul.show(300);
+                    } else {
+                        ul.hide(300);
+                    }
+                }else{
+                    var user_id = $(even).parent().attr("data-id");
+                    var pid = $(even).siblings("ul").attr("class");
+                    $.ajax({
+                        url:"{:url('gerChildren')}",
+                        data:{"user_id":user_id},
+                        dataType:"JSON ",
+                        type:"post",
+                        success:function (data) {
+                            if(data.length > 0){
+                                $("."+pid).html(forTree(data));
+                            }
+                        },
+                    });
+                }
+            }
+            
+			/*递归实现获取无级树数据并生成DOM结构*/
+			var forTree = function(o) {
+                var str = "";
+				for(var i = 0; i < o.length; i++) {
+					var urlstr = "";
+					try {
+						if(typeof o[i]["url"] == "undefined") {
+							urlstr = "<div class='Tree' data-id='"+o[i]["user_id"]+"'>" +
+								"<span>" + o[i]["no"] + "</span>" +
+                                "<span>" + o[i]["mobile"] + "</span>" +
+                                "<span onclick='addChildren(this)' style='color: #0b98ff' >" + o[i]["nickname"] + "</span>" +
+                                "<span>" + o[i]["level_name"] + "</span>" +
+                                "<span>" + o[i]["pay_money_used"] + "</span>" +
+                                "<span>" + o[i]["user_money_used"] + "</span>" +
+								"<ul class='user_id_"+o[i]["user_id"]+"'>";
+						}
+						/*else{urlstr = "<div><span>"+o[i]["userLevel"]+"</span><ul>"; }*/
+						str += urlstr;
+						if(o[i]["list"] != null) {
+							forTree(o[i]["list"]);
+						}
+						str += "</ul></div>";
+					} catch(e) {}
+				}
+				return str;
+			}
+
+			/*树形菜单*/
+			var menuTree = function() {
+				//给有子对象的元素加
+				$("#menuTree ul").each(function(index, element) {
+					var ulContent = $(element).html();
+					var spanContent = $(element).siblings("span").html();
+					if(ulContent) {
+						$(element).siblings("span").html(spanContent)
+					}
+				});
+			}()
+
+			/*树形列表展开*/
+			$("#btn_open").click(function() {
+				$("#menuTree ul").show(300);
+				curzt("-");
+			})
+
+			/*收缩*/
+			$("#btn_close").click(function() {
+				$("#menuTree ul").hide(300);
+				curzt("+");
+			})
+
+			function curzt(v) {
+				$("#menuTree span").each(function(index, element) {
+					var ul = $(this).siblings("ul");
+					var spanStr = $(this).html();
+					var spanContent = spanStr.substr(3, spanStr.length);
+					if(ul.find(".Tree").html() != null) {
+						$(this).html("[" + v + "] " + spanContent);
+					}
+				});
+			}
+		</script>
+
+	</body>
+
+</html>

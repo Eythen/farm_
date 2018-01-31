@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+		<meta content="telephone=no" name="format-detection" />
+		<title>绑定银行卡</title>
+
+		<link href="__PUBLIC__/skin/css/ydui.css" rel="stylesheet">
+		<link href="__PUBLIC__/skin/css/cart.css" rel="stylesheet">
+		<link href="__PUBLIC__/skin/css/app.css" rel="stylesheet">
+		<style>
+			.g-flexview {
+				height: auto;
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: -ms-flexbox;
+				display: flex;
+				-webkit-box-orient: vertical;
+				-webkit-box-direction: normal;
+				-webkit-flex-direction: column;
+				-ms-flex-direction: column;
+				flex-direction: column;
+				margin: 0 auto;
+				max-width: 750px;
+				min-width: 300px;
+				padding-top: 1rem;
+			}
+
+			.m-celltitle{
+				font-size: .25rem;
+				color: red;
+			}
+			.m-celltitle:after{
+				border-bottom: none;
+			}
+		</style>
+
+		<script src="__PUBLIC__/skin/js/ydui.flexible.js"></script>
+	</head>
+
+	<body>
+		<header class="m-navbar">
+			<a href="{:url('users/index')}" class="navbar-item"><i class="back-ico"></i></a>
+			<div class="navbar-center"><span class="navbar-title">绑定银行卡</span></div>
+			<a href="javascript:;" class="navbar-item" id="save">保存</a>
+		</header>
+		<div class="g-flexview">
+
+			<div class="m-cell top3">
+				<div class="cell-item">
+					<div class="cell-left">银行名称：</div>
+					<div class="cell-right"><input type="text" class="cell-input bank" value="{$user.bank}" placeholder="请输入银行名称" autocomplete="off" /></div>
+				</div>
+				<div class="cell-item">
+					<div class="cell-left">开户行：</div>
+					<div class="cell-right"><input type="text" class="cell-input openbank" value="{$user.openbank}" placeholder="请输入开户行" autocomplete="off" /></div>
+				</div>
+				<div class="cell-item">
+					<div class="cell-left">银行卡号：</div>
+					<div class="cell-right"><input type="number" pattern="[0-9]*" value="{$user.bankcard}" class="cell-input Bankcard" placeholder="请输入银行卡号" autocomplete="off" /></div>
+				</div>
+			</div>
+			
+			<div class="m-celltitle">温馨提示：输入持卡人姓名必须与个人信息姓名一致</div>
+
+
+		</div>
+
+		<script src="__PUBLIC__/skin/js/jquery.min.js"></script>
+		<script src="__PUBLIC__/skin/js/ydui.js"></script>
+		<script src="__PUBLIC__/skin/js/app.js"></script>
+		<script>
+			! function(win, $) {
+				var dialog = win.YDUI.dialog;
+				$('#save').on('click',function(){
+					var bank = $('.bank').val();
+					var openbank = $('.openbank').val();
+					var Bankcard = $('.Bankcard').val();
+					    partten = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+					    red = /^(\d{16}|\d{19})$/;
+					if(bank == ""){
+						$('.bank').focus();
+						dialog.toast('银行名称不能为空！', 'none', 1000);
+						return false;
+					}else if(openbank == ""){
+						$('.openbank').focus();
+						dialog.toast('开户行不能为空！', 'none', 1000);
+						return false;
+					}else if(!red.test(Bankcard)){
+						$('.Bankcard').focus();
+						dialog.toast('银行卡号不能为空！', 'none', 1000);
+						return false;
+					}else{
+						$.ajax({
+					   		type:"post",
+					   		url:"{:url('users/bank')}",
+						    data: { bank:bank, openbank:openbank, bankcard:Bankcard},
+					   		success:function(data){
+					   			if(data.code){
+									dialog.toast('提交成功！', 'none', 1000, function() {
+										window.history.go(-1)
+									});
+								}
+								else{
+									dialog.toast(data.msg, 'none', 2000);
+								}	
+					   		},
+					   		error:function(msg){
+					   			dialog.toast('请求失败', 'none', 2000);
+					   		}
+					   	});
+						//dialog.toast('修改成功！', 'none', 1000);
+					}
+				})
+			}(window, jQuery);
+		</script>
+		<script src="__PUBLIC__/js/mui.min.js"></script>
+		<script>
+            mui.init({
+                keyEventBind:{
+                    backbutton:false
+                }
+            })
+		</script>
+		<script src="__PUBLIC__/js/common.js"></script>
+	</body>
+
+</html>

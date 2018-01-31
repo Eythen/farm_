@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+		<meta content="telephone=no" name="format-detection" />
+		<title>我的订单</title>
+
+		<link href="__PUBLIC__/skin/css/ydui.css" rel="stylesheet">
+		<link href="__PUBLIC__/skin/fonts/iconfont.css" rel="stylesheet">
+		<link href="__PUBLIC__/skin/css/mescroll.css" rel="stylesheet">
+		<link href="__PUBLIC__/skin/css/app.css" rel="stylesheet">
+		<style>
+			.g-flexview {
+				height: 100%;
+				margin: 0 auto;
+				max-width: 750px;
+				min-width: 300px;
+				padding-top: 1rem;
+			}
+		</style>
+
+		<script src="__PUBLIC__/skin/js/ydui.flexible.js"></script>
+	</head>
+
+	<body>
+		
+		<header class="m-navbar">
+			<a href="{:url('users/index')}" class="navbar-item"><i class="back-ico"></i></a>
+			<div class="navbar-center"><span class="navbar-title">我的订单</span></div>
+		</header>
+
+		<div class="g-flexview">
+			
+			<div id="mescroll" class="mescroll">
+
+				<!--产品-->
+				<div class="navtab">
+					<p class="active" i="0">全部</p>
+					<p i="1">待付款</p>
+					<p i="2">待发货</p>
+					<p i="3">待收货</p>
+					<p i="4">完成</p>
+				</div>
+				<ul class="Cservice" id="Cservice">
+	            	
+	            </ul>
+			</div>
+
+		</div>
+
+		<script src="__PUBLIC__/skin/js/jquery.min.js"></script>
+		<script src="__PUBLIC__/skin/js/ydui.js"></script>
+		<script src="__PUBLIC__/skin/js/mescroll.js"></script>
+		<script src="__PUBLIC__/skin/js/app.js"></script>
+
+		<script>
+
+			$(function() {
+
+				//创建MeScroll产品对象
+				var isIOS = !!navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+				//是否为PC端,如果是scrollbar端,默认自定义滚动条
+				var isPC = typeof window.orientation == 'undefined';
+				var mescroll = new MeScroll("mescroll", {
+					down: {
+						use: true, //是否初始化下拉刷新; 默认true
+						auto: true, //是否在初始化完毕之后自动执行下拉回调callback; 默认true
+						autoShowLoading: false, //如果在初始化完毕之后自动执行下拉回调,是否显示下拉刷新进度; 默认false
+						isLock: false, //是否锁定下拉,默认false;
+						isBoth: false, //下拉刷新时,如果滑动到列表底部是否可以同时触发上拉加载;默认false,两者不可同时触发;
+						callback: function(mescroll) {
+							mescroll.resetUpScroll();
+						},
+						offset: 60, //触发刷新的距离,默认80
+						outOffsetRate: 0.2, //超过指定距离范围外时,改变下拉区域高度比例;小于1,越往下拉高度变化越小;
+						minAngle: 45, //触发下拉最少要偏移的角度(滑动的轨迹与水平线的锐角值),取值区间  [0,90];默认45度,即向下滑动的角度大于45度(方位角为45°~145°及225°~315°)则触发下拉;而小于45度,将不触发下拉,避免与左右滑动的轮播等组件冲突;<br/>注意:没有必要配置超出[0,90]区间的值,否则角度限制无效; 因为假设配置60, 生效的方位角就是60°到120° 和 240°到300°的范围;
+						mustToTop: !isIOS, //是否列表必须滑动到顶部才能下拉;因为列表回弹效果(-webkit-overflow-scrolling:touch)是iOS专属样式,所以iOS默认false,其他为true;
+						hardwareClass: "mescroll-hardware", //硬件加速样式;解决iOS下拉因隐藏进度条而闪屏的问题,参见mescroll.css
+						warpClass: "mescroll-downwarp", //容器,装载布局内容,参见mescroll.css
+						resetClass: "mescroll-downwarp-reset", //高度重置的动画,参见mescroll.css
+						htmlContent: '<p class="downwarp-progress"></p><p class="downwarp-tip">下拉刷新 </p>', //布局内容
+						inited: function(mescroll, downwarp) {
+//							console.log("down --> inited");
+							//初始化完毕的回调,可缓存dom
+							mescroll.downTipDom = downwarp.getElementsByClassName("downwarp-tip")[0];
+							mescroll.downProgressDom = downwarp.getElementsByClassName("downwarp-progress")[0];
+						},
+						inOffset: function(mescroll) {
+//							console.log("down --> inOffset");
+							//进入指定距离offset范围内那一刻的回调
+							if(mescroll.downTipDom) mescroll.downTipDom.innerHTML = "下拉刷新";
+							if(mescroll.downProgressDom) mescroll.downProgressDom.classList.remove("mescroll-rotate");
+						},
+						outOffset: function(mescroll) {
+//							console.log("down --> outOffset");
+							//下拉超过指定距离offset那一刻的回调
+							if(mescroll.downTipDom) mescroll.downTipDom.innerHTML = "释放更新";
+						},
+						onMoving: function(mescroll, rate, downHight) {
+							//下拉过程中的回调,滑动过程一直在执行; rate下拉区域当前高度与指定距离offset的比值(inOffset: rate<1; outOffset: rate>=1); downHight当前下拉区域的高度
+//							console.log("down --> onMoving --> mescroll.optDown.offset=" + mescroll.optDown.offset + ", downHight=" + downHight + ", rate=" + rate);
+							if(mescroll.downProgressDom) {
+								var progress = 360 * rate;
+								mescroll.downProgressDom.style.webkitTransform = "rotate(" + progress + "deg)";
+								mescroll.downProgressDom.style.transform = "rotate(" + progress + "deg)";
+							}
+						},
+						beforeLoading: function(mescroll, downwarp) {
+//							console.log("down --> beforeLoading");
+							//准备触发下拉刷新的回调
+							return false; //如果要完全自定义下拉刷新,那么return true,此时将不再执行showLoading(),callback();
+						},
+						showLoading: function(mescroll) {
+//							console.log("down --> showLoading");
+							//触发下拉刷新的回调
+							if(mescroll.downTipDom) mescroll.downTipDom.innerHTML = "刷新中 ...";
+							if(mescroll.downProgressDom) mescroll.downProgressDom.classList.add("mescroll-rotate");
+						}
+					},
+					//上拉加载的所有配置项
+					up: {
+						use: true,
+						auto: false, //是否在初始化时以上拉加载的方式自动加载第一页数据; 默认false
+						isLock: false, //是否锁定上拉,默认false;当列表没有更多数据时会自动锁定不可上拉;在endSuccess如果检查到有下一页数据,则会自动解锁true
+						isBoth: true, //上拉加载时,如果滑动到列表顶部是否可以同时触发下拉刷新;默认false,两者不可同时触发; 这里为了演示改为true,不必等列表加载完毕才可下拉;
+						callback: getListData, //上拉回调,此处可简写; 相当于 callback: function (page, mescroll) { getListData(page); }
+						page: {
+							num: 0, //当前页 默认0,回调之前会加1; 即callback(page)会从1开始
+							size: 3, //每页数据条数
+							time: null //加载第一页数据服务器返回的时间; 防止用户翻页时,后台新增了数据从而导致下一页数据重复;
+						},
+						noMoreSize: 1, //如果列表已无数据,可设置列表的总数量要大于半页才显示无更多数据;避免列表数据过少(比如只有一条数据),显示无更多数据会不好看
+						offset: 100, //离底部的距离
+						toTop: {
+							//回到顶部按钮,需配置src才显示
+							src: "__PUBLIC__/skin/img/mescroll-totop.png", //图片路径,默认null;
+							offset: 1000, //列表滚动多少距离才显示回到顶部按钮,默认1000
+							warpClass: "mescroll-totop", //按钮样式,参见mescroll.css
+							showClass: "mescroll-fade-in", //显示样式,参见mescroll.css
+							hideClass: "mescroll-fade-out", //隐藏样式,参见mescroll.css
+							duration: 300 //回到顶部的动画时长,默认300ms
+						},
+						loadFull: {
+							use: false, //列表数据过少,不足以滑动触发上拉加载,是否自动加载下一页,直到满屏或者无更多数据为止;默认false,因为可通过调高page.size避免这个情况
+							delay: 500 //延时执行的毫秒数; 延时是为了保证列表数据或占位的图片都已初始化完成,且下拉刷新上拉加载中区域动画已执行完毕;
+						},
+						empty: {
+							//列表第一页无任何数据时,显示的空提示布局; 需配置warpId或clearEmptyId才生效;
+							warpId: null, //父布局的id; 如果此项有值,将不使用clearEmptyId的值;
+							icon: "__PUBLIC__/skin/img/errorImg.png", //图标,默认null
+							tip: "暂无相关数据~", //提示
+							/*btntext: "去逛逛", //按钮,默认""
+							btnClick: function() { //点击按钮的回调,默认null
+								alert("点击了按钮,具体逻辑自行实现");
+								window.location.href="mall.html";
+							}*/
+						},
+						clearId: null, //加载第一页时需清空数据的列表id; 如果此项有值,将不使用clearEmptyId的值;
+						clearEmptyId: "Cservice", //相当于同时设置了clearId和empty.warpId; 简化写法;
+						hardwareClass: "mescroll-hardware", //硬件加速样式,动画更流畅,参见mescroll.css
+						warpClass: "mescroll-upwarp", //容器,装载布局内容,参见mescroll.css
+						htmlLoading: '<p class="upwarp-progress mescroll-rotate"></p><p class="upwarp-tip">加载中..</p>', //上拉加载中的布局
+						htmlNodata: '<p class="upwarp-nodata">-- 我是有底线的 --</p>', //无数据的布局
+						inited: function(mescroll, upwarp) {
+//							console.log("up --> inited");
+							//初始化完毕的回调,可缓存dom 比如 mescroll.upProgressDom = upwarp.getElementsByClassName("upwarp-progress")[0];
+						},
+						showLoading: function(mescroll, upwarp) {
+//							console.log("up --> showLoading");
+							//上拉加载中.. mescroll.upProgressDom.style.display = "block" 不通过此方式显示,因为ios快速滑动到底部,进度条会无法及时渲染
+							upwarp.innerHTML = mescroll.optUp.htmlLoading;
+						},
+						showNoMore: function(mescroll, upwarp) {
+//							console.log("up --> showNoMore");
+							//无更多数据
+							upwarp.innerHTML = mescroll.optUp.htmlNodata;
+						},
+						onScroll: function(mescroll, y) { //列表滑动监听,默认onScroll: null;
+							//y为列表当前滚动条的位置
+//							console.log("up --> onScroll 列表当前滚动的距离 y = " + y);
+						},
+						scrollbar: {
+							use: isPC, //默认只在PC端自定义滚动条样式
+							barClass: "mescroll-bar"
+						}
+					}
+				});
+
+				/*初始化菜单*/
+				var pdType = 0; //全部订单0; 待付款1; 待发货2; 待收货3; 完成订单4;
+				$(".navtab p").click(function() {
+					var i = $(this).attr("i");
+					if(pdType != i) {
+						//更改列表条件
+						pdType = i;
+						$(".navtab .active").removeClass("active");
+						$(this).addClass("active");
+						//重置列表数据
+						mescroll.resetUpScroll();
+					}
+				})
+				/*联网加载列表数据  page = {num:1, size:10}; num:当前页 从1开始, size:每页数据条数 */
+				function getListData(page) {
+					//联网加载数据
+//					console.log("pdType=" + pdType + ", page.num=" + page.num);
+					getListDataFromNet(pdType, page.num, page.size, function(data) {
+						//联网成功的回调,隐藏下拉刷新和上拉加载的状态;
+//						console.log("data.length=" + data.length);
+						mescroll.endSuccess(data.length); //传参:数据的总数; mescroll会自动判断列表如果无任何数据,则提示空;列表无下一页数据,则提示无更多数据;
+						//设置列表数据
+						setListData(data);
+					}, function() {
+						//联网失败的回调,隐藏下拉刷新和上拉加载的状态;
+						mescroll.endErr();
+					});
+				}
+				/*设置列表数据*/
+				function setListData(data) {
+					var listDom = document.getElementById("Cservice");
+					for(var i = 0; i < data.length; i++) {
+						var pd = data[i];
+						
+						var str='<div class="daifk">订单号：' + pd.order_sn + '</div>';
+
+                        var n = 0;
+						for(var k = 0; k < pd.goods.length; k++){
+						    n += pd.goods[k].goods_num;
+                            str+='<div class="service"><a href="/index.php/wap/cart/details.html?order_id=' + pd.goods[k].order_id + '">';
+                            str+='<div class="imgdi"><img src="' + pd.goods[k].original_img + '"></div>';
+                            str+='<div class="txte"><p>' + pd.goods[k].goods_name + '</p>';
+                            str+='<p><em>' + pd.goods[k].spec_key_name + '</em></p>';
+                            str+='<p><em>数量 x ' + pd.goods[k].goods_num + '</em></p>';
+                            str+='<p class="luse"><span>购物币：</span>' + pd.goods[k].goods_price + '</p></div></a></div>';
+						}
+							str+='<div class="pic">共 '+n+' 件商品<span>实付：</span><strong>'+ pd.order_amount +'</strong></div>';
+
+						str+='<div class="daifk line">';
+
+                        if(pd.order_status != 3){
+                            if(pd.shipping_status > 0 && pd.order_status == 1){
+                                str+='<a class="dfk" href="/index.php/wap/users/order_confirm.html?order_id='+pd.order_id+'">确认收货</a>';
+                                str+='<a class="dfk" href="/index.php/wap/users/logistics.html?order_id='+pd.order_id+'">查看物流</a>';
+                            }
+                            if(pd.pay_status == 0){
+                                str+='<a class="dfk red" href="/index.php/wap/cart/payment.html?order_id='+pd.order_id+'">立即付款</a>';
+                            }
+                            if(pd.shipping_status == 0 && pd.pay_status == 0){
+                                str+='<a class="dfk" href="/index.php/wap/users/cancel_order.html?id='+pd.order_id+'">取消订单</a>';
+                            }
+                        }
+                        str+='<a class="dfk" href="/index.php/wap/cart/details.html?order_id='+pd.order_id+'">订单详情</a></div>';
+							
+						var liDom = document.createElement("li");
+						liDom.innerHTML = str;
+						listDom.appendChild(liDom);
+					}
+				}
+				/*联网加载列表数据*/
+				function getListDataFromNet(curNavIndex, pageNum, pageSize, successCallback, errorCallback) {
+                    $.ajax({
+                        url:"{:url('ajaxOrder')}",
+                        data:{"type":curNavIndex,"page":pageNum},
+                        dataType:"JSON ",
+                        type:"post",
+                        success:function (data) {
+                            var listData = [];
+                            for(var i = 0; i < data.length; i++) {
+
+                                listData.push(data[i]);
+                            }
+                            //回调
+                            successCallback(listData);
+                        },
+                    });
+				}
+
+				//禁止PC浏览器拖拽图片,避免与下拉刷新冲突;如果仅在移动端使用,可删除此代码
+				document.ondragstart = function() {
+					return false;
+				}
+			});
+		</script>
+		<script src="__PUBLIC__/js/mui.min.js"></script>
+		<script>
+            mui.init({
+                keyEventBind:{
+                    backbutton:false
+                }
+            })
+		</script>
+		<script src="__PUBLIC__/js/common.js"></script>
+	</body>
+
+</html>

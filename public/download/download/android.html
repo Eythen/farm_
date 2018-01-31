@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>安卓下载</title>
+		<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport" />
+	    <meta content="yes" name="apple-mobile-web-app-capable" />
+	    <meta content="black" name="apple-mobile-web-app-status-bar-style" />
+	    <meta content="telephone=no" name="format-detection" />
+	    <script src="/public/skin/js/ydui.flexible.js"></script>
+	    <style type="text/css">
+	    	*{
+	    		margin: 0;
+	    		padding: 0;
+	    	}
+	    	.wrap{
+	    		position: relative;
+	    	}
+	    	.wrap img,.box img{
+	    		 width: 100%;
+	    	}
+	    	.wrap a{
+	    		width: 86%;
+	    		display: block;
+	    		position: absolute;
+	    		bottom: -0.2rem;
+	    		left: 0.53rem;
+	    	}
+	    </style>
+	</head>
+	<body>
+		<div class="wrap">
+			<img src="../img/download/android/download_android (1).png"/>
+			<a target="_blank" href="/download/android.apk" download="独需商城">
+				<img src="../img/download/android/button.png" alt="" />
+			</a>
+		</div>
+		<div class="box">
+		</div>
+	</body>
+	<script type="text/javascript">
+		var obox = document.getElementsByClassName('box')[0],
+			str = '';
+		for(let i = 2;i<14;i++){
+			str += `<img src="../img/download/android/download_android (${i}).png"/>`;
+		}
+		obox.innerHTML = str;
+	</script>
+</html>

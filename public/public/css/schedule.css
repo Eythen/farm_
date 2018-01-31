@@ -1,0 +1,92 @@
+/*** 投资排班  ***/
+.box_head {
+	width: 312px;
+	height: 38px;
+	background: #eeeeee;
+	position: relative;
+	border: 1px solid #cccccc;
+	box-sizing: border-box;
+	border-radius: 30px;
+}
+
+.box_head a {
+	display: block;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	line-height: 30px;
+	text-decoration: none;
+}
+
+.bu {
+	width: 100px;
+	height: 30px;
+	border-radius: 30px;
+	position: relative;
+	z-index: 2;
+	float: left;
+	margin-left: 2px;
+	margin-top: 2px;
+}
+
+.di {
+	width: 100px;
+	height: 30px;
+	border: 1px solid #6ec1e5;
+	border-radius: 30px;
+	background: #86ceed;
+	float: left;
+	position: absolute;
+	z-index: 1;
+	margin-left: 2px;
+	margin-top: 2px;
+}
+
+.bu_current {
+	color: #fff;
+}
+
+
+.record_list{
+	list-style-type:none;
+	width:100%;
+	float:left;
+}
+
+.record_list li{
+	list-style:none;
+	float:left;
+}
+
+
+
+.li_content {width:190px;height:128px;margin: 30px auto; position:relative; border:1px solid #d2d2d2;border-radius:5px;box-sizing:border-box;transition:all 0.5s;-webkit-transition:all 0.5s;}
+.li_content .top{width:100%;height:45px;line-height:45px; font-size:16px;padding-left:15px;position:relative;border-radius:5px 5px 0 0;background:#86ceed url(img/sg.png) no-repeat center;background-position:-63px 50%;color:#fff;transition:all 0.8s;-webkit-transition:all 0.8s;}
+.li_content .top img{margin-top:7.5px;margin-right:5px;margin-left:10px;float:left}
+.li_content .txt{padding:10px 15px 10px 15px;}
+.li_content .txt p{text-overflow : ellipsis;white-space : nowrap;overflow:hidden; height:22px; font-size: 14px; margin-top:0px; margin-bottom:0px; padding-left:0px;}
+.li_content .cg{position:absolute;right: 10px;top:0px;}
+.li_content .content_div{width:98%; margin:0px auto; background:red; padding-left:30px;}
+
+.li_content:hover{box-shadow:2px 2px 10px rgba(0, 0, 0, .4);border:1px solid #86ceed;-webkit-box-shadow:2px 2px 10px rgba(0, 0, 0, .4);}
+.li_content:hover .top{background-position:375px 50%;}
+.li_content .edit_list{
+	width:190px;
+	height:130px;
+	position:relative;
+    z-index:999;
+	border-bottom: 1px solid #86ceed;
+	border-right: 1px solid #86ceed;
+	border-left: 1px solid #86ceed;
+	border-radius:0px 0px 5px 5px;
+	background:#fff;
+	padding-left:13px;
+	left:-1px;
+	top:-30px;
+}
+
+.li_content .edit_list p{
+	height:14px;
+	line-height:14px;
+}
+

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <meta content="yes" name="apple-mobile-web-app-capable" />
+    <meta content="black" name="apple-mobile-web-app-status-bar-style" />
+    <meta content="telephone=no" name="format-detection" />
+    <title>审核</title>
+    <link href="__PUBLIC__/skin/css/ydui.css" rel="stylesheet">
+    <link href="__PUBLIC__/skin/css/dropload.css" rel="stylesheet">
+    <link href="__PUBLIC__/skin/css/app.css" rel="stylesheet">
+    <style>
+    .g-flexview {
+        height: auto;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        margin: 0 auto;
+        max-width: 750px;
+        min-width: 300px;
+        padding-top: 1rem;
+    }
+
+    .nav-box {
+        padding-top: 2rem;
+    }
+
+    .nav-box li,
+    .nav-box li a {
+        display: flex;
+        width: 100%;
+        height: 2rem;
+        background: #3EC4C8;
+        color: #fff;
+        margin-bottom: 0.8rem;
+        justify-content: center;
+        line-height: 2rem;
+        font-size: 0.4rem;
+    }
+
+    .nav-box li a span {
+        margin-right: 0.2rem;
+        display: flex;
+        justify-content: center;
+        align-self: center;
+    }
+
+    .tab-nav-item.tab-active:before {
+        content: '';
+        width: 44%;
+        height: 2px;
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        margin-left: -22%;
+        z-index: 4;
+        background-color: currentColor;
+    }
+    </style>
+    <script src="__PUBLIC__/skin/js/ydui.flexible.js"></script>
+</head>
+
+<body>
+    <header class="m-navbar">
+        <a href="{:url('users/index')}" class="navbar-item">
+	        <i class="back-ico"></i>
+	    </a>
+        <div class="navbar-center">
+            <span class="navbar-title">审核</span>
+        </div>
+    </header>
+    <div class="g-flexview">
+        <div class="top50">
+            <div class="m-cell top3">
+                <a class="cell-item" href="{:url('examine2',['type' =>1])}">
+                    <div class="cell-left">部门&nbsp;&nbsp;{neq name="son_check" value="0"}<span class="badge badge-danger">{$son_check}</span>{/neq}</div>
+                    <div class="cell-right cell-arrow"></div>
+                </a>
+            </div>
+            <div class="m-cell top3">
+                <a class="cell-item" href="{:url('examine2',['type' =>2])}">
+                    <div class="cell-left">个人&nbsp;&nbsp;{neq name="my_check" value="0"}<span class="badge badge-danger">{$my_check}</span>{/neq}</div>
+                    <div class="cell-right cell-arrow"></div>
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="nav-box">
+		<ul>
+			<li>
+				<a href="{:url('examine2',['type' =>1])}">
+					<span>部门</span>
+					{neq name="son_check" value="0"}<span class="badge badge-danger">{$son_check}</span>{/neq}
+				</a>
+			</li>
+			<li>
+				<a href="{:url('examine2',['type' =>2])}">
+					<span>个人</span>
+					{neq name="my_check" value="0"}<span class="badge badge-danger">{$my_check}</span>{/neq}
+				</a>
+			</li>
+		</ul>
+	</div> -->
+    <script src="__PUBLIC__/skin/js/jquery.min.js"></script>
+    <script src="__PUBLIC__/skin/js/dropload.min.js"></script>
+    <script src="__PUBLIC__/skin/js/ydui.js"></script>
+    <script src="__PUBLIC__/skin/js/app.js"></script>
+    <script src="__PUBLIC__/js/mui.min.js"></script>
+    <script>
+    mui.init({
+        keyEventBind: {
+            backbutton: false
+        }
+    })
+    </script>
+    <script src="__PUBLIC__/js/common.js"></script>
+</body>
+
+</html>

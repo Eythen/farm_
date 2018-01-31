@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>信息管理平台</title>
+    {include file="public:css" /}
+    <style type="text/css">
+        * {margin:0; padding:0; border:0; outline:0; font-size:100%; vertical-align:baseline;}
+        table{border-collapse:collapse;border-spacing:0;}
+        .c-100 {width: 100%;}
+        .c-t-center {text-align: center;}
+        .c-main {width: 100%;margin: 0 auto;}
+        .c-main h3{ margin: 15px 0;}
+        /* table
+        -----------------------------------------------------------------------------*/
+        .tb th {text-align: center; padding:10px 5px; font-size: 14px;font-weight: normal;border-top:1px solid #ccc; border-bottom:1px solid #ccc; background-color:#f4f5f6; line-height: 20px; color:#333; vertical-align: middle;}
+        .tb td { padding:10px 5px; line-height: 25px; background-color:#fff; border-bottom:1px solid #ddd; word-wrap: break-word; word-break:break-all; color:#666; vertical-align: middle;}
+        .tb th.small {padding:5px;}
+        .tb .hover td { background-color:#fafafa;}
+        .tb-b {border:1px solid #ddd;}
+        .tb-b th , .tb-b td {border-color:#ddd; border-left:1px solid #ddd;}
+        .tb-n th , .tb-n td {border:0; background:none; vertical-align:middle; padding:10px; color:#666;}
+
+        .tb-s {border-left: 1px solid #ddd; border-top: 1px solid #ddd;}
+        .tb-s th {background-color: #F8F8F8; color: #333; border-bottom: 1px solid #ddd; border-right: 1px solid #ddd; padding: 15px 10px; width: 120px;}
+        .tb-s td {border-bottom: 1px solid #ddd;  border-right: 1px solid #ddd;  padding: 15px 10px;}
+        .tb-skin1 th { position:relative; padding:5px; border-top: 0 none; border-bottom:0 none; background-color:#f4f5f6;}
+        .tb-skin1 th:before { content:''; position:absolute; right:-1px; top:5px; bottom:5px; display:block; width:1px; background-color:#ddd; font-size:0; z-index:1; }
+        .tb-skin1 th:last-child { overflow:hidden; *zoom:1; }
+        .tb-min th , .tb-min td {padding:1px 4px;}
+    </style>
+</head>
+<body>
+    <!-- Main content -->
+    <section class="content">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i>会员类型变化记录表</h3>
+            </div>
+            <div class="panel-body">
+                <div class="navbar navbar-default">
+                        <form action="" class="navbar-form form-inline" method="post">
+                            <div class="form-group">
+                                <select name="level_id" class="form-control">
+                                    <option value="">==所有会员类型==</option>
+                                    {volist name="user_level" id="vo"}
+                                    <option value="{$key}" {if condition="$_POST['level_id'] eq $key"} selected="selected" {/if}>{$vo}</option>
+                                    {/volist}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="nickname" class="form-control" placeholder="会员昵称" value="{$Think.post.nickname}">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="mobile" class="form-control" placeholder="会员手机" value="{$Think.post.mobile}">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="first_leader_name" class="form-control" placeholder="推荐者昵称" value="{$Think.post.first_leader_name}">
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> 筛选</button>
+                            </div>
+                            <!--<button type="submit" class="btn btn-default pull-right"><i class="fa fa-file-excel-o"></i>&nbsp;导出excel</button>                               -->
+                        </form>
+                </div>
+
+                <div class="c-main">
+
+                    <table class="tb tb-b c-100 c-t-center">
+                        <thead>
+                            <tr>
+                                <th>序号</th>
+                                <th>会员ID</th>
+                                <th>会员手机号</th>
+                                <th>会员昵称</th>
+                                <th>会员类型</th>
+                                <th>推荐者</th>
+                                <th>最近升级时间</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {volist name="log" id="vo" empty="<td colspan='7'>暂无数据</td>"}
+                            <tr>
+                                <td>{$key+1}</td>
+                                <td>{$vo.user_id}</td>
+                                <td>{$vo.mobile}</td>
+                                <td>{$vo.nickname}</td>
+                                <td>{$vo.level_name}</td>
+                                <td>{$vo.first_leader}</td>
+                                <td>{$vo.add_time|date="Y-m-d H:i:s",###}</td>
+                            </tr>
+                            {/volist}
+                        </tbody>
+                    </table>
+
+            </div>
+        </div>
+    </section>
+    <!-- /.content -->
+    <div class="col-xs-2 col-xs-offset-3 well-sm" >
+        <button type="button" class="btn btn-warning btn-block" id="print" onClick="dayin()" >打　印</button>
+        <input type="hidden" name="qingkongyema" id="qingkongyema" class="tab" value="清空页码" onClick="pagesetup_null()">
+    </div>
+    <div class="col-xs-2 col-xs-offset-5 well-sm" >
+        <p id="downloadify">请升级flash版本到10以上</p>
+    </div>
+<!-- /.content-wrapper -->
+{include file="public:js" /}
+<script type="text/javascript" src="__PUBLIC__/js/plugins/js_to_excel/swfobject.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/plugins/js_to_excel/downloadify.min.js"></script>
+<script type="text/javascript">
+    function dayin(){
+        document.all('qingkongyema').click();
+        $("#print").hide();
+        $("#think_page_trace_open").hide();
+        window.print();
+        $("#print").show();
+    }
+</script>
+<!-- 以下代码是导出excel的 -->
+        <script type="text/javascript">
+            Downloadify.create('downloadify',{
+                filename:"订单记录表"+"<?=date('Y-m-d-His')?>"+'.xls',
+                data: function(){
+                    return $('.c-main').html();
+                },
+                transparent: false,
+                swf: '__PUBLIC__/js/plugins/js_to_excel/downloadify.swf',
+                downloadImage: '__PUBLIC__/js/plugins/js_to_excel/download.png',
+                width: 100,
+                height: 30,
+                transparent: true,
+                append: false
+            });
+
+        </script>
+<!-- 以下代码是导出excel的end -->
+
+<script language="VBScript">
+    dim hkey_root,hkey_path,hkey_key
+    hkey_root="HKEY_CURRENT_USER"
+    hkey_path="/Software/Microsoft/Internet Explorer/PageSetup"
+    //设置网页打印的页眉页脚为空
+    function pagesetup_null()
+    on error resume next
+    Set RegWsh = CreateObject("WScript.Shell")
+    hkey_key="/header" 
+    RegWsh.RegWrite hkey_root+hkey_path+hkey_key,""
+    hkey_key="/footer"
+    RegWsh.RegWrite hkey_root+hkey_path+hkey_key,""
+    end function
+</script>
+
+<script>
+    $(document).ready(function(){
+		$('#add_time').daterangepicker({
+			format:"YYYY/MM/DD",
+			singleDatePicker: false,
+			showDropdowns: true,
+			minDate:'2017/01/01',
+			maxDate:'2030/01/01',
+			startDate:'2017/01/01',
+		    locale : {
+	            applyLabel : '确定',
+	            cancelLabel : '取消',
+	            fromLabel : '起始时间',
+	            toLabel : '结束时间',
+	            customRangeLabel : '自定义',
+	            daysOfWeek : [ '日', '一', '二', '三', '四', '五', '六' ],
+	            monthNames : [ '一月', '二月', '三月', '四月', '五月', '六月','七月', '八月', '九月', '十月', '十一月', '十二月' ],
+	            firstDay : 1
+	        }
+		});
+    });
+</script>
+</body>
+</html>

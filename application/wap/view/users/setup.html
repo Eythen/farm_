@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+	
+	<head>
+		<meta charset="UTF-8">
+		<title>我的设置</title>
+		<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport" />
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+		<meta content="telephone=no" name="format-detection" />
+		
+		<!-- 引入YDUI样式 -->
+		<link rel="stylesheet" href="__PUBLIC__/css/ydui.css" />
+		<link rel="stylesheet" href="__PUBLIC__/font/iconfont.css" />
+		<link rel="stylesheet" href="__PUBLIC__/css/animate.min.css" />
+		<link rel="stylesheet" href="__PUBLIC__/css/style.css" />
+
+		<!-- 引入YDUI自适应解决方案类库 -->
+		<script src="__PUBLIC__/js/ydui.flexible.js"></script>
+		
+	</head>
+	
+	<body>
+        
+        <header class="navheader">
+		    <a class="icon-jiantou-copy" href="javascript:history.go(-1)"></a>
+		    <h1 class="mui-title">我的设置</h1>
+		</header>
+		
+		<section class="g-flexview">
+			<div class="tp-bt">
+                
+                <div class="animated bounceInLeft">
+					<form action="" method="post" id="set-form" enctype="multipart/form-data">
+						<input type="hidden" name="user_id" value="{$user['user_id']}">
+						<div class="head">
+							<div class="addimgs">
+								{if condition="$user['head_pic'] neq '' "}
+								<img src="{$user.head_pic}" class="fileImg" alt=""/>
+								{else/}
+								<img src="__PUBLIC__/img/head.png" class="fileImg" alt=""/>
+								{/if}
+								<input type="file" name="head_pic" class="file" />
+								<p>更换头像</p>
+							</div>
+						</div>
+						<div class="m-cell">
+							<div class="cell-item">
+								<div class="cell-right"><label>昵称：</label><input type="text" name="nickname" value="{$user.nickname}" class="cell-input" placeholder="输入昵称"/></div>
+							</div>
+						</div>
+					</form>
+			    </div>
+                
+                <div class="foo_fixed">
+                    <button type="button" id="registered" class="btn-block btn-primary">确定</button>
+                </div>
+                
+
+			</div>
+		</section>
+		
+
+		<script src="__PUBLIC__/js/jquery.min.js"></script>
+
+		<script src="__PUBLIC__/js/mui.min.js"></script>
+		<script>
+            mui.init({
+                keyEventBind:{
+                    backbutton:false
+                }
+            })
+		</script>
+		<script src="__PUBLIC__/js/ydui.js"></script>
+		<script src="__PUBLIC__/js/fastclick.js"></script>
+		<script src="__PUBLIC__/js/plugins/layer/layer.js"></script>
+		<script>
+			$(function() {
+				//消除IOS延迟
+				FastClick.attach(document.body);
+				
+				
+				$('#registered').click(function(event) {
+			        var nickname = $('input[name="nickname"]').val();
+		            if (nickname == "" ) {
+		                layer.msg('昵称不能为空');
+		                return false;
+		            }
+		            
+		            $("#set-form").submit();
+
+			    });
+			});
+			
+			//上传头像
+			$(".file").change(function(){
+                var fileImg = $(this).parent().find(".fileImg");
+                var explorer = navigator.userAgent;
+                var imgSrc = $(this)[0].value;
+                if (explorer.indexOf('MSIE') >= 0) {
+                    if (!/\.(jpg|jpeg|png|JPG|PNG|JPEG)$/.test(imgSrc)) {
+                        imgSrc = "";
+                        fileImg.attr("src","/img/default.png");
+                        return false;
+                    }else{
+                        fileImg.attr("src",imgSrc);
+                    }
+                }else{
+                    if (!/\.(jpg|jpeg|png|JPG|PNG|JPEG)$/.test(imgSrc)) {
+                        imgSrc = "";
+                        fileImg.attr("src","");
+                        return false;
+                    }else{
+                        var file = $(this)[0].files[0];
+                        var url = URL.createObjectURL(file);
+                        fileImg.attr("src",url);
+                    }
+                }
+            })
+			
+			
+		</script>
+		<script src="__PUBLIC__/js/common.js"></script>
+	</body>
+	
+</html>

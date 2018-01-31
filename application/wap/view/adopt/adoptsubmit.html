@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+	<head>
+		<!-- 声明文档使用的字符编码 -->
+		<meta charset='utf-8'>
+		<!-- 优先使用 IE 最新版本和 Chrome -->
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<!-- 页面描述 -->
+		<meta name="description" content="不超过150个字符" />
+		<!-- 页面关键词 -->
+		<meta name="keywords" content="" />
+		<!-- 网页作者 -->
+		<meta name="author" content="guo,652730268@qq.com" />
+		<!-- 搜索引擎抓取 -->
+		<meta name="robots" content="index,follow" />
+		<!-- 为移动设备添加 viewport -->
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=3,minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" />
+		<!-- `width=device-width` 会导致 iPhone 5 添加到主屏后以 WebApp 全屏模式打开页面时出现黑边 http://bigc.at/ios-webapp-viewport-meta.orz -->
+
+		<!-- iOS 设备 begin -->
+		<meta name="apple-mobile-web-app-title" content="标题">
+		<!-- 添加到主屏后的标题（iOS 6 新增） -->
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<!-- 是否启用 WebApp 全屏模式，删除苹果默认的工具栏和菜单栏 -->
+
+		<!--meta name="apple-itunes-app" content="app-id=myAppStoreID, affiliate-data=myAffiliateData, app-argument=myURL" -->
+		<!-- 添加智能 App 广告条 Smart App Banner（iOS 6+ Safari） -->
+		<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+		<!-- 设置苹果工具栏颜色 -->
+		<meta name="format-detection" content="telphone=no, email=no" />
+		<!-- 忽略页面中的数字识别为电话，忽略email识别 -->
+
+		<!-- 启用360浏览器的极速模式(webkit) -->
+		<meta name="renderer" content="webkit">
+		<!-- 避免IE使用兼容模式 -->
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<!-- 不让百度转码 -->
+		<meta http-equiv="Cache-Control" content="no-siteapp" />
+		<!-- 针对手持设备优化，主要是针对一些老的不识别viewport的浏览器，比如黑莓 -->
+		<meta name="HandheldFriendly" content="true">
+		<!-- 微软的老式浏览器 -->
+		<meta name="MobileOptimized" content="320">
+		<!-- uc强制竖屏 -->
+		<meta name="screen-orientation" content="portrait">
+		<!-- QQ强制竖屏 -->
+		<meta name="x5-orientation" content="portrait">
+		<!-- UC强制全屏 -->
+		<meta name="full-screen" content="yes">
+		<!-- QQ强制全屏 -->
+		<meta name="x5-fullscreen" content="true">
+		<!-- UC应用模式 -->
+		<meta name="browsermode" content="application">
+		<!-- QQ应用模式 -->
+		<meta name="x5-page-mode" content="app">
+		<!-- windows phone 点击无高光 -->
+		<meta name="msapplication-tap-highlight" content="no">
+		<!-- iOS 图标 begin -->
+		<link rel="apple-touch-icon-precomposed" href="/apple-touch-icon-57x57-precomposed.png" />
+		<!-- iPhone 和 iTouch，默认 57x57 像素，必须有 -->
+		<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/apple-touch-icon-114x114-precomposed.png" />
+		<!-- Retina iPhone 和 Retina iTouch，114x114 像素，可以没有，但推荐有 -->
+		<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144x144-precomposed.png" />
+		<!-- Retina iPad，144x144 像素，可以没有，但推荐有 -->
+		<!-- iOS 图标 end -->
+
+		<!-- iOS 启动画面 begin -->
+		<link rel="apple-touch-startup-image" sizes="768x1004" href="img/App-ios-logo-152x152.png" />
+
+		<link rel="apple-touch-startup-image" href="img/App-ios-logo-152x152.png" />
+		<!-- iPhone/iPod Touch 竖屏 320x480 (标准分辨率) -->
+		<link rel="apple-touch-startup-image" sizes="640x960" href="img/App-ios-logo-152x152.png" />
+		<!-- iPhone/iPod Touch 竖屏 640x960 (Retina) -->
+		<link rel="apple-touch-startup-image" sizes="640x1136" href="img/App-ios-logo-152x152.png" />
+		<!-- iPhone 5/iPod Touch 5 竖屏 640x1136 (Retina) -->
+		<!-- iOS 启动画面 end -->
+
+		<!-- iOS 设备 end -->
+		<meta name="msapplication-TileColor" content="#000" />
+		<!-- Windows 8 磁贴颜色 -->
+		<meta name="msapplication-TileImage" content="icon.png" />
+		<!-- Windows 8 磁贴图标 -->
+
+		<link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml" />
+		<!-- 添加 RSS 订阅 -->
+		<link rel="shortcut icon" type="image/ico" href="/favicon.ico" />
+		<!-- 添加 favicon icon -->
+		<!-- sns 社交标签 begin -->
+		<!-- 参考微博API -->
+		<meta property="og:type" content="类型" />
+		<meta property="og:url" content="URL地址" />
+		<meta property="og:title" content="标题" />
+		<meta property="og:image" content="图片" />
+		<meta property="og:description" content="描述" />
+		<title>认养提交信息</title>
+
+		<!-- css样式 -->
+		<link href="__PUBLIC__/skin/css/weui.min.css" rel="stylesheet">
+		<link href="__PUBLIC__/skin/css/jquery-weui.css" rel="stylesheet">
+		<link href="__PUBLIC__/skin/font/iconfont.css" rel="stylesheet">
+		<link href="__PUBLIC__/skin/css/mescroll.css" rel="stylesheet">
+		<link href="__PUBLIC__/skin/css/app.css" rel="stylesheet">
+		<link href="__PUBLIC__/skin/css/adopt.css" rel="stylesheet">
+
+		<!-- 自适应处理页面js -->
+		<script src="__PUBLIC__/skin/js/flexible.js"></script>
+		<script>
+			//交付方式
+			function radio() {
+				document.getElementById("span1").style.display = "block";
+				document.getElementById("span2").style.display = "none";
+			}
+
+			function radio1() {
+				document.getElementById("span1").style.display = "none";
+				document.getElementById("span2").style.display = "block";
+			}
+		</script>
+	</head>
+
+	<body ontouchstart>
+
+		<header class="header">
+			<a class="icon-jiantou-left" href="javascript:history.go(-1);"></a>
+			<div class="header-title">认养提交信息</div>
+		</header>
+
+		<div class="adoptsubmit">
+
+			<!--填写资料-->
+			<div class="weui-cells weui-cells_form weui-top">
+				<div class="weui-cell weui-bottom">
+					<div class="weui-cell__hd"><label class="weui-label">交付方式</label></div>
+					<div class="weui-cell__bd">
+						<div class="fr">
+							<div class="delivery">
+								<label class="radio">
+					                <input type="radio" class="groupradio" name="receive" value="1" onclick="radio2()" checked>
+					                <span class="icon-checkedoff"></span>上门自提方式
+					            </label>
+							</div>
+							<div class="delivery">
+								<label class="radio">
+					                <input type="radio" class="groupradio" name="receive" value="2" onclick="radio21()">
+					                <span class="icon-checkedoff"></span>物流发货方式
+					           </label>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="span1" style="display:block">
+
+					<div class="weui-cell">
+						<div class="weui-cell__hd"><label class="weui-label">姓名</label></div>
+						<div class="weui-cell__bd">
+							<input class="weui-input" id="username" type="text" placeholder="">
+						</div>
+					</div>
+					<div class="weui-cell">
+						<div class="weui-cell__hd"><label class="weui-label">联系电话</label></div>
+						<div class="weui-cell__bd">
+							<input class="weui-input" id="phone" type="number" pattern="[0-9]*" placeholder="">
+						</div>
+					</div>
+					<div class="weui-cell span21" style="display:none">
+						<div class="weui-cell__hd"><label class="weui-label">所在地区</label></div>
+						<div class="weui-cell__bd">
+							<input class="weui-input" id="end" type="text" value="">
+						</div>
+					</div>
+					<div class="weui-cell span21" style="display:none">
+						<div class="weui-cell__hd"><label class="weui-label">详细地址</label></div>
+						<div class="weui-cell__bd">
+							<input class="weui-input" id="endtwo" type="text" placeholder="">
+						</div>
+					</div>
+					<div class="weui-cell">
+						<div class="weui-cell__hd"><label class="weui-label">代屠宰</label></div>
+						<div class="weui-cell__bd">
+							<input class="weui-input" id="picker" type="text" value="">
+						</div>
+					</div>
+
+				</div>
+				<div id="span2" style="display:none">
+					<div class="weui-cell">
+						<div class="weui-cell__hd"><label class="weui-label">姓名</label></div>
+						<div class="weui-cell__bd">
+							<input class="weui-input" id="username" type="text" placeholder="">
+						</div>
+					</div>
+					<div class="weui-cell">
+						<div class="weui-cell__hd"><label class="weui-label">联系电话</label></div>
+						<div class="weui-cell__bd">
+							<input class="weui-input" id="phone" type="phonetwo" pattern="[0-9]*" placeholder="">
+						</div>
+					</div>
+					<div class="weui-cell">
+						<div class="weui-cell__hd"><label class="weui-label">所在地区</label></div>
+						<div class="weui-cell__bd">
+							<input class="weui-input" id="end" type="text" value="">
+						</div>
+					</div>
+					<div class="weui-cell">
+						<div class="weui-cell__hd"><label class="weui-label">详细地址</label></div>
+						<div class="weui-cell__bd">
+							<input class="weui-input" id="endtwo" type="text" placeholder="">
+						</div>
+					</div>
+					<div class="weui-cell">
+						<div class="weui-cell__hd"><label class="weui-label">代屠宰</label></div>
+						<div class="weui-cell__bd">
+							<input class="weui-input" id="pickertwo" type="text" value="">
+						</div>
+					</div>
+
+				</div>
+			</div>
+			<hr>
+			<!--产品列表-->
+			<div class="weui-cells weui-top">
+				<div class="weui-panel__hd">已选择</div>
+				<ul id="adopt-list" class="adopt-list">
+					{volist name="pigs" id="vo"}
+					<li>
+						<div class="list-left">
+							<img src="{$vo.original_img}" />
+						</div>
+						<div class="list-center list-width">
+							<div class="adopt-text">
+								<span>编号-</span>
+								<h6>{$vo.pig_name}</h6>
+								<span class="ewwe"><span class="number">￥{$vo.pig_price}</span></span>
+							</div>
+							<p><i>重量:{$vo.pig_weight}kg</i><i>身长:{$vo.pig_log}cm</i><i>肚围:{$vo.pig_round}cm</i></p>
+							<p><i>疫苗:{$vo.pig_vaccine}</i><i>预计出栏时间:{$vo.out_time}</i></p>
+						</div>
+					</li>
+					{/volist}
+				</ul>
+			</div>
+			<hr>
+			<div class="weui-cells weui-top">
+			    <form >
+					<div class="weui-cell weui-cell_access">
+						<div class="weui-cell__bd">
+							<p>红包</p>
+						</div>
+						<div class="weui-cell__ft"><input class="weui-input" name="coupon_red" id="hb" type="text" value="暂无可用红包" data-values=""></div>
+					</div>
+					<div class="weui-cell weui-cell_access">
+						<div class="weui-cell__bd">折扣券</div>
+						<div class="weui-cell__ft"><input class="weui-input" name="coupon_discount" id="jkq" type="text" value="暂无可用折扣券" data-values=""></div>
+					</div>
+				</form>
+				<!--<div class="weui-cell weui-cell_access">
+					<div class="weui-cell__bd">兑换券</div>
+					<div class="weui-cell__ft"><input class="weui-input" id="dhq" type="text" value="暂无可用兑换券"></div>
+				</div>-->
+				<div class="weui-cell">
+					<div class="weui-cell__bd">
+						<p>发票</p>
+					</div>
+					<div class="weui-cell__ft">交付时提供</div>
+				</div>
+				<div class="weui-cell">
+					<div class="weui-cell__bd">订单总价</div>
+					<div class="weui-cell__ft">
+						<div class="originalprice">
+							商品总价
+							<span class="original-text"><small>￥</small><span>{$total}</span></span>
+						</div>
+						<div class="originalprice">
+							实付总价
+							<span class="red">
+						        <small>￥</small><span>{$total}</span>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="weui-agree">
+				<input type="checkbox" class="weui-agree__checkbox" style="border: 1px solid #d1d1d1;" checked>
+				<span class="weui-agree__text">我已同意
+		        	<a href="protocol.html">《认养协议》</a>
+		        </span>
+			</div>
+
+			<div class="adoptsubmit-nav">
+				<div class="left-btn">
+					合计
+					<span class="red">
+			    		<small>￥</small>
+			    		<span>{$total}</span>
+					</span>
+				</div>
+				<div class="right-btn">
+					<input type="button" class="sett yellow-color" id="submit" value="确认订单" />
+				</div>
+			</div>
+
+		</div>
+
+		<!-- js -->
+		<script src="__PUBLIC__/skin/js/jquery.min.js"></script>
+		<script src="__PUBLIC__/skin/js/mescroll.js"></script>
+		<script src="__PUBLIC__/skin/js/fastclick.js"></script>
+		<script>
+			$(function() {
+				//消除延迟
+				FastClick.attach(document.body);
+			});
+		</script>
+		<script src="__PUBLIC__/skin/js/jquery-weui.js"></script>
+		<script src="__PUBLIC__/skin/js/city-picker.js"></script>
+		<script>
+			$(function() {
+				//输入框判断
+				$('#submit').click(function() {
+					var username = $('#username').val();
+					var text = /^[\u4E00-\u9FA5A-Za-z]+$/;
+					var phone = $('#phone').val();
+					//var partten = /^1[34578]\d{9}$/;
+					var partten = /^1\d{10}$/;
+					var picker = $('#picker').val();
+					var receive = $('input[name=receive]:checked').val();
+					var end = '';
+					var endtwo = '';
+					if(receive == 2){
+						console.log(111121);
+						end = $('#end').val();
+						endtwo = $('#endtwo').val();
+						if(end == '') {
+							$.toptip('输入您所在地区', 'warning');
+							$('#end').focus();
+							return false;
+						}
+						if(endtwo == '') {
+							$.toptip('输入您详情地址', 'warning');
+							$('#endtwo').focus();
+							return false;
+						}
+					}
+					if(username == '') {
+						$.toptip('输入您的姓名', 'warning');
+						$('#username').focus();
+						return false;
+					} else if(!text.test(username)) {
+						$.toptip('输入姓名有误?', 'warning');
+						return false;
+						$('#username').focus();
+					} else if(phone == '') {
+						$.toptip('输入您手机号码', 'warning');
+						$('#phone').focus();
+						return false;
+					} else if(!partten.test(phone)) {
+						$.toptip('输入手机号码有误?', 'warning');
+						return false;
+						$('#phone').focus();
+					} else if(picker == '') {
+						$.toptip('请选择代屠宰方式', 'warning');
+						$('#picker').focus();
+						return false;
+					} else {
+						var coupon_discount = $('#jkq').attr("data-values");
+					    if(coupon_discount == undefined ){
+					        coupon_discount = '';
+					    }
+					    var coupon_red = $('#hb').attr("data-values");
+					    if(coupon_red == undefined ){
+					        coupon_red = '';
+					    }
+						//var coupon_discount = $('input[name=coupon_discount').data('values');
+						//$.toast('开始获取表单信息coupon_discount');
+						//var coupon_red = $('input[name=coupon_red').data('values');
+						//$.toast('开始获取表单信息coupon_red');
+						var	data = {
+								coupon_discount: coupon_discount,
+								coupon_red: coupon_red,
+								username: username,
+								phone: phone,
+								picker: picker,
+								end: end,
+								endtwo: endtwo,
+								receive: receive,
+							};
+							$.showLoading();
+							$.ajax({
+		                        url: "{:url('order')}",
+		                        type: 'POST',
+		                        dataType: 'json',
+		                        data: data,
+		                        success: function(data){
+		                            if( data.code ){
+		                                window.location.href = data.data;
+		                            }else{
+	                            		$.hideLoading();
+	                            		$.confirm({
+											title: '下单不成功',
+											text: data.msg,
+											onOK: function () {
+												//点击确认
+												window.location.href="{:url('index')}";
+											},
+											onCancel: function () {
+
+											}
+										});
+		                                //$.toast(data.msg, "cancel");
+		                            }
+		                        }
+		                    })
+						//$.toptip('提交成功!', 'success');
+					}
+					
+
+
+				});
+
+				//地址
+				$("#end").cityPicker({
+					title: "选择收货地址"
+				});
+
+				//代屠宰
+				$("#picker").select({
+					title: "请选择代屠宰方式",
+					items: [
+					    {
+						    value: "1",
+							title: "整猪分割",
+							
+						},
+						{
+							value: "2",
+							title: "整猪不分割",
+						}
+					]
+				});
+				
+
+				//红包
+				$("#hb").select({
+					title: "选择红包",
+					items: [
+						{volist name='coupon_red' id='vo'}
+						{   
+					    	value: "{$vo.id}",
+							title: "{$vo.name}",
+						},
+						{/volist}
+					],
+					onChange: function(d) {
+						var coupon_discount = $('#jkq').attr("data-values");
+					    if(coupon_discount == undefined ){
+					        coupon_discount = '';
+					    }
+					    var coupon_red = $('#hb').attr("data-values");
+					    if(coupon_red == undefined ){
+					        coupon_red = '';
+					    }
+						var   data = {coupon_red:coupon_red, coupon_discount:coupon_discount};
+						$.ajax({
+			                url: "{:url('totalPrice')}",
+			                type: 'POST',
+			                dataType: 'json',
+			                data: data,
+			                success: function(data){
+			                    if( data.code ){
+			                        $('.red').find('span').text(data.msg);
+			                    }else{
+			                    	
+			                        $.toast(data.msg, "cancel");
+			                    }
+			                }
+			            })
+					},
+					onClose: function() {
+					},
+					onOpen: function() {
+					},
+				});
+
+				//折扣券
+				$("#jkq").select({
+					title: "折扣券",
+					items: [
+						{volist name='coupon_discount' id='vo'}
+						{   
+					    	value: "{$vo.id}",
+							title: "{$vo.name}",
+						},
+						{/volist}
+					],
+					onChange: function(d) {
+						/*var coupon_discount = $('input[name=coupon_discount').data('values'),
+							coupon_red = $('input[name=coupon_red').data('values'),*/
+						var coupon_discount = $('#jkq').attr("data-values");
+					    if(coupon_discount == undefined ){
+					        coupon_discount = '';
+					    }
+					    var coupon_red = $('#hb').attr("data-values");
+					    if(coupon_red == undefined ){
+					        coupon_red = '';
+					    }
+						var data = {coupon_red:coupon_red, coupon_discount:coupon_discount};
+						$.ajax({
+			                url: "{:url('totalPrice')}",
+			                type: 'POST',
+			                dataType: 'json',
+			                data: data,
+			                success: function(data){
+			                    if( data.code ){
+			                        $('.red').find('span').text(data.msg);
+			                    }else{
+			                    	
+			                        $.toast(data.msg, "cancel");
+			                    }
+			                }
+			            })
+					},
+					onClose: function() {
+						//console.log("close");
+					},
+					onOpen: function() {
+						//console.log("open");
+					},
+				});
+
+				//兑换券
+				/*$("#dhq").select({
+					title: "兑换券",
+					items: [
+					    {   
+					    	value: "1",
+							title: "购满100元可用20元",
+						},
+						{
+							value: "2",
+							title: "购满200元可用40元",
+						}
+					],
+					onChange: function(d) {
+						console.log(this, d);
+					},
+					onClose: function() {
+						console.log("close");
+					},
+					onOpen: function() {
+						console.log("open");
+					},
+				});*/
+
+
+			});
+			function radio2(){
+				$('.span21').hide();
+			}
+			function radio21(){
+				$('.span21').show();
+			}
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>打印回访记录</title>
+	<link href="__PUBLIC__/css/bootstrap.min.css?v=3.3.5" rel="stylesheet">
+	<script src="__PUBLIC__/js/jquery.min.js?v=2.1.4" ></script>
+	<script type="text/javascript" src="__PUBLIC__/js/plugins/js_to_excel/swfobject.js"></script>
+	<script type="text/javascript" src="__PUBLIC__/js/plugins/js_to_excel/downloadify.min.js"></script>
+</head>
+<body>
+	{volist name="data" id="d" key="k" }
+	<div class="panel panel-default" style="width:1000px; margin:0px auto" >
+	    <div class="panel-heading text-primary text-center">
+	    	<h3>{$d.customer_name}--回访记录</h3>
+	    </div>
+	    <div class="panel-body" style="font-size:18px" id="data_container" >
+	    	<table class="table table-bordered " id="contract"  border="1">
+	    		<tr>
+	    			<th class="col-xs-1 primary text-center" >回访部门</th>
+	    			<th class="col-xs-1 primary text-center" >回访人员</th>
+	    			<th class="col-xs-1 primary text-center" >回访内容</th>
+	    			<th class="col-xs-1 primary text-center" >回访时间</th>
+	    		</tr>
+	    		{volist name="d['log']" id="v" key="kk" }
+		            <tr>
+	    			<td class="col-xs-1 primary" >{$v.department}</td>
+	    			<td class="col-xs-1 primary" >{$v.zy_name}</td>
+	    			<td class="col-xs-1 primary" >{$v.content}</td>
+	    			<td class="col-xs-1 primary text-xs" >{$v.time}</td>
+	    		</tr>
+	    		{/volist}
+	    	</table>
+	    </div>
+	    	<p id="downloadify">
+				请升级flash版本到10以上
+			</p>
+	</div>
+	{if condition="count($data) neq $k"}
+		<div style="page-break-after:always" ></div>
+	{/if}
+	{/volist}
+
+	<div class="col-xs-2 col-xs-offset-5 well-sm" >
+	    <button type="button" class="btn btn-warning btn-block" id="print" onClick="dayin()" >打　印</button>
+	    <input type="hidden" name="qingkongyema" id="qingkongyema" class="tab" value="清空页码" onClick="pagesetup_null()">
+	</div>
+</body>
+<script type="text/javascript">
+	function dayin(){
+		document.all('qingkongyema').click();
+		$("#print").hide();
+		$("#think_page_trace_open").hide();
+		window.print();
+		$("#print").show();
+	}
+</script>
+<!-- 以下代码是导出excel的 -->
+		<script type="text/javascript">
+			Downloadify.create('downloadify',{
+				filename:"回访——"+"{$data[0]['customer_name']}"+'.xls',
+				data: function(){ 
+					return $('#data_container').html();
+				},
+				transparent: false,
+				swf: '__PUBLIC__/js/plugins/js_to_excel/downloadify.swf',
+				downloadImage: '__PUBLIC__/js/plugins/js_to_excel/download.png',
+				width: 100,
+				height: 30,
+				transparent: true,
+				append: false
+			});
+		</script>
+<!-- 以下代码是导出excel的end -->
+
+<script language="VBScript">
+	dim hkey_root,hkey_path,hkey_key
+	hkey_root="HKEY_CURRENT_USER"
+	hkey_path="/Software/Microsoft/Internet Explorer/PageSetup"
+	'//设置网页打印的页眉页脚为空
+	function pagesetup_null()
+	on error resume next
+	Set RegWsh = CreateObject("WScript.Shell")
+	hkey_key="/header" 
+	RegWsh.RegWrite hkey_root+hkey_path+hkey_key,""
+	hkey_key="/footer"
+	RegWsh.RegWrite hkey_root+hkey_path+hkey_key,""
+	end function
+</script>
+</html>

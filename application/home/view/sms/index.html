@@ -1,0 +1,357 @@
+{include file="public:yunying_header" /}
+<link href="__PUBLIC__/css/sms.css" rel="stylesheet">
+<link href="__PUBLIC__/css/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet">
+</head>
+
+<body class="animated fadeInRight">
+<div class="box-search">
+    <div class="pull-left col-md-9 col-sm-12 col-xs-12">
+        <button class="btn btn-success add pull-left" rel="2">创建短信</button>
+        &nbsp;
+        <div class="input-prepend input-group pull-left col-sm-12 col-xs-12" style="width:260px;margin-left:30px">
+            <span class="add-on input-group-addon border-radius"><i class="glyphicon glyphicon-calendar"></i></span>
+            <input class="form-control Wdate wdate border-radius" type="text" name="date" value="" placeholder="按时间段搜索">
+        </div>
+        <div class="search-status">
+            <div class="search-status-label">审核状态：</div>
+            <div class="search-status-select">
+                <select class="form-control" name="status" id="status" >
+                    <option value="">全部</option>
+                    <option value="2">待审核</option>
+                    <option value="1">审核通过</option>
+                    <option value="3">审核不通过</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="pull-right col-md-3 col-sm-12 col-xs-12">
+        <div class="form-inline">
+            <div class="form-group">
+                <input type="text" name="search" id="searchkw" class="form-control border-radius search-text"  placeholder="Search">
+                &nbsp;
+                <button class="btn btn-select search-sms">搜索</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="box-content">
+
+    <div class="page_prev"></div>
+    <div class="page_next"></div>
+    <div class="data-list">
+        <ul class="sms_list"></ul>
+    </div>
+</div>
+<div class="box-stats">
+    <div class="sms_stats pull-left">
+        <div class="sms-status">
+            <div class="txt">管理员：</div>
+            <div class="select">
+                <select class="form-control must" name="url" id="url">
+                    <option value="">请选择</option>
+                    <option value="1">创建版面</option>
+                    <option value="2">详情版面</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="stats_page pull-right">
+        <div class="form-inline">
+            <span class="page_total"></span>
+            &nbsp;
+            <span class="page_now">0</span>
+            /
+            <span class="page_count">0</span>
+            页&nbsp;
+                &nbsp;&nbsp;跳转到&nbsp;&nbsp;
+            <input type="text" class="form-control border-radius w50 page-value">
+            &nbsp;
+            <button class="btn btn-select page-jump" type="button">GO</button>
+        </div>
+    </div>
+</div>
+{include file="public:js" /}
+<script type="text/javascript" src="__PUBLIC__/js/plugins/daterangepicker/moment.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/plugins/daterangepicker/daterangepicker.min.js"></script>
+<script type="text/javascript">
+        $('.Wdate').daterangepicker();
+        var page_offset = 0;                                //初始页码
+        var page_kw = '';                                   //初始搜索
+        var page_status = '';                                 //初始城市
+        var page_date = '';                                 //初始时间
+        var page_count = 0;                                 //初始总数
+        var select_all = 0;                                 //判断全选
+        init();                                             //初始参数
+        $('.Wdate').daterangepicker();                      //双日历
+        function init(){
+            iWidth = $(window).width();                     //窗口宽度
+            iHeight = $(window).height();                   //窗口高度
+            layerWidth = '96%';                             //打开档案窗口宽度
+            layerHeight = '92%';                            //打开档案高度
+            boxWidth = 210;                                 //box宽度
+            boxHeight = 180;                              //box高度
+            dataCol = parseInt((iWidth-160) / boxWidth); 
+
+            //窗口可显示列数
+            dataRow = parseInt((iHeight - 100) / boxHeight);//窗口可显示行数
+            //dataCol = dataCol > 6 ? 6 : dataCol;
+            dataRow = dataRow < 2 ? 1 : dataRow;
+            page_limit = dataCol * dataRow;                 //分页数
+            if(page_offset == 0){
+                getData();
+            }
+
+            var datalist_w = dataCol*boxWidth+"px";         //加载内容宽度
+            var datalist_h = dataRow*boxHeight+"px";         //加载内容高度
+            $(".sms_list").css({"width":datalist_w,"height":datalist_h,"margin":"auto"});
+        }
+        $(window).resize(function() {
+            init();                                         //窗口改变时调整参数
+        });
+        //获取档案数据
+        function getData(pageStart){
+            if (pageStart >= 0) {
+                page_offset = pageStart;
+            }
+            var blayer = layer.load();
+            page_now = page_offset + 1;                         //当前页数
+            $.ajax({
+               type: 'POST',
+                url: '{:url('index')}',
+               data: {
+                    offset: page_offset * page_limit,
+                    limit: page_limit,
+                    search: page_kw,
+                    status: page_status,
+                    page_date:page_date,
+
+  
+                },
+                success:function(res){
+                    var rankstr = '';
+                    if(res.total > 0){
+                        page_total = res.total;                             //总记录数
+                        page_count = Math.ceil(page_total/ page_limit);     //统计页数
+                        if (page_offset > page_count) {
+                            getData(0);
+                        }
+                        $('.page_total').text('共'+page_total+'条');
+                        $('.page_count').text(page_count);
+                        $('.page_now').text(page_now);
+                        list_data = ''
+                        for(var key in res.rows){
+                            if (res.rows[key].status == 1) {             //判断状态，1为审核通过，2为待审核，3为审核不通过
+                                list_data +='<div class="box" data-id="'+res.rows[key].id+'">';
+                            }
+                            else if(res.rows[key].status == 2) {
+                                list_data +='<div class="box  box2" data-id="'+res.rows[key].id+'">';
+                            } else{
+                                list_data +='<div class="box  box1" data-id="'+res.rows[key].id+'">';
+                            }                           
+                            list_data +='<div class="top">申请人：'+res.rows[key].user_name+'</div>';
+                            list_data +='<div class="txt">';
+                           // list_data +='<div class="tp"><p>申请人：'+res.rows[key].user_name+'</p></div>';
+                            list_data +='<div class="tp">发送时间：'+res.rows[key].add_time+'</div>';
+                             if (res.rows[key].type==2) {             //判断类型，1为发送，2为回复
+                                list_data +='<div class="tp">类型：回复</div>';
+                            }
+                            else{
+                                list_data +='<div class="tp">类型：发送</div>';
+                            }
+                            
+                            if (res.rows[key].status==2) {             //判断状态，1为审核通过，2为待审核，3为审核不通过
+                                list_data +='<div class="icon-wait"></div>';
+                                list_data +='<div class="tp">审核状态：待审核</div>';
+                            }
+                            else if (res.rows[key].status==3) {             
+                                list_data +='<div class="icon-fail"></div>';
+                                list_data +='<div class="tp">审核状态：审核不通过</div>';
+                            }
+                            else{
+                                list_data +='<div class="icon-pass"></div>';
+                                list_data +='<div class="tp">审核状态：审核通过</div>';
+                            }
+                            list_data +='<div class="tp"><p>审核人：'+res.rows[key].supervise_id+'</p></div>';
+                            list_data +='</div>';
+
+
+                            list_data +='<div class="bottom">';
+                            list_data +='<div class="sms-btn sms-info" data-id="'+res.rows[key].id+'">查看短信</div>';
+                            list_data +='<div class="sms-btn sms-all" data-id="'+res.rows[key].id+'">查看详情</div>';
+                            list_data +='</div>';
+                            list_data +='</div>';                            
+                        }
+                        $('.sms_list').html(list_data);
+                    }else{
+                       clean_page();
+                    }
+                    if(res.status_total){
+                        statusstr ='<strong>统计：</strong>'
+                        for(var k in res.status_total){
+                          statusstr += res.status_total[k]['status'] + " <i>" + res.status_total[k]['count'] + "</i> 个 ";
+                        }
+                    $('.sms_stats').html(statusstr);
+                    }
+                    layer.close(blayer);
+                },
+                error:function(){
+                    clean_page();
+                    layer.close(blayer);
+                }
+            });
+        }
+        //清理记录
+        function clean_page(){
+            $('.page_total').text('共0条');
+            $('.page_count').text(0);
+            $('.page_now').text(0);
+            $('.sms_list').text('没有找到匹配的记录');
+            $('.sms_stats').text('');
+        }
+        //上一页
+        $('.page_prev').click(function(){
+            if (page_offset == 0) {
+                layer.msg('已经是第一页了！');
+                return;
+            }
+            page_offset--;
+            getData(page_offset);
+
+        })
+        //下一页
+        $('.page_next').click(function(){
+            if (page_offset+1 >= page_count) {
+                layer.msg('已经是最后一页了！');
+                return;
+            }
+            page_offset++;
+            getData(page_offset);
+        })
+        //跳转
+        $('.page-jump').click(function(){
+            jump_page();
+        })
+        $('.page-value').on('keypress',function(event){
+            if(event.keyCode == "13"){
+                jump_page();
+            }
+        })
+        function jump_page() {
+            go_page = $('.page-value').val() - 1;
+            if (go_page >= page_count || go_page < 0) {
+                layer.msg('超过总页数');
+                return;
+            }
+            getData(go_page);
+        }
+
+        //选择版面
+        $("#url").change(function(){
+            var url = $("#url option:selected").val();
+            if(url==1){
+                window.location.href = '{:url("index")}';
+            }
+            else{
+                window.location.href = '{:url("indexStatus")}';
+            }
+        });
+        //时间搜索
+        $(document).on("apply.daterangepicker",'.wdate',function(res){
+            page_date = $(this).daterangepicker().context.value;
+            adv_search();
+        });
+        //选择状态
+        $("#status").change(function(){
+            page_status = $("#status option:selected").val();
+            adv_search();
+        });
+        function adv_search(){
+            page_kw = '';
+            page_offset = 0;
+            page_count = 0;
+            getData();
+        }
+        //关键词搜索
+        $('.search-sms').click(function(){
+            search_sms();
+        })
+        $('#searchkw').on('keypress',function(event){
+            if(event.keyCode == "13"){
+                search_sms();
+            }
+        })
+        function search_sms(){
+            $("#status").val('');
+            page_kw = $('#searchkw').val();
+            page_status = '';
+            page_offset = 0;
+            page_count = 0;
+            getData();
+        }
+        //更新
+        $('.refresh').click(function(){
+            var page = $('.page_now').text()-1;
+            getData(page);
+        })
+        //单击添加任务
+        $(document).on("click",'.add',function(){
+            var index = layer.open({
+                type: 2,
+                closeBtn:0,
+                area: [layerWidth, layerHeight],
+                offset: '0px',
+                title: false,
+                shade: 0.6,
+                skin: 'layui-layer-task',
+                content: '{:url('addSms')}',
+            });
+        });
+
+        
+        //查看短信
+        $(document).on("click",'.sms-info',function(){
+            //var id = $(this).parent().data('id');
+            var id = $(this).data('id');
+            layer.open({
+                type: 2,
+                area: [layerWidth, '455px'],
+                offset: '20px',
+                title: false,
+                shade: 0.6,
+                closeBtn:false,
+                skin: 'layui-layer-task',
+                content: '{:url('smsInfo')}'+'?id='+id,
+                end:function(index, layero){
+                    var page = $('.page_now').text()-1;
+                    getData(page);
+                }
+            });
+        });
+
+        //查看详情
+        $(document).on("click",'.sms-all',function(){
+            //var id = $(this).parent().data('id');
+            var id = $(this).data('id');
+            layer.open({
+                type: 2,
+                area: [layerWidth, layerHeight],
+                offset: '20px',
+                title: false,
+                shade: 0.6,
+                closeBtn:false,
+                skin: 'layui-layer-task',
+                content: '{:url('smsInfoAll')}'+'?id='+id,
+                
+            });
+        });
+
+         $(document).on("mouseenter",'.box',function(event){
+                $(this).find('.bottom').stop(true,true).slideToggle(300);                   
+            });
+         $(document).on("mouseleave",'.box',function(event){
+                $(this).find('.bottom').stop(true,true).slideToggle(300);                 
+            });
+            
+    </script></body>
+
+</html>

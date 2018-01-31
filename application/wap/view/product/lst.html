@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+	
+	<head>
+		<meta charset="UTF-8">
+		<title>产品列表</title>
+		<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport" />
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+		<meta content="telephone=no" name="format-detection" />
+		
+		<!-- 引入YDUI样式 -->
+		<link rel="stylesheet" href="__PUBLIC__/css/ydui.css" />
+		<link rel="stylesheet" href="__PUBLIC__/font/iconfont.css" />
+		<link rel="stylesheet" href="__PUBLIC__/css/animate.min.css" />
+		<link rel="stylesheet" href="__PUBLIC__/css/style.css" />
+
+		<!-- 引入YDUI自适应解决方案类库 -->
+		<script src="__PUBLIC__/js/ydui.flexible.js"></script>
+        <style>
+			.g-flexview {
+				height: auto;
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: -ms-flexbox;
+				display: flex;
+				-webkit-box-orient: vertical;
+				-webkit-box-direction: normal;
+				-webkit-flex-direction: column;
+				-ms-flex-direction: column;
+				flex-direction: column;
+				margin: 0 auto;
+				max-width: 750px;
+				min-width: 300px;
+			}
+		</style>
+		
+	</head>
+	
+	<body>
+        
+        <!-- 头部搜索框 -->
+        <header class="navheader">
+			<a class="icon-jiantou-copy" href="{:url('Shop/index')}"></a>
+		    <h1 class="mui-title">{$cat_name}</h1>
+			<input type="hidden" name="cat_id" value="{$cat_id}">
+		</header>
+
+
+			<section class="g-flexview">
+				<div class="tp-bt">
+
+					<!-- 产品展示 -->
+					<div class="guess tp3">
+						<ul class="lists">
+							{volist name="goods" id="goods"}
+							<li>
+								<div class="photo-card">
+									{if condition="$cat_id neq '' "}
+									<a href="{:url('details',array('come'=>2,'goods_id'=>$goods['goods_id']))}">
+									{else/}
+									<a href="{:url('details',array('come'=>3,'goods_id'=>$goods['goods_id']))}">
+									{/if}
+										<img src="{$goods.original_img}">
+										<span class="product-text">{$goods.goods_name}</span>
+										<b>{$goods.shop_price}积分</b>
+									</a>
+								</div>
+							</li>
+							{/volist}
+						</ul>
+					</div>
+
+				</div>
+			</section>
+
+			
+        <!-- 底部导航 -->
+        <nav class="nav-bar">
+		    <a href="{:url('Index/index')}" class="nav-item">
+		       <span class="icon-xiangmu"></span>
+		       <span class="nav-label">项目</span>
+		    </a>
+		    <a href="{:url('Shop/index')}" class="nav-item active">
+		    	<span class="icon-shangcheng"></span>
+		        <span class="nav-label">商城</span>
+		    </a>
+		     <a href="{:url('News/index')}" class="nav-item">
+		     	<span class="icon-tixing"></span>
+		        <span class="nav-label">动态</span>
+		    </a>
+		    <a href="{:url('Users/index')}" class="nav-item">
+		    	<span class="icon-wode"></span>
+		        <span class="nav-label">我的</span>
+		    </a>
+		</nav>
+
+		<script src="__PUBLIC__/js/jquery.min.js"></script>
+
+		<script src="__PUBLIC__/js/mui.min.js"></script>
+		<script>
+            mui.init({
+                keyEventBind:{
+                    backbutton:false
+                }
+            })
+		</script>
+		<script src="__PUBLIC__/js/ydui.js"></script>
+		<script src="__PUBLIC__/js/fastclick.js"></script>
+		<script src="__PUBLIC__/js/dropload.min.js"></script>
+		<script>
+			$(function() {
+			    //消除IOS延迟
+				FastClick.attach(document.body);
+				var come = '';
+			    var cat_id = $("input[name='cat_id']").val();
+			    if(cat_id){
+                    come = 2;
+				}else{
+                    come = 3;
+				}
+			    var page = 1;
+			    // dropload
+			    $('.guess').dropload({
+			        scrollArea : window,
+			        loadDownFn : function(me){
+			            $.ajax({
+			                type: 'post',
+			                url: "{:url('Product/ajaxGoodsList')}",
+                            data: {"page":page,"cat_id":cat_id},
+			                dataType: 'json',
+			                success: function(data){
+                                var data = JSON.parse(data);
+			                    var result = '';
+                                page++;
+			                    for(var i = 0; i < data.lists.length; i++){
+			                        result +=   '<li>'
+													+'<div class="photo-card">'
+														+'<a href="/index.php/wap/product/details.html?come='+come+'&goods_id='+data.lists[i].goods_id+'">'
+															+'<img src="'+data.lists[i].original_img+'">'
+															+'<span class="product-text">'+data.lists[i].goods_name+'</span>'
+															+'<b>'+data.lists[i].shop_price+'</b>'
+														+'</a>'
+													+'</div>'
+												+'</li>';
+			                    }
+                                $('.lists').append(result);
+								if (data.lists.length == 0){
+                                    // 无数据
+                                    me.noData();
+                                    // 锁定
+                                    me.lock();
+								}
+                                // 每次数据加载完，必须重置
+                                me.resetload();
+			                },
+			            });
+			        }
+			    });
+			});
+		</script>
+		<script src="__PUBLIC__/js/common.js"></script>
+	</body>
+	
+</html>

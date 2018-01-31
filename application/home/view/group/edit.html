@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>信息管理平台</title>
+	{include file="public:css" /}
+</head>
+<body>
+<div class="well-lg" >
+    <form class="form-horizontal">
+        <div class="form-group">
+            <label for="title" class="col-xs-4 control-label text-right">分组名称:</label>
+            <div class="col-xs-8">
+                <input type="text" class="form-control" id="title" name="title" value="{$data.title}" >
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="desc" class="col-xs-4 control-label text-right">分组描述:</label>
+            <div class="col-xs-8">
+                <textarea class="form-control" rows="4" id="desc" name="desc">{$data.desc}</textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-xs-4">
+                <button type="button" class="btn btn-primary pull-right" id='submit' >保存</button>
+                <input type="hidden" id="id" name="id" value="{$data.id}" >
+            </div>
+        </div>
+    </form>
+</div>
+	{include file="public:js" /}
+    <script type="text/javascript">
+        $(function(){
+            $('#submit').click(function(event) {
+                var title = $.trim($('#title').val());
+                var desc = $.trim($('#desc').val());
+                var id = $.trim($('#id').val());
+                if(title==''){
+                    layer.msg('分组名称不能为空', {icon: 2}); 
+                }else{
+                    $.ajax({
+                        url: "{:url('edit')}",
+                        type: 'POST',
+                        dataType: 'json',
+                        data: {title: title,desc: desc,id: id},
+                        success: function(data){
+                            if( data.code ){
+                                var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                                parent.layer.close(index); //再执行关闭 
+                            }else{
+                                layer.msg(data.info, {icon: 2}); 
+                            }
+                        }
+                    })
+                }
+            });
+        })
+    </script>
+</body>
+</html>

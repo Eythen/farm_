@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>信息管理平台</title>
+	{include file="public:css" /}
+	<link href="__PUBLIC__/css/plugins/jstree/default/style.min.css?v=3.3.0" rel="stylesheet">
+    <style type="text/css">
+        .btn-icon{ font-size: 16px; margin: 0px 5px; }
+    </style>
+</head>
+<body>
+    <div class="col-xs-4" >
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">视图列表</h3>
+            </div>
+            <div class="panel-body">
+                <div id="jstree_demo" style="height:600px; overflow:auto" ></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-8 hidden animated fadeInDown rule_box" >
+        <div id="toolbar">
+            <button id="add" class="btn btn-success">
+                <i class="glyphicon glyphicon-plus"></i> 新增规则
+            </button>
+        </div>
+        <table class="table text-center table-hover" data-toolbar="#toolbar" data-toggle="table" data-sort-name="id" data-sort-order="desc" data-url="" data-side-pagination="client" data-pagination="true" data-page-list="[5, 10, 20, 50, 100, 200]" data-show-refresh="true" data-search="true" data-show-export="true" data-filter-control="true" data-filter-show-clear="true" >
+            <thead>
+                <tr>
+                    <th data-halign="center" data-field="id" data-filter-control="input" >ID</th>
+                    <th data-halign="center" data-field="name" data-filter-control="input" >规则</th>
+                    <th data-halign="center" data-field="title" data-filter-control="input" >规则名称</th>
+                    <th data-halign="center" data-field="operate" data-formatter="operateFormatter" data-events="operateEvents" >操作</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+	{include file="public:js" /}
+    <script src="__PUBLIC__/js/plugins/jstree/jstree.min.js?v=3.3.0"></script>
+	<script type="text/javascript">
+        $(function(){
+            $('#jstree_demo').jstree({
+                "core" : {
+                    'data' : {$json}
+                },
+            });
+
+            //栏目捕捉双击事件
+            $(document).on('dblclick','#jstree_demo li',function(){
+                nodes=$("#jstree_demo").jstree("get_selected");
+                var url = "{:url('rule_list')}?"+"id="+nodes;
+                $(".rule_box").removeClass('hidden');
+                $(".table").bootstrapTable('refresh', "{url: url}");
+            })
+        });
+
+        function operateFormatter(value, row, index) {
+            if( row.status==1 ){
+                return [
+                    '<a href="javascript:void(0);" class="btn-icon minus-circle" title="禁用规则" style="color:#F00" ><i class="fa fa-minus-circle"></i></a><a href="javascript:void(0);" class="btn-icon edit" title="编辑规则"><i class="fa fa-edit"></i></a><a href="javascript:void(0);" class="btn-icon remove" title="删除规则"><i class="fa fa-remove"></i></a>',
+                ].join('');
+            }else{
+                return [
+                    '<a href="javascript:void(0);" class="btn-icon check-circle" title="启用规则" style="color:#009933" ><i class="fa fa-check-circle"></i></a><a href="javascript:void(0);" class="btn-icon edit" title="编辑规则"><i class="fa fa-edit"></i></a><a href="javascript:void(0);" class="btn-icon remove" title="删除规则"><i class="fa fa-remove"></i></a>',
+                ].join('');
+            }
+        }
+
+        window.operateEvents = {
+            // 禁用规则
+            'click .minus-circle': function(e, value, row, index){
+                var id = row.id;
+                $.ajax({
+                    url: "{:url('add')}",
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {id: id, status: 0},
+                    success: function(data){
+                        if( data.status ){
+                            $(".table").bootstrapTable('refresh');
+                        }else{
+                            layer.msg(data.info, {icon: 2}); 
+                        }
+                    }
+                })
+            },
+            // 启用规则
+            'click .check-circle': function(e, value, row, index){
+                var id = row.id;
+                $.ajax({
+                    url: "{:url('add')}",
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {id: id, status: 1},
+                    success: function(data){
+                        if( data.status ){
+                            $(".table").bootstrapTable('refresh');
+                        }else{
+                            layer.msg(data.info, {icon: 2}); 
+                        }
+                    }
+                })
+            },
+            // 编辑规则
+            'click .edit': function (e, value, row, index) {
+                layer.open({
+                    title:'编辑规则',
+                    type: 2,
+                    area: ['400px', '300px'],
+                    fix: false, //不固定
+                    maxmin: true,
+                    content: "{:url('add')}"+"?id="+row.id,
+                    end: function(){
+                        $(".table").bootstrapTable('refresh');
+                    }
+                });
+            },
+            // 删除规则
+            'click .remove': function (e, value, row, index) {
+                $.ajax({
+                    url: "{:url('delete')}",
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {id: row.id},
+                    success: function(data){
+                        if( data.status ){
+                            $(".table").bootstrapTable('remove', {
+                                field: 'id',
+                                values: row.id
+                            });
+                        }else{
+                            layer.msg(data.info, {icon: 2});
+                        }
+                    }
+                })
+            },
+        };
+
+        $(function(){
+            $("#add").click(function(event) {
+                layer.open({
+                    title:'新增规则',
+                    type: 2,
+                    area: ['400px', '300px'],
+                    fix: false, //不固定
+                    maxmin: true,
+                    content: "{:url('add')}?menu_id="+nodes,
+                    end: function(){
+                        $(".table").bootstrapTable('refresh');
+                    }
+                });
+            });
+        })
+	</script>
+</body>
+</html>

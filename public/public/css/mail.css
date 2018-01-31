@@ -1,0 +1,134 @@
+.animated{padding:10px 20px;}
+.mail-status{position:relative; width:180px;display: block;line-height: 34px;float:right;margin-left:20px;}
+.mail-status .txt{position:relative; width:60px;display: block;line-height: 34px;float:left;text-align: right;}
+.mail-status .select{position:relative; width:120px;display: block;line-height: 34px;float:right;}
+* {margin:0;padding:0;font-family:"microsoft yahei";font-size:14px;margin:0 auto;}
+/* search-box */
+.box-search{padding:10px 5px;height:35px;padding-bottom:40px;}
+.box-search .company_title{padding-right:10px;font-weight:100;}
+.box-search .company_laber{padding:0 10px;font-weight:100;}
+.box-search .company_date{margin-left:10px;}
+/*日历插件样式修改*/
+.daterangepicker {width: 600px; right: 200px!important; display: none;} 
+.Wdate{width:220px!important;}
+.box-search .btn-more{position: relative;margin-left:20px;width:100px;float: right;}
+.box-search .btn-refresh{cursor:pointer;float:left;margin-left:20px;background-color: #fff; border: 1px solid #E5E6E7; border-top-left-radius: 6px; border-bottom-left-radius: 6px; color: inherit; font-size: 16px; font-weight: 400; line-height: 1em; padding: 9px 12px; text-align: center;} 
+.box-search .btn-config{position: absolute;right:1px;top:1px;cursor:pointer;background-color: #fff; border: 1px solid #E5E6E7; border-bottom-right-radius: 6px; border-top-right-radius:6px; color: inherit; font-size: 16px; font-weight: 400; line-height: 1em; padding: 9px 12px; text-align: center;} 
+.box-search .btn-config .config-tip{position: absolute;z-index:99;box-shadow:2px 2px 3px #aaaaaa;width:160px;height:55px;right:1px;top:38px;cursor:pointer;background-color: #e9f5fa; border: 1px solid #E5E6E7; border-radius: 6px; font-size: 12px; line-height: 1.6em; padding: 9px 12px;text-align: left; } 
+.box-search .btn-config .config-tip i{position: absolute;width:0px;height:0px;right:6px;top:-20px; border-right:12px solid transparent; border-bottom:12px solid #e9f5fa; border-left:12px solid transparent; border-top:12px solid transparent;} 
+
+.box-content{margin:10px auto;min-height:370px;}
+/*.box-content ul{text-align:center;margin:0;padding:0;}
+.box-content li{text-align:left;font-size:12px;list-style:none;float:left;position:relative;height:130px;margin-top:10px;}
+.dropdown-menu li{height: 20px!important;}*/
+
+
+
+.page_next{position: absolute; width: 58px; height:59px; top: 50%;margin-top:-29px; right:-30px;background: url(../img/task/task-next-prev.png) -58px 0 no-repeat;z-index: 999;cursor: pointer;}
+.page_prev{position: absolute; width: 58px; height:59px; top: 50%;margin-top:-29px; left:-80px;background: url(../img/task/task-next-prev.png) 0px 0 no-repeat; z-index: 999;cursor: pointer;}
+.data-list{    position: relative; margin: 0 auto; display: block; }
+
+/* btn */
+.top-btn{padding-left:20px;padding-right:20px;}
+.btn-default {background-color: #fff; border-color: #c2c2c2; color: #000; }
+.btn-white{background-color:#FFF;border-color:#cccccc;color:#333333;}
+.btn-white:hover,.btn-white:focus{background-color:#f7f6f6;border-color:#cccccc;color:#333333;}
+.btn-select{background-color:#468cc8;border-color:#2f79ba;color:#fff;}
+.btn-select:hover,.btn-select:focus{background-color:#4f97d5;color:#fff;}
+.btn-print{background-color:#60b761;border-color:#50ac51;color:#fff;}
+.btn-print:hover,.btn-print:focus{background-color:#69bd69;color:#fff;}
+.btn-down{background-color:#60c0dc;border-color:#4cb8d8;color:#fff;}
+.btn-down:hover,.btn-down:focus{background-color:#69c6e1;color:#fff;}
+.btn-edit{background-color:#efad57;border-color:#df983b;color:#fff;}
+.btn-edit:hover,.btn-edit:focus{background-color:#f4b564;color:#fff;}
+.btn-big{padding-left:56px;padding-right:56px;}
+.border-radius{border-radius:6px;}
+.w50{width:50px!important;}
+/* stats-box */
+.box-stats{padding:5px 10px;/*border:1px solid #ccc;*/position:absolute;float:left;width:97%;margin-top:10px;bottom:0;background-color:#fff;}
+.box-stats .record_stats{line-height:34px;}
+.box-stats .record_stats i{color:#f79445;font-style:normal;}
+.box-stats .page-value{text-align:center;}
+
+
+
+/*列表页面start*/
+.box-content .mail{position:relative;float:left;border: 1px solid #ccc;border-radius: 6px;margin-right: 2em;overflow-y: scroll;}
+.box-content .mail ul{position: relative;float: left;padding-right: 2em;clear:both;}
+.box-content .mail li{text-align:left;font-size:12px;list-style:none;position:relative;height:95px;padding-left: 1em;border-bottom:1px solid #ccc;cursor: pointer;}
+.box-content .mail li strong,.box-content .mail li span{font-size: 14px;color:#000;font-weight: normal;padding-right:1em;font-family: "Microsoft Yahei", "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif;}
+.box-content .mail li div{margin:5px 0px;font-size:12px;}
+.box-content .mail li:hover{border-left: 2px solid #86ceed;background-color: #ecf4f7;}
+.box-content .mail li.on{border-left: 2px solid #86ceed;background-color: #ecf4f7;}
+.box-content .mail{border: 1px solid #ccc;border-radius: 6px;}
+.box-content .show-content{position:relative;border: 1px solid #ccc;border-radius: 6px;overflow-y: scroll;}
+.box-content .show-content-main{position:relative;margin-left: 2em;}
+.box-content .show-content-main h2{color:#000;}
+.box-content .show-content-main .show-content-head{position: relative;color:#a0a0a0;border-top: 1px solid #C7BEBE;border-bottom: 1px solid #C7BEBE;margin-top:10px;padding-top: 10px;}
+.box-content .show-content-main .show-content-head span{padding-right: 2em;}
+.box-content .show-content-main .show-content-head span i{padding-right: 1em;font-size: 16px}
+.box-content .show-content-main .show-content-body{position: relative;min-height:205px;color:#333333;padding: 25px 25px 25px 27px;}
+/*.box-content .show-content-files {position: absolute;width:100%;min-height:135px;left: 0px;bottom: 0px;background-color: #fff;}*/
+.box-content .show-content-files {position:relative;display:block;width:100%;height:220px;background-color: #fff;bottom:0px;left:0;}
+.box-content .show-content-files h4{height:35px;line-height:35px;color:#333333;padding-left: 28px;}
+.box-content .show-content-files ul{margin-left: 2em;padding-left: 14px;}
+.box-content .show-content-files ul li{list-style: none;}
+
+.col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-xs-1, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9 {position: relative; min-height: 1px; padding-right: 0px; padding-left: 0px; }
+ /*列表页面end*/
+
+.mail-left{position: relative;width:360px;float:left;}
+.mail-right{position: relative;min-width:660px;float:right;}
+
+.mail_info .main{position:relative;padding:20px;margin-top:50px;float:left;width: 100%;}
+.mail_info .main dl{position: relative;width:100%;float:left;margin:8px 0;padding:0;clear:both;}
+.mail_info .main dl dt{position: relative;float:left;margin:0;padding:0 14px;}
+.mail_info .main dl dd{position: relative;float:left;margin:0;padding:0;}
+
+.mail_info .base{position:relative;padding:20px;margin-top:50px;float:left;width: 100%;}
+.mail_info .base ul{position: relative;float:left;margin:0;padding:0;clear:both;}
+.mail_info .base li{width:100%;float:left;list-style:none;margin-bottom:15px;}
+.mail_info .base li h3{text-align:center;color:#428bca;}
+.mail_info .base li label{width:30%;font-weight:normal;text-align:right;padding-top:7px;margin-right:14px;height:35px;line-height:35px;float:left;}
+.mail_info .base li div{width:58%;font-weight:normal;text-align:right;padding-top:7px;float:left;}
+.mail_info .base li .form-control{display:inline-block;width:100%;vertical-align:middle;}
+.mail_info .base input,.mail_info .base textarea{border:1px solid #cccccc;border-radius:4px;}
+.mail_info .base .textarea-label{width:13.1%;float:left;padding-right:15px;padding-left:15px;min-width:104px;}
+.mail_info .base .textarea-content{width:86.9%;float:left;padding-right:8px;padding-left:15px;min-width:200px;}
+.mail_info .base .textarea-content textarea{width:100%;}
+.mail_info .submit{width:100%;float:left;text-align:center;padding-bottom:20px;}
+.mail_info .submit span{margin-right:20px;padding-left:25px;padding-right:25px;}
+.mail_info .others{position:relative;padding:20px;float:left;}
+
+
+.mail_info .task-header{position: fixed;width:100%;height:50px;line-height:50px;border-bottom: 4px solid #428bca;margin-bottom:16px;float:left;background-color: #fff;z-index: 10000;}
+.mail_info .task-header .title{font-size: 18px;float:left;color: #333333;padding-left:30px;_padding-left: 15px;}
+.mail_info .right-close{position:relative;width:36px;height:36px;float: right;margin-right:15px;_margin-right: 7px; top:6px;cursor: pointer;background: url(../img/task/close.png) left top no-repeat;}
+.mail_info .glyphicon-user{cursor: pointer;}
+.mail_info .nav-tabs>li>a { color: #699ed0!important;}
+.mail_info .nav-tabs>li.active>a, .mail_info .nav-tabs>li.active>a:focus, .mail_info .nav-tabs>li.active>a:hover { color: #494949!important;}
+
+
+.attachment{position:relative;clear:both;}
+.attachment li{float:left;width:84px;margin-bottom:10px;list-style: none;margin-right:26px;}
+.attachment_box{position:relative;border:1px dashed #dcdcdc;width:84px;background-color:#eeeeee;border-radius:5px;height:84px;overflow:hidden;}
+.attachment_box .attachment_bg{font-size:35px;text-align:center;color:#dddddd;z-index:0;}
+.attachment_box .attachment_tips{position:absolute;bottom:0;text-align:center;width:100%;background-color:rgba(0,0,0,0.48);padding:2px 0;color:#FFF;z-index:3;font-size:12px;}
+.attachment_box .attachment_del{position:absolute;top:3px;right:3px;color:#8E8E8E;z-index:4;font-size:15px;}
+.attachment_box .attachment_del:hover{cursor:pointer;}
+.attachment_box .attachment_img{position:absolute;top:0;z-index:2;}
+.attachment_box .attachment_img img{width:100%;height:100%;cursor:pointer;}
+.attachment_name{text-align:left;}
+
+
+
+
+/*弹窗*/
+.layui-layer-mail {border-radius: 10px!important; max-width: 1250px; }
+.layui-layer-mail .layui-layer-content {border-radius: 15px; }
+
+/*上传显示start*/
+.uploadify{ width:84px;height:84;float:left;margin-right:18px }
+.uploadify-queue{ width:84px!important;height:84px!important;position: absolute!important;left: 0px;bottom: 0px;display: none;}
+/*.uploadify-button-text{position: absolute; width:84px;height:22px;line-height:22px;left:0px;bottom:0px;color:#fff;background-color:#909090;text-align:center;margin:0px;}*/
+/*上传显示end*/

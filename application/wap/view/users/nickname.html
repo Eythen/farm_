@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+		<meta content="telephone=no" name="format-detection" />
+		<title>修改昵称</title>
+
+		<link href="__PUBLIC__/skin/css/ydui.css" rel="stylesheet">
+		<link href="__PUBLIC__/skin/css/cart.css" rel="stylesheet">
+		<link href="__PUBLIC__/skin/css/app.css" rel="stylesheet">
+		<style>
+			.g-flexview {
+				height: auto;
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: -ms-flexbox;
+				display: flex;
+				-webkit-box-orient: vertical;
+				-webkit-box-direction: normal;
+				-webkit-flex-direction: column;
+				-ms-flex-direction: column;
+				flex-direction: column;
+				margin: 0 auto;
+				max-width: 750px;
+				min-width: 300px;
+				padding-top: 1rem;
+			}
+		</style>
+
+		<script src="__PUBLIC__/skin/js/ydui.flexible.js"></script>
+	</head>
+
+	<body>
+		<header class="m-navbar">
+			<a href="javascript:history.go(-1)" class="navbar-item"><i class="back-ico"></i></a>
+			<div class="navbar-center"><span class="navbar-title">修改昵称</span></div>
+			<a href="javascript:;" class="navbar-item" id="save">保存</a>
+		</header>
+		<div class="g-flexview">
+
+			<div class="m-cell top3">
+				<div class="cell-item">
+					<div class="cell-left">昵称：</div>
+					<div class="cell-right"><input type="text" class="cell-input" placeholder="请输入昵称" value="{$user.nickname}" autocomplete="off" /></div>
+				</div>
+			</div>
+
+		</div>
+
+		<script src="__PUBLIC__/skin/js/jquery.min.js"></script>
+		<script src="__PUBLIC__/skin/js/ydui.js"></script>
+		<script src="__PUBLIC__/skin/js/app.js"></script>
+		<script>
+			! function(win, $) {
+				var dialog = win.YDUI.dialog;
+				//保存
+				var nick = "{$user.nickname}";
+				$('#save').on('click', function() {
+					if(!$('.cell-input').val()) {
+						dialog.toast('昵称不能为空！', 'none', 2000);
+						return false;
+						/* else {
+							dialog.toast('昵称未改变！', 'none', 1000);
+						}*/
+					}
+					if($('.cell-input').val() != nick) {
+						nickname = $('.cell-input').val();
+						$.ajax({
+					   		type:"post",
+					   		url:"{:url('users/nickname')}",
+						    data: {nickname:nickname},
+					   		success:function(data){
+					   			if(data.code){
+									dialog.toast('修改昵称成功！', 'none', 1000, function() {
+										window.history.go(-1)
+									});
+								}
+								else{
+									dialog.toast(data.msg, 'none', 2000);
+								}	
+					   		},
+					   		error:function(msg){
+					   			dialog.toast('请求失败', 'none', 2000);
+					   		}
+					   	});
+					}
+					else {
+							dialog.toast('昵称未改变！', 'none', 1000);
+							return false;
+						}
+				})
+			}(window, jQuery);
+		</script>
+		<script src="__PUBLIC__/js/mui.min.js"></script>
+		<script>
+            mui.init({
+                keyEventBind:{
+                    backbutton:false
+                }
+            })
+		</script>
+		<script src="__PUBLIC__/js/common.js"></script>
+	</body>
+
+</html>

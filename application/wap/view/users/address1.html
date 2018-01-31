@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+		<meta content="telephone=no" name="format-detection" />
+		<title>管理收货地址</title>
+
+		<link href="__PUBLIC__/skin/css/ydui.css" rel="stylesheet">
+		<link href="__PUBLIC__/skin/css/app.css" rel="stylesheet">
+		<style>
+			.g-flexview {
+				height: auto;
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: -ms-flexbox;
+				display: flex;
+				-webkit-box-orient: vertical;
+				-webkit-box-direction: normal;
+				-webkit-flex-direction: column;
+				-ms-flex-direction: column;
+				flex-direction: column;
+				margin: 0 auto;
+				max-width: 750px;
+				min-width: 300px;
+				padding-top: 1rem;
+			}
+			
+			.navbar-item {
+				height: auto
+			}
+			
+			.btn-danger {
+				background-color: #3ec4c8;
+				color: #FFF;
+			}
+		</style>
+
+		<script src="__PUBLIC__/skin/js/ydui.flexible.js"></script>
+	</head>
+
+	<body>
+		<header class="m-navbar">
+			<a href="javascript:history.go(-1)" class="navbar-item"><i class="back-ico"></i></a>
+			<div class="navbar-center"><span class="navbar-title">管理收货地址</span></div>
+		</header>
+		<div class="g-flexview">
+
+			<ul class="address">
+				{volist name="address" id="vo"}
+				<li id="address">
+					<div class="name">
+						<span>{$vo.consignee}</span>
+						<span class="fr">{$vo.mobile}</span>
+					</div>
+					<div class="say">
+						<span>{$vo.address}</span>
+					</div>
+
+					<div class="default">
+						<div class="opt">
+							<input class="magic-radio" type="radio" name="radio" id="r{$vo.address_id}" data-isdefault="{$vo.is_default}" value="{$vo.address_id}" {eq name="vo['is_default']" value="1" }checked{/eq}>
+							<label for="r{$vo.address_id}">默认地址</label>
+						</div>
+						<a href="javascript:;" data-id="{$vo.address_id}" class="icon-delete"></a>
+					</div>
+				</li>
+				{/volist}
+			</ul>
+			<div class="foo_fixed">
+				<a href="{:url('users/addaddress')}" class="btn-block btn-ls">添加新地址</a>
+			</div>
+
+
+		</div>
+
+
+		<script src="__PUBLIC__/skin/js/jquery.min.js"></script>
+		<script src="__PUBLIC__/skin/js/ydui.js"></script>
+		<script src="__PUBLIC__/skin/js/app.js"></script>
+
+		<script>
+			! function(win, $) {
+					var dialog = win.YDUI.dialog;
+
+					$('.magic-radio').click(function(){
+						var vv = $(this).data("isdefault")
+						var address_id = $(this).val();
+						if(!vv){
+							$.ajax({
+						   		type:"post",
+						   		url:"{:url('users/ajaxSet')}",
+							    data: {address_id:address_id},
+						   		success:function(data){
+						   			if(data.code){
+										dialog.toast('修改成功！', 'none', 1000);
+									}
+									else{
+										dialog.toast(data.msg, 'none', 2000);
+									}	
+						   		},
+						   		error:function(msg){
+						   			dialog.toast('请求失败', 'none', 2000);
+						   		}
+						   	});
+						}
+					});
+
+					$('.icon-delete').click(function(){
+						var address_id = $(this).data('id');
+						var fa = $(this).closest('li');
+						
+						$.ajax({
+					   		type:"post",
+					   		url:"{:url('users/delAddress')}",
+						    data: {address_id:address_id},
+					   		success:function(data){
+					   			if(data.code){
+									fa.remove();
+									dialog.toast('删除成功！', 'none', 1000);
+								}
+								else{
+									dialog.toast(data.msg, 'none', 2000);
+								}	
+					   		},
+					   		error:function(msg){
+					   			dialog.toast('请求失败', 'none', 2000);
+					   		}
+					   	});						
+					});
+				}(window, jQuery);
+			
+
+		</script>
+		<script src="__PUBLIC__/js/mui.min.js"></script>
+		<script>
+            mui.init({
+                keyEventBind:{
+                    backbutton:false
+                }
+            })
+		</script>
+		<script src="__PUBLIC__/js/common.js"></script>
+	</body>
+
+</html>

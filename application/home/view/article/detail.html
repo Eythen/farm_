@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<head>
+  <meta charset="UTF-8">
+  <title>信息管理平台</title>
+  {include file="public:css" /}
+  <style type="text/css">
+        body{background-color: #eee}
+    .btn-icon{ font-size: 12px; margin: 0px 5px; }
+  </style>
+
+<script type="text/javascript">
+    window.UEDITOR_Admin_URL = "__ROOT__public/plugins/Ueditor/";
+    var URL_upload = "{$URL_upload}";
+    var URL_fileUp = "{$URL_fileUp}";
+    var URL_scrawlUp = "{$URL_scrawlUp}";
+    var URL_getRemoteImage = "{$URL_getRemoteImage}";
+    var URL_imageManager = "{$URL_imageManager}";
+    var URL_imageUp = "{$URL_imageUp}";
+    var URL_getMovie = "{$URL_getMovie}";
+    var URL_home = "{$URL_home}";    
+</script>
+
+{load href="__ROOT__public/plugins/Ueditor/ueditor.config.js"/}
+{load href="__ROOT__public/plugins/Ueditor/ueditor.all.js"/}
+</head>
+<body>
+<!--------头部开始-------------->
+
+<div class="well">
+
+    <div class="panel panel-primary">
+		<div class="panel-heading">
+			<div class="panel-title text-center">{$article.title}</div>
+		</div>
+        <div class="bg-info text-center">
+		    <span id="sLevel2">{$cat_name}</span>
+		</div>
+
+
+		<div class="panel-body">
+	    	<div class="help_box" style="margin: 0px; padding: 10px 10px 10px 20px; color: rgb(102, 102, 102); line-height: 18px; font-family: Arial, Verdana, 宋体; font-size: 12px; white-space: normal; background-color: rgb(255, 255, 255);">
+			    <p style="padding: 0px; margin-top: 0px; margin-bottom: 0px;"><br>
+			    	{$article.content|htmlspecialchars_decode} 
+	                <!--html_entity_decode-->
+				</p>
+			</div>
+		</div>
+	</div>
+
+
+
+</div>
+</body>
+
+</html>

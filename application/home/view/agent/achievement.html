@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>信息管理平台</title>
+    {include file="public:css" /}
+    <link href="/public/css/style.min862f.css" rel="stylesheet">
+
+</head>
+
+<body class="gray-bg">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="widget navy-bg no-padding">
+                    <div class="p-m">
+                        <h1 class="m-xs">¥ {$order_amount}</h1>
+                        <h3 class="font-bold no-margins">
+                            订单总额
+                        </h3>
+ 
+                    </div>
+                    <div class="flot-chart">
+                        <div class="flot-chart-content" id="flot-chart1" style="padding: 0px; position: relative;">
+                            <canvas class="base" width="447" height="100"></canvas>
+                            <canvas class="overlay" width="447" height="100" style="position: absolute; left: 0px; top: 0px;"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="widget lazur-bg no-padding">
+                    <div class="p-m">
+                        <h1 class="m-xs">{$order_apply_num}</h1>
+                        <h3 class="font-bold no-margins">
+                            提货申请
+                        </h3>
+
+                    </div>
+                    <div class="flot-chart">
+                        <div class="flot-chart-content" id="flot-chart2" style="padding: 0px; position: relative;">
+                            <canvas class="base" width="209" height="100"></canvas>
+                            <canvas class="overlay" width="209" height="100" style="position: absolute; left: 0px; top: 0px;"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="widget yellow-bg no-padding">
+                    <div class="p-m">
+                        <h1 class="m-xs">{$apply_num}</h1>
+                        <h3 class="font-bold no-margins">
+                            更换业务员申请
+                        </h3>
+
+                    </div>
+                    <div class="flot-chart">
+                        <div class="flot-chart-content" id="flot-chart3" style="padding: 0px; position: relative;">
+                            <canvas class="base" width="209" height="100"></canvas>
+                            <canvas class="overlay" width="209" height="100" style="position: absolute; left: 0px; top: 0px;"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3 col-sm-6 col-xs-12">
+              <div class="widget yellow-bg p-lg text-center">
+                  <div class="m-b-md">
+                      <i class="fa fa-bell fa-4x"></i>
+                      <h1 class="m-xs">{$order_wait_num}</h1>
+                      <h3 class="font-bold no-margins">
+                              待处理订单
+                          </h3>
+                      <!-- <small>账户</small> -->
+                  </div>
+              </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-12">
+              <div class="widget lazur-bg p-lg text-center">
+                  <div class="m-b-md">
+                      <i class="fa fa-book fa-4x"></i>
+                      <h1 class="m-xs">{$order_num}</h1>
+                      <h3 class="font-bold no-margins">
+                              订单数量
+                          </h3>
+                      <!-- <small>账户</small> -->
+                  </div>
+              </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-12">
+              <div class="widget navy-bg p-lg text-center">
+                  <div class="m-b-md">
+                      <i class="fa fa-files-o fa-4x"></i>
+                      <h1 class="m-xs">{$goods_num}</h1>
+                      <h3 class="font-bold no-margins">
+                              商品数量
+                          </h3>
+                      <!-- <small>账户</small> -->
+                  </div>
+              </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-12">
+              <div class="widget red-bg p-lg text-center">
+                  <div class="m-b-md">
+                      <i class="fa fa-users fa-4x"></i>
+                      <h1 class="m-xs">{$agent_num}</h1>
+                      <h3 class="font-bold no-margins">
+                              代理商总数
+                          </h3>
+                      <!-- <small>账户</small> -->
+                  </div>
+              </div>
+            </div>
+
+         </div>
+
+</div>
+        {include file="public:js" /}
+        <script type="text/javascript">
+        var url = 'https://www.baidu.com/s?wd=';
+
+        function ipFormatter(value, row, index) {
+            return [
+                value + '<a href="javascript:window.open(\'' + url + value + '\');" class="btn-icon edit btn btn-sm btn-primary" title="查IP地址">查IP地址</a>',
+            ].join('');
+        }
+
+        $(function() {
+
+
+            //更新
+            $('.myrefresh').click(function(event) {
+                $(".table").bootstrapTable('refresh');
+            });
+
+
+
+
+
+        })
+        </script>
+</body>
+
+</html>

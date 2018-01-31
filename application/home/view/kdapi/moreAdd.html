@@ -1,0 +1,77 @@
+{include file="public:yunying_header" /}
+<link href="__PUBLIC__/css/visitor.css" rel="stylesheet">
+
+</head>
+<body>
+<div class="sms_info ">
+<!-- 基本信息开始 -->
+    <form class="form-horizontal" id="form_info" >
+    <div class="base col-sm-12 col-md-12 col-xs-12">
+
+        <ul style="margin-top:30px;">
+            <li  class="submit   col-sm-12 col-md-12 col-xs-12">
+                <a href="__PUBLIC__/sn_excel.zip"><span class="btn btn-primary btn-lg">下载EXCEL模板</span></a>
+            </li>
+            <li  class="submit   col-sm-12 col-md-12 col-xs-12">
+                <span class="myup" id="myup">上传EXCEL数据</span>
+            </li>
+        </ul>
+    </div>
+<!-- 基本信息结束 -->
+</form>
+</div>
+{include file="public:js" /}
+<script type="text/javascript">
+    var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+
+    $(".closed").click(function(){
+        parent.layer.close(index); //再执行关闭
+    });
+    //上传
+    var blayer = 0;
+    var txt = $('.myup').text();
+    var id =<?php echo $_SESSION['think']['uid']; ?>;
+    $('.myup').uploadify({
+        'swf' : '__PUBLIC__/js/plugins/upload/uploadify.swf',
+        'uploader' : "{:url('upExcel')}",
+        'buttonText' : txt,
+        'buttonClass' : 'myup',
+        'fileSizeLimit' : 3072,
+        ////'width' : '84',
+        //'height' : '84',
+        'formData' : { 'session_id' : id },
+        'fileTypeExts': '*.xls;*.xlsx',
+        'onUploadStart': function(res){
+            blayer = layer.load(1);
+        },
+        'onUploadSuccess': function (file, data, response) {
+            var data = $.parseJSON(data);
+            layer.close(blayer);
+            if(data.status){
+                parent.location.reload();
+            }else{
+                layer.alert(data.info);
+            }
+        },
+      'overrideEvents': ['onSelectError', 'onDialogClose'],
+      'onSelectError': function (file, errorCode, errorMsg) {
+          switch (errorCode) {
+              case -100:
+                  alert("上传的文件数量已经超出系统限制的" + $('.myup').uploadify('settings', 'queueSizeLimit') + "个文件！");
+                  break;
+              case -110:
+                  alert("文件 [" + file.name + "] 大小超出系统限制的" + $('.myup').uploadify('settings', 'fileSizeLimit') + "大小！");
+                  break;
+              case -120:
+                  alert("文件 [" + file.name + "] 大小异常！");
+                  break;
+              case -130:
+                  alert("文件 [" + file.name + "] 类型不正确！");
+                  break;
+          }
+          return false;
+      },
+    });
+</script>
+</body>
+</html>

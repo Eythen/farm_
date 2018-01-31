@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+		<meta content="telephone=no" name="format-detection" />
+		<title>兑换</title>
+
+		<link href="__PUBLIC__/skin/css/ydui.css" rel="stylesheet">
+		<link href="__PUBLIC__/skin/css/app.css" rel="stylesheet">
+		<style>
+			.g-flexview {
+				height: auto;
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: -ms-flexbox;
+				display: flex;
+				-webkit-box-orient: vertical;
+				-webkit-box-direction: normal;
+				-webkit-flex-direction: column;
+				-ms-flex-direction: column;
+				flex-direction: column;
+				margin: 0 auto;
+				max-width: 750px;
+				min-width: 300px;
+				padding-top: 1rem;
+			}
+		</style>
+
+		<script src="__PUBLIC__/skin/js/ydui.flexible.js"></script>
+	</head>
+
+	<body>
+		<header class="m-navbar">
+			<a href="{:url('users/index')}" class="navbar-item"><i class="back-ico"></i></a>
+			<div class="navbar-center"><span class="navbar-title">兑换</span></div>
+		</header>
+		<div class="g-flexview">
+			<div class="top50">
+
+				<div class="m-cell top3">
+				    <a class="cell-item" href="{:url('integral/exchange2')}">
+				        <div class="cell-left">报单币兑换为购物币</div>
+				        <div class="cell-right cell-arrow"></div>
+				    </a>
+				</div>
+				<div class="m-cell mt">
+					<a class="cell-item" href="{:url('integral/rebate')}">
+				        <div class="cell-left">返利币兑换为报单币</div>
+				        <div class="cell-right cell-arrow"></div>
+				    </a>
+				    <a class="cell-item" href="{:url('integral/rebate2')}">
+				        <div class="cell-left">返利币兑换为购物币</div>
+				        <div class="cell-right cell-arrow"></div>
+				    </a>
+				</div>
+
+			</div>
+		</div>
+
+		<script src="__PUBLIC__/skin/js/jquery.min.js"></script>
+		<script src="__PUBLIC__/skin/js/ydui.js"></script>
+		<script src="__PUBLIC__/skin/js/app.js"></script>
+		<script src="__PUBLIC__/js/mui.min.js"></script>
+		<script>
+            mui.init({
+                keyEventBind:{
+                    backbutton:false
+                }
+            })
+		</script>
+		<script src="__PUBLIC__/js/common.js"></script>
+	</body>
+
+</html>

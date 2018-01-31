@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>请用我的车</title>
+		<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport" />
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+		<meta content="telephone=no" name="format-detection" />
+		
+		<!-- 引入YDUI样式 -->
+		<link rel="stylesheet" href="__PUBLIC__/css/ydui.css" />
+		<link rel="stylesheet" href="__PUBLIC__/font/iconfont.css" />
+		<link rel="stylesheet" href="__PUBLIC__/css/animate.min.css" />
+		<link rel="stylesheet" href="__PUBLIC__/css/style.css" />
+		<link rel="stylesheet" href="__PUBLIC__/css/mobileSelect.css" />
+
+		<!-- 引入YDUI自适应解决方案类库 -->
+		<script src="__PUBLIC__/js/ydui.flexible.js"></script>
+	</head>
+	<body>
+		
+		<header class="navheader">
+		    <a class="icon-jiantou-copy" href="javascript:history.go(-1)"></a>
+		    <h1 class="mui-title">请用我的车</h1>
+		</header>
+		
+		<section class="g-flexview">
+			
+			<div class="registered vehicle_bg">
+				<div class="animated bounceInLeft">
+				
+					<div class="tp-bt">
+						<form action="" method="post" enctype="multipart/form-data" id="car-form">
+							<div class="add_imgs margin-bo">
+			                    <img src="__PUBLIC__/img/car.png" alt="" class="fileImg"/>
+			                	<input type="file" name="car_pic" class="file" />
+			                </div>
+							<div class="m_cell">
+								<div class="cell_item">
+				                    <div id="vehicle"  class="cell-input">车辆类型</div>
+									<input type="hidden" id="car_type" name="car_type" value="">
+					            </div>
+								<div class="cell_item">
+									<div id="Seat" class="cell-input">座位数</div>
+									<input type="hidden" id="car_seat" name="seat" value="">
+					            </div>
+					            <div class="cell_item">
+					            	<div id="loadsdf" class="cell-input">载重</div>
+									<input type="hidden" id="load" name="load" value="">
+					            </div>
+					            <div class="cell_item">
+							        <input type="text" name="name" class="cell-input" placeholder="车主姓名"/>
+							    </div>
+							    <div class="cell_item">
+							        <input type="text" name="model" class="cell-input" placeholder="车型号"/>
+							    </div>
+							    <div class="cell_item">
+							        <input type="text" name="car_number" id="number" class="cell-input" placeholder="车牌号"/>
+							    </div>
+							    <div class="cell_item">
+							        <input type="text" name="driver" onclick="" class="cell-input" id="driver" placeholder="驾驶员姓名"/>
+							    </div>
+							    <div class="cell_item">
+							        <input type="text" name="car_license" class="cell-input" id="car_license" placeholder="驾驶员驾照编号"/>
+							    </div>
+							</div>
+							<input type="hidden" name="user_id" value="{$user_id}">
+							<input type="hidden" name="help_id" value="{$help_id}">
+							<button type="button" id="registered" class="registered_btn"/>提交</button>
+						</form>
+					</div>
+					
+				</div>
+			</div>
+			
+		</section>
+		
+		
+		
+		<script src="__PUBLIC__/js/jquery.min.js"></script>
+		
+		<script src="__PUBLIC__/js/mui.min.js"></script>
+		<script src="__PUBLIC__/js/mui.zoom.js"></script>
+		<script src="__PUBLIC__/js/mui.previewimage.js"></script>
+		<script type="text/javascript">
+			mui.init({
+				keyEventBind:{
+					backbutton:false
+				}
+			})
+		</script>
+		<script src="__PUBLIC__/js/ydui.js"></script>
+		<script src="__PUBLIC__/js/fastclick.js"></script>
+		<script src="__PUBLIC__/js/plugins/layer/layer.js"></script>
+		<script src="__PUBLIC__/js/mobileSelect.js"></script>
+
+		
+		<script>
+			$(function() {
+			    //消除IOS延迟
+				FastClick.attach(document.body);
+				
+				$('#registered').click(function(event) {
+                    var vehicle = $('#vehicle').html();
+                    var Seat = $('#Seat').html();
+                    var loadsdf = $('#loadsdf').html();
+                    var name = $("input[name=name]").val();
+                    var number = $("#number").val();
+                    var driver = $("#driver").val();
+                    var car_license = $("#car_license").val();
+
+                    if (vehicle == "车辆类型" ) {
+                        layer.msg('车辆类型不能为空');
+                        return false;
+                    }
+                    if (Seat == "座位数" ) {
+                        layer.msg('座位数不能为空');
+                        return false;
+                    }
+                    if (loadsdf == "载重" ) {
+                        layer.msg('载重不能为空');
+                        return false;
+                    }
+                    if (name == ''){
+                        layer.msg('车主姓名不能为空');
+                        return false;
+                    }
+                    if (number == ''){
+                        layer.msg('车牌号码不能为空');
+                        return false;
+                    }driver
+                    if (driver == ''){
+                        layer.msg('驾驶人不能为空');
+                        return false;
+                    }
+                    if (car_license == ''){
+                        layer.msg('驾照编号不能为空');
+                        return false;
+                    }
+
+                    $("#car_type").val(vehicle);
+                    $("#car_seat").val(Seat);
+                    $("#load").val(loadsdf);
+
+                    $("#car-form").submit();
+
+			    });
+
+				//上传身份证
+				$(".file").change(function(){
+	                var fileImg = $(this).parent().find(".fileImg");
+	                var explorer = navigator.userAgent;
+	                var imgSrc = $(this)[0].value;
+	                if (explorer.indexOf('MSIE') >= 0) {
+	                    if (!/\.(jpg|jpeg|png|JPG|PNG|JPEG)$/.test(imgSrc)) {
+	                        imgSrc = "";
+	                        fileImg.attr("src","/img/default.png");
+	                        return false;
+	                    }else{
+	                        fileImg.attr("src",imgSrc);
+	                    }
+	                }else{
+	                    if (!/\.(jpg|jpeg|png|JPG|PNG|JPEG)$/.test(imgSrc)) {
+	                        imgSrc = "";
+	                        fileImg.attr("src","");
+	                        return false;
+	                    }else{
+	                        var file = $(this)[0].files[0];
+	                        var url = URL.createObjectURL(file);
+	                        fileImg.attr("src",url);
+	                    }
+	                }
+	            })
+				
+			});
+			
+			//车辆类型
+		    var weekdayArr=['轿车','越野车','商务车','中型客车(中巴)','大型客车(大巴)','皮卡','货车'];
+		    var mobileSelect = new MobileSelect({
+			    trigger: '#vehicle', 
+			    title: '车辆类型',  
+			    wheels: [
+			        {data: weekdayArr}
+			    ],
+			    position:[2] //初始化定位 打开时默认选中的哪个  如果不填默认为0
+			});
+			
+			//座位数
+		    var weekdayArr=['4座','6座','8座','10座','20座','30座','40座以上'];
+		    var mobileSelect2 = new MobileSelect({
+			    trigger: '#Seat', 
+			    title: '座位数',  
+			    wheels: [
+			        {data: weekdayArr}
+			    ],
+			    position:[2] //初始化定位 打开时默认选中的哪个  如果不填默认为0
+			});
+			
+			//载重
+		    var weekdayArr=['2.4T','5T','8T','10T以上'];
+		    var mobileSelect3 = new MobileSelect({
+			    trigger: '#loadsdf', 
+			    title: '载重',  
+			    wheels: [
+			        {data: weekdayArr}
+			    ],
+			    position:[2] 
+			});
+				
+		</script>
+	<script src="__PUBLIC__/js/common.js"></script>
+	</body>
+</html>

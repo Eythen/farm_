@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>信息管理平台</title>
+	{include file="public:css" /}
+	<link href="__PUBLIC__/css/plugins/jstree/default/style.min.css?v=3.3.0" rel="stylesheet">
+</head>
+<body>
+	<div class="well well-sm" >
+		<div id="jstree_demo" style="height:270px; overflow:auto" ></div>
+	</div>
+	<div class="col-xs-4 col-xs-offset-4" >
+		<button type="button" class="btn btn-primary btn-block submit">保存</button>
+	</div>
+	{include file="public:js" /}
+	<script src="__PUBLIC__/js/plugins/jstree/jstree.min.js?v=3.3.0"></script>
+	<script type="text/javascript">
+		$(function(){
+			$('#jstree_demo').jstree({
+			 	"core" : {
+			    	'data' : {$json}
+			 	},
+			  	"checkbox" : {
+	      			"keep_selected_style" : false
+	    		},
+	    		"plugins" : [
+	    			"checkbox",
+	    		]
+			});
+			$(".submit").click(function(event) {
+				var nodes=$("#jstree_demo").jstree("get_checked"); //使用get_checked方法 
+				$.ajax({
+					url: "{:url('rule')}"+"?id={$id}",
+					type: 'POST',
+					dataType: 'json',
+					data: {nodes: nodes},
+					success: function(data){
+						if( data.status ){
+    						var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                            parent.layer.close(index); //再执行关闭 
+						}else{
+    						layer.msg(data.info, {icon: 2}); 
+						}
+					}
+				})
+			});
+		});
+	</script>
+</body>
+</html>

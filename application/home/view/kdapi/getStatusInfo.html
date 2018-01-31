@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>信息管理平台</title>
+	{include file="public:css" /}
+</head>
+<body>
+<div class="well-lg" >
+    <form class="form-horizontal" id="generalize_info">
+        <div class="form-group bg-info">
+            <label for="username" class="col-xs-4 control-label text-right">（{$data.name}）单号:</label>
+            <div class="col-xs-7">
+                {$data.sn}
+            </div>
+        </div>
+        <div class="form-group">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>时间</th>
+                        <th>物流状态</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {volist name="data['info']" id="vo"}
+                    <tr>
+                      <th scope="row">{$vo.AcceptTime}</th>
+                      <td>{$vo.AcceptStation}</td>
+                    </tr>
+                    {/volist}
+                </tbody>
+            </table>            
+        </div>
+
+        
+    </form>
+</div>
+	{include file="public:js" /}
+    <script type="text/javascript">
+        var index = parent.layer.getFrameIndex(window.name);
+        //parent.layer.iframeAuto(index);//调整高度自适应
+    </script>
+</body>
+</html>

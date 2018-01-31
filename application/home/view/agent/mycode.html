@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>信息管理平台</title>
+    {include file="public:css" /}
+    <link href="/public/css/style.min862f.css" rel="stylesheet">
+
+</head>
+
+<body class="gray-bg">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="widget-head-color-box navy-bg p-lg text-center">
+                    <div class="m-b-md">
+                        <h2 class="font-bold no-margins">
+                                {$admin.username}
+                            </h2>
+                        <small>{$admin.phone}</small>
+                    </div>
+                    <img src="{$admin.qrcode}" class="m-b-md" alt="profile">
+                    <!-- <div>
+                        <span>100 动态</span> |
+                        <span>350 关注</span> |
+                        <span>610 关注者</span>
+                    </div> -->
+                </div>
+                <!-- <div class="widget-text-box">
+                    <h4 class="media-heading">Beaut-zihan</h4>
+                    <p>前端工程师</p>
+                    <div class="text-right">
+                        <a class="btn btn-xs btn-white"><i class="fa fa-thumbs-up"></i> 赞 </a>
+                        <a class="btn btn-xs btn-primary"><i class="fa fa-heart"></i> 收藏</a>
+                    </div>
+                </div> -->
+            </div>
+
+         </div>
+
+</div>
+        {include file="public:js" /}
+        <script type="text/javascript">
+        var url = 'https://www.baidu.com/s?wd=';
+
+        function ipFormatter(value, row, index) {
+            return [
+                value + '<a href="javascript:window.open(\'' + url + value + '\');" class="btn-icon edit btn btn-sm btn-primary" title="查IP地址">查IP地址</a>',
+            ].join('');
+        }
+
+        $(function() {
+
+
+            //更新
+            $('.myrefresh').click(function(event) {
+                $(".table").bootstrapTable('refresh');
+            });
+
+
+
+
+
+        })
+        </script>
+</body>
+
+</html>

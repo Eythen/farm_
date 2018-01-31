@@ -1,0 +1,80 @@
+
+/*头部*/
+header{width: 100%;height: 2rem;line-height: 2rem;text-align: center;padding: 0 .5rem;position: relative;color: #666;border-bottom: .02rem solid gray;}
+header span{position: absolute;right: .67rem;}
+/*头部*/
+.con{ padding-top: .1rem;  }
+.content{background: #fff;margin-bottom: .3rem;border-bottom: 1px solid #e8e8e8; }
+input[type="checkbox"]{display: none;}
+/*列表*/
+.list{width: 100%;padding: .3rem;border-bottom: 1px solid #e8e8e8;}
+.list p{margin-left: .7rem;line-height: .58rem;font-size: .3rem;}
+ul li{width: 100%;padding: .3rem;border-bottom: 1px solid #e8e8e8;}
+ul li .label{padding: .7rem .2rem 0 0;overflow: hidden;}
+ul li .img{width: 1.5rem;height: 1.5rem;float: left; padding: .1rem;}
+ul li .text{width: 4.3rem;margin-left: .3rem;float: left;}
+ul li .text p{width: 100%;}
+.text .number{display: inline-block;text-align: center;width: .6rem;height: .6rem;line-height: .6rem;background: rgba(255,255,255,.7);color: #666;font-size: .3rem;float: left;}
+.overflow{margin-bottom: .2rem;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
+.red{color: #09BB07; display: inline-block; font-size: .4rem;margin-right: .1rem;}
+ul li .img img{width: 100%;height: 100%;}
+.list label img{width: .4rem;height: .4rem;    margin-top: .06rem;}
+.label img{width: .4rem;height: .4rem;margin-top: -0.2rem;}
+.total{width: 100%;background: white;text-align: right; color: #666;padding:.3rem;}
+.total span{color: #22af21; font-size: .3rem;}
+.m-spinner { float: right;
+    border: 1px solid #EAE8E8;
+    border-radius: 1px;
+    display: inline-block;
+    overflow: hidden;
+}
+.m-spinner .btn1, .m-spinner .btn2{float: left;font-size: .4rem;
+    width: .6rem;
+    height: .6rem;
+    line-height: .6rem;
+    text-align: center;
+    font-weight: normal;
+    color: #666;
+    letter-spacing: 0;
+    background-color: #F8F8F8;}
+
+/*列表*/
+/*底部结算*/
+.bottom{bottom: 0;width: 100%;color: #701C17;background: #fff; position: fixed;left: 0;border-top: 1px solid #e8e8e8;height: 1rem;line-height: 1rem;}
+.bottom .bottom-label{ float: left; padding-left: .3rem;font-size: .3rem;width: 25%;}
+.bottom .bottom-label label{ line-height: .5rem;}
+.bottom .bottom-label span{ float: left;}
+.bottom .bottom-label img{width: .4rem;height: .4rem;margin-top: .3rem;margin-right: .2rem;float: left;}
+.bottom .bottom-label b{ font-size: .3rem;color: #333;font-weight: normal;line-height: 1.1rem;}
+.bottom .bottom-left{ float: right; width: 75%;color: #333; font-size: .25rem;line-height: 1.1rem;}
+.bottom .bottom-left span{color: #22af21; font-size: .3rem; margin: 0 .1rem;}
+.bottom .bottom-left .sett{width: 2rem;background: #ff900d;color: white;font-size: .3rem;margin-left: .2rem;float: right;height: 1rem; line-height: 1rem;border: none;}
+.bottom .delete{width: 2rem;background: red;color: white;font-size: .3rem;margin-left: .2rem;float: right;height: 1rem; line-height: 1rem;border: none;}
+/*底部结算*/
+/*弹框1*/
+.text1{width: 100%;height: 100%;top: 0;left: 0;background: rgba(200,200,200,.7);display: none;-webkit-display: none; justify-content: center; align-items:center;}
+.text1 form{width: 70%;height: 5rem;background: white;}
+.text1 form input[type=number]{width: 40%;height: 1.8rem;margin: .8rem 30%;border: .04rem solid black;}
+.text1 form input[type=button]{width: 100%;height: 1.6rem;background: #701C17;color: white;}
+/*弹框1*/
+.alert{width: 100%;height: 2rem;text-align: center;line-height: 2rem;color: red;background: white;bottom: 5rem;display: none;}
+/*没有数据*/
+.Dataempty{ text-align: center; margin-top: 1rem;}
+.Dataempty .Dataempty_img { width: 2rem; margin:0 auto .5rem;}
+.Dataempty .Dataempty_img img{ width: 100%;}
+.Dataempty .txte{ font-size: .3rem; color: #777;     position: absolute;
+    left: 50%;
+    margin-left: -1.7rem;
+    top: 50%;
+    margin-top: 1rem;}
+.Dataempty .strollaround{width: 90%; margin: 0 auto;position: absolute;
+    left: 50%;
+    margin-left: -3.4rem;
+    top: 50%;
+    margin-top: 1.5rem;}
+
+/*没有数据*/
+.fl{float:left;}
+.fr{float:right;}
+.clearfix:after{content:"";display:block;width:100%;height:0;clear:both;} 
+

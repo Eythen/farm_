@@ -1,0 +1,268 @@
+{include file="public:yunying_header" /}
+<link href="__PUBLIC__/css/mail.css" rel="stylesheet">
+<style type="text/css">
+
+
+</style>
+</head>
+<body>
+<div class="mail_info">
+    <div class="task-header">
+        <div class="title">发送邮件</div>
+        <div class="right-close closed"></div>
+    </div>
+    <!-- 基本信息开始 -->
+    <form class="form-horizontal" id="form_info" >
+        {notempty name="data.id"}
+            <input type="hidden" name="id" value="{$data.id}"> 
+        {/notempty}
+        <div class="main">
+            <dl>
+                <dt class="col-md-1 col-sm-1"><div class="control-label">收件人</div></dt>
+                <dd class="col-md-10 col-sm-10">
+                    <input type="text" name="addressee" id="addressee" class="form-control must" value=""  placeholder="请输入收件人邮箱，多个用“，”逗号隔开">
+                </dd>
+            </dl>
+            <dl>
+                <dt class="col-md-1 col-sm-1"><div class="control-label">主题</div></dt>
+                <dd class="col-md-10 col-sm-10">
+                    <input type="text" name="subject" id="subject" class="form-control must" value=""  placeholder="请输入邮件主题">
+                </dd>
+            </dl>
+            <dl>
+                <dt class="col-md-1 col-sm-1"><div class="control-label">正文</div></dt>
+                <dd class="col-md-10 col-sm-10">
+                    <!-- <div class="container" id="container"></div> -->
+                    <div class="summernote" id="summernote"></div>
+                </dd>
+            </dl>
+            <dl>
+                <dt class="col-md-1 col-sm-1"><div class="control-label">附件</div></dt>
+                <dd class="col-md-10 col-sm-10">
+                    <div class="attachment">
+                        <ul class="attachment-file" style="padding-left:0px">
+                            <li>
+                                <div class="attachment_box">
+                                    <div class="attachment_img" id="send_file"></div>
+                                    <div class="attachment_img"></div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </dd>
+            </dl>
+             
+        </div>
+        <!-- 基本信息结束 -->
+
+        <div class="submit   col-sm-12 col-md-12">
+            <input type="hidden" name="file" id="file" value="">
+            <span class="btn btn-success" id="add_btn">提交</span>
+            <span class="btn btn-primary closed">取消</span>
+        </div>
+    </form>
+</div>
+{include file="public:js" /}
+
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/js/plugins/summernote/summernote.css">
+<script src="__PUBLIC__/js/plugins/summernote/summernote.min.js"></script>
+<script src="__PUBLIC__/js/plugins/summernote/lang/summernote-zh-CN.js"></script>
+<script type="text/javascript">
+    $(".closed").click(function(){
+        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+        parent.layer.close(index); //再执行关闭
+    });
+
+    $(document).ready(function() {
+        var mail = '{$data.mail}';
+        if(mail==''){
+            parent.$('.btn-config').click();
+            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+            parent.layer.close(index); //再执行关闭
+        }
+        $('.summernote').summernote({
+            lang:'zh-CN',
+            minHeight:'200px',
+            placeholder: '请输入邮件内容...',
+            toolbar: [
+                // [groupName, [list of button]]
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                ['font', ['strikethrough', 'superscript', 'subscript']],
+                ['fontsize', ['fontsize']],
+                ['Insert',['link','table']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['height', ['height']]
+            ]
+        });     
+    });
+
+    //附件
+    var blayer = 0;
+        $('#send_file').uploadify({
+            'swf' : '__PUBLIC__/js/plugins/upload/uploadify.swf',
+            'uploader' : "{:url('Upload/file')}",
+            'buttonText' : '',
+            'buttonClass' : 'attachment_bg glyphicon glyphicon-plus',
+            'width' : '84',
+            'height' : '84',
+            'formData' : { 'session_id' : '{$Think.session.uid}' },
+            'fileTypeExts': '*.xls;*.zip;*.rar;*.jpg;*.doc;*.gif;*.png;*.jpeg;*.docx;*.xlsx;*.pdf',
+            'onUploadStart': function(res){
+                blayer = layer.load(1);
+            },
+            'onUploadComplete': function(a){
+                layer.close(blayer);
+            },
+            'onUploadSuccess': function (file, data, response) {
+                var data = $.parseJSON(data);
+                if(data.status){
+                    file_data = '';
+                    file_data += '<li>';
+                    file_data += '<div class="attachment_box">';
+                    file_data += '<div class="attachment_img" data-file-url="'+ data.path +'">' + checkExt(data.path,data.ext) + '</div>';
+                    file_data += '<div class="attachment_del glyphicon glyphicon-remove-sign" data-file-url="'+ data.path +'" data-file-name="'+ data.name + '.' + data.ext +'" title="删除"></div>';
+                    file_data += '</div>';
+                    file_data += '<div class="attachment_name">'+ data.name + '.' + data.ext +'</div>';
+                    file_data += '</li>';
+                    $('.attachment-file').prepend(file_data);
+                    var files = $.trim($('#file').val());
+                    if( files=='' ){
+                        $("#file").val(data.path+'|'+data.name + '.' + data.ext);
+                    }else{
+                        $("#file").val(files+';'+data.path+'|'+data.name + '.' + data.ext);
+                    }
+                }else{
+                    layer.alert(res.info);
+                }
+            }
+        });
+    function checkExt(filepath,fileext){
+        var icon_file = '';
+        switch(fileext){
+            case 'jpg': case 'jpeg': case 'gif': case 'png':
+                icon_file = filepath;
+                break;
+            case 'doc': case 'docx':
+                icon_file = '__PUBLIC__/img/ext/doc.png';
+                break;
+            case 'xls': case 'xlsx':
+                icon_file = '__PUBLIC__/img/ext/xls.png';
+                break;
+            case 'pdf':
+                icon_file = '__PUBLIC__/img/ext/pdf.png';
+                break;
+            case 'rar': case 'zip':
+                icon_file = '__PUBLIC__/img/ext/rar.png';
+                break;
+            case 'mp4': case 'avi': case 'rmvb': case 'mov':
+                icon_file = '__PUBLIC__/img/ext/media.png';
+                break;
+            default:
+                icon_file = '__PUBLIC__/img/ext/other.png';
+                break;
+        }
+        return '<img src="'+icon_file+'" width="100%">';
+    }
+    $(document).on('click','.attachment_del',function(){
+        var file_url = $(this).data('file-url');
+        var file_name = $(this).data('file-name');
+        var obj = $(this);
+        $.ajax({
+            type: 'POST',
+            url: '{:url('Upload/fileDelete')}',
+            data: 'file_url='+file_url,
+            dataType: 'JSON',
+            async: false,
+            success: function(res){
+                if (res.status) {
+                    obj.parent().parent().remove();
+                    $("#file").val($("#file").val().replace(file_url+'|'+file_name, ""));
+                    $("#file").val($("#file").val().replace(";;", ";"));
+                    if ($('#file').val() == ';') {
+                        $("#file").val('');
+                    }
+                }else{
+                    layer.msg(res.info);
+                }
+            },
+            error: function(){
+                layer.msg('删除失败了！请联系管理员!');
+            }
+        });
+    })
+    $(document).on('click','.attachment_img',function(){
+        var url = $(this).data('file-url').replace("./", "/");
+        var ext = url.slice(url.lastIndexOf(".")+1).toLowerCase();
+        if (ext == 'jpg' || ext == 'gif' || ext == 'png' || ext == 'jpeg') {
+            parent.parent.parent.layer.open({
+                type: 1,
+                maxWidth: '960px',
+                offset: '20px',
+                title: false,
+                content: $(this).html()
+            });
+        }else{
+            window.open(url);
+        }
+    })
+    //提交
+    $(document).on("click","#add_btn",function(){
+        if(check()){
+            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+            var url ="{:url('addMail')}";
+            var addressee = $('#addressee').val();
+            var subject = $('#subject').val();
+            var file = $('#file').val();
+            var content = $('.summernote').summernote('code');
+
+             $.ajax({
+                   type: 'POST',
+                    dataType: 'JSON',
+                    //async: false,
+                    url: url,
+                    data: {'addressee':addressee,'subject':subject, 'file':file, 'content':content},
+                    beforeSend:function(){
+                        var lb = parent.layer.load(1);
+                    },
+                    success:function(res){
+                        if(res.status){
+                           parent.layer.msg(res.info);
+                        }
+                        parent.layer.closeAll(); //再执行关闭
+                    },
+                    error:function(){
+                        parent.layer.msg('提交有误，请检查!！');
+                        parent.layer.close(lb); //再执行关闭
+                        
+                    }
+                });
+             
+            
+            //parent.layer.close(index); //再执行关闭
+        }
+    });
+    
+    function check() {
+        var msg = '';
+        $(".must").each(function() {
+            if( $.trim($(this).val())=='' ){
+                msg += '-' + $(this).attr('placeholder') + '<br>';
+            }
+        });
+
+        var summernote=$('.summernote').summernote('code');
+        if(summernote=='' || summernote=='<p><br></p>'){
+            msg += '-请输入邮件内容<br>';
+        }
+        if (msg) {
+            parent.layer.alert(msg, {icon: 3,title:'输入的内容'}); 
+            return false;
+        } else {
+            return true;
+        }
+
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>我的积分</title>
+		<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport" />
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+		<meta content="telephone=no" name="format-detection" />
+
+		<!-- 引入YDUI样式 -->
+		<link rel="stylesheet" href="__PUBLIC__/css/ydui.css" />
+		<link rel="stylesheet" href="__PUBLIC__/font/iconfont.css" />
+		<link rel="stylesheet" href="__PUBLIC__/css/animate.min.css" />
+		<link rel="stylesheet" href="__PUBLIC__/css/style.css" />
+
+		<!-- 引入YDUI自适应解决方案类库 -->
+		<script src="__PUBLIC__/js/ydui.flexible.js"></script>
+	</head>
+
+	<body>
+
+		<header class="navheader">
+			<a class="icon-jiantou-copy" href="javascript:history.go(-1)"></a>
+			<h1 class="mui-title">我的积分</h1>
+		</header>
+
+		<section class="g-flexview">
+			<div class="tp-bt">
+				<div class="animated bounceInLeft">
+                
+	                <div class="m-cell">
+					    <div class="cell-item">
+					        <div class="cell-left">累计充值</div>
+					        <div class="cell-right">{empty name="user['account']" }0{else/} {$user['account']}{/empty}积分</div>
+					    </div>
+					    <div class="cell-item">
+					        <div class="cell-left">累计返利</div>
+					        <div class="cell-right">{empty name="user['points_return']" }0{else/} {$user['points_return']}{/empty}积分</div>
+					    </div>
+					    <div class="cell-item">
+					        <div class="cell-left">累计工资</div>
+					        <div class="cell-right">{empty name="user['points_wages']" }0{else/} {$user['points_wages']}{/empty}积分</div>
+					    </div>
+					    <div class="cell-item">
+					        <div class="cell-left">累计使用</div>
+					        <div class="cell-right">{empty name="user['used']" }0{else/} {$user['used']}{/empty}积分</div>
+					    </div>
+					    <div class="cell-item">
+					        <div class="cell-left">积分余额</div>
+					        <div class="cell-right">{empty name="user['user_money']" }0{else/} {$user['user_money']}{/empty}积分</div>
+					    </div>
+					</div>
+					
+					<div class="m-cell">
+					    <a class="cell-item" href="{:url('users/rechargelist')}">
+					        <div class="cell-left">充值记录</div>
+					        <div class="cell-right cell-arrow"></div>
+					    </a>
+					    <a class="cell-item" href="{:url('users/rebatelist')}">
+					        <div class="cell-left">返利积分</div>
+					        <div class="cell-right cell-arrow"></div>
+					    </a>
+					    <a class="cell-item" href="{:url('users/wageslist')}">
+					        <div class="cell-left">工资积分</div>
+					        <div class="cell-right cell-arrow"></div>
+					    </a>
+					    <a class="cell-item" href="{:url('users/usedlist')}">
+					        <div class="cell-left">使用记录</div>
+					        <div class="cell-right cell-arrow"></div>
+					    </a>
+					</div>
+				
+
+                </div>
+			</div>
+		</section>
+
+		<script src="__PUBLIC__/js/jquery.min.js"></script>
+
+		<script src="__PUBLIC__/js/mui.min.js"></script>
+		<script>
+            mui.init({
+                keyEventBind:{
+                    backbutton:false
+                }
+            })
+		</script>
+		<script src="__PUBLIC__/js/ydui.js"></script>
+		<script src="__PUBLIC__/js/fastclick.js"></script>
+		<script>
+			$(function() {
+				//消除IOS延迟
+				FastClick.attach(document.body);
+			});
+		</script>
+		<script src="__PUBLIC__/js/common.js"></script>
+	</body>
+
+</html>

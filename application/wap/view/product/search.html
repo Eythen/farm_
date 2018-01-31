@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+	
+	<head>
+		<meta charset="UTF-8">
+		<title>搜索商品</title>
+		<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport" />
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+		<meta content="telephone=no" name="format-detection" />
+		
+		<!-- 引入YDUI样式 -->
+		<link rel="stylesheet" href="__PUBLIC__/css/ydui.css" />
+		<link rel="stylesheet" href="__PUBLIC__/font/iconfont.css" />
+		<link rel="stylesheet" href="__PUBLIC__/css/animate.min.css" />
+		<link rel="stylesheet" href="__PUBLIC__/css/style.css" />
+
+		<!-- 引入YDUI自适应解决方案类库 -->
+		<script src="__PUBLIC__/js/ydui.flexible.js"></script>
+		
+	</head>
+	
+	<body>
+        
+        <!-- 头部搜索框 -->
+        <header class="header-search">
+		    <a href="javascript:history.go(-1)" class="icon-jiantou-copy"></a>
+			<form action="" method="post" id="search-form">
+				<input type="text" class="search" name="keywords" placeholder="输入商品" maxlength="20">
+				<button type="submit" class="search_btn">搜索</button>
+			</form>
+		</header>
+
+
+        <section  class="animated bounceInLeft">
+			<section class="g-flexview">
+				
+                <div class="search_main">
+		            <p class="title">热门搜索</p>
+		            <div class="hot_content">
+						{volist name="hot" id="hot"}
+		                <a class="item" href="JavaScript:void(0)">{$hot.keywords}</a>
+						{/volist}
+		            </div>
+
+			        <div class="history">
+			            <p class="title">历史</p>
+			            <div class="hot_content" id="log">
+							{volist name="log" id="log"}
+			                <a class="item" href="JavaScript:void(0)">{$log.keywords}</a>
+							{/volist}
+			            </div>
+			        </div>
+			        <div class="empty">
+			            <a class="clear" href="javascript:void(0)">清空历史搜索</a>
+			        </div>
+			    </div>
+
+			</section>
+		</section>
+
+
+
+		<script src="__PUBLIC__/js/jquery.min.js"></script>
+		
+		<script src="__PUBLIC__/js/mui.min.js"></script>
+		<script src="__PUBLIC__/js/mui.zoom.js"></script>
+		<script src="__PUBLIC__/js/mui.previewimage.js"></script>
+		<script type="text/javascript">
+			mui.init({
+				keyEventBind:{
+					backbutton:false
+				}
+			})
+		</script>
+		<script src="__PUBLIC__/js/ydui.js"></script>
+		<script src="__PUBLIC__/js/fastclick.js"></script>
+		<script src="__PUBLIC__/js/plugins/layer/layer.js"></script>
+		<script>
+			$(function() {
+			    //消除IOS延迟
+				FastClick.attach(document.body);
+
+				$(".clear").click(function (event) {
+                    $.ajax({
+                        type: 'post',
+                        url: "{:url('clear')}",
+                        dataType: 'json',
+                        success: function(data){
+                            if(data == 1){
+                                layer.msg('清除历史搜索成功！');
+                                $("#log").html('');
+							}
+                        },
+                    });
+                });
+				
+				$(".item").click(function (event) {
+				    var keywords = $(this).html();
+				    $(".search").val(keywords);
+                    $("#search-form").submit();
+                });
+
+			});
+		</script>
+
+	<script src="__PUBLIC__/js/common.js"></script>
+	</body>
+	
+</html>

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>信息管理平台</title>
+  {include file="public:css" /}
+  {include file="public/min-header" /}
+  <style type="text/css">
+        body{background-color: #eee}
+    .btn-icon{ font-size: 12px; margin: 0px 5px; }
+  </style>
+</head>
+
+<body>
+<div class="wrapper animate col-md-12">
+    <section class="content col-md-12">
+        <!-- Main content -->
+        <div class="container-fluid col-md-12">
+            <div class="pull-right">
+                <a href="javascript:history.go(-1)" data-toggle="tooltip" title="" class="btn btn-default" data-original-title="返回"><i class="fa fa-reply"></i>返回</a>
+              
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-list"></i>{if condition="$pigInfo['pig_id'] eq '' "}新增花猪{else/}编辑花猪{/if}</h3>
+                </div>
+                <div class="panel-body">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#tab_tongyong" data-toggle="tab">通用信息</a></li>
+<!--                        <li><a href="#tab_goods_desc" data-toggle="tab">描述信息</a></li>-->
+                        <!-- <li><a href="#tab_goods_images" data-toggle="tab">花猪相册</a></li> -->
+                        <!--<li><a href="#tab_goods_spec" data-toggle="tab">花猪规格</a></li>-->
+                        <!--<li><a href="#tab_goods_attr" data-toggle="tab">花猪属性</a></li>-->
+                      <!--   <li><a href="#tab_goods_size" data-toggle="tab">花猪参数</a></li>
+                      <li><a href="#tab_goods_entry" data-toggle="tab">套餐组成</a></li> -->
+                    </ul>
+                    <!--表单数据-->
+                    <form method="post" id="addEditPigForm" >
+                    
+                        <!--通用信息-->
+                    <div class="tab-content">                     
+                        <div class="tab-pane active" id="tab_tongyong">
+                           
+                            <table class="table table-bordered">
+                                <tbody>
+                                <tr>
+                                    <td>花猪编号:</td>
+                                    <td>
+                                        <input type="text" value="{$pigInfo.pig_name}" name="pig_name" class="form-control" style="width:350px;"/>
+                                        <span id="err_pig_name" style="color:#F00; display:none;"></span>                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>花猪备注:</td>
+                                    <td>
+                                      <textarea rows="3" cols="50" name="pig_remark">{$pigInfo.pig_remark}</textarea><br>后台的备注，前台看不到
+                                        <span id="err_pig_remark" style="color:#F00; display:none;"></span>
+                                         
+                                    </td>                                                                       
+                                </tr>
+                                <!-- <tr>
+                                    <td>花猪货号</td>
+                                    <td>                                                                               
+                                        <input type="text" value="{$pigInfo.pig_sn}" name="pig_sn" class="form-control" style="width:350px;"/>
+                                        <span id="err_pig_sn" style="color:#F00; display:none;"></span>
+                                    </td>
+                                </tr> -->
+                                <tr>
+                                    <td>本店售价:</td>
+                                    <td>
+                                        <input type="text" value="{$pigInfo.pig_price}" name="pig_price" class="form-control" style="width:150px;" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')" onpaste="this.value=this.value.replace(/[^\d.]/g,'')" />
+                                        <span id="err_pig_price" style="color:#F00; display:none;"></span>                                                 
+                                    </td>
+                                </tr>  
+                                <tr>
+                                    <td>上传花猪图片:</td>
+                                    <td>
+                                        <input type="button" value="上传图片"  onclick="GetUploadify(1,'','pig','call_back');"/>
+                                        <input type="text" class="input-sm"  name="original_img" id="original_img" value="{$pigInfo.original_img}"/>
+                                        {if condition="$pigInfo['original_img'] neq null"}
+                                            &nbsp;&nbsp;
+                                            <a target="_blank" href="{$pigInfo.original_img}" id="original_img2">
+                                                <img width="25" height="25" src="/public/images/image_icon.jpg">
+                                            </a>
+                                        {/if}
+                                        <span id="err_original_img" style="color:#F00; display:none;"></span>                                                 
+                                    </td>
+                                </tr> 
+                                <tr>
+                                    <td>出栏时间</td>
+                                    <td>
+                                        <div class="input-prepend input-group"  style="width:350px;">
+                                            <span class="add-on input-group-addon">
+                                            <i class="glyphicon glyphicon-calendar fa fa-calendar">
+                                            </i>
+                                    </span>
+                                            <input type="text" class="form-control" id="out_time" name="out_time" value="{$info.out_time|date=" Y-m-d ",###}">
+                                        </div>
+                                    </td>
+                                </tr> 
+
+                                </tbody>                                
+                                </table>
+                        </div>
+
+                    </div>              
+                    <div class="pull-right">
+                        <input type="hidden" name="pig_id" value="{$pigInfo.pig_id}">
+                        <!-- onclick="ajax_submit_form('addEditGoodsForm','{:url('Goods/addEditGoods?is_ajax=1')}');"  -->
+                        <button class="btn btn-primary save" title="" data-toggle="tooltip" type="button" data-original-title="保存">保存</button>
+                    </div>
+          </form><!--表单数据-->
+                </div>
+            </div>
+          <div class="well well-sm" >
+              <div id="toolbar">  
+                  <button id="more_del" class="btn btn-warning">
+                      <i class="glyphicon glyphicon-minus"></i> 批量删除
+                  </button>
+                  <button type="button" class="btn btn-primary add-log" data-id="{$pigInfo.pig_id}"><i class="fa fa-plus"></i> 添加花猪数据</button>
+              </div>
+              <table class="table text-center table-hover table-condensed" data-toolbar="#toolbar" data-toggle="table" data-sort-name="id" data-sort-order="desc" data-url="{:url('loglist', ['pig_id'=> $pigInfo.pig_id ])}" data-side-pagination="server" data-pagination="true" data-page-list="[10, 20, 50, 100, 200]" data-show-refresh="true" data-search="false" data-show-export="true" data-filter-control="true" data-filter-show-clear="true" >
+                  <thead>
+                      <tr>
+                          <th data-halign="center" data-field="state" data-checkbox="true" ></th>
+                          <th data-halign="center" data-field="log_id" data-filter-control="input" >ID</th>
+                          <th data-halign="center" data-field="pig_health" data-filter-control="input" >健康</th>
+                          <th data-halign="center" data-field="pig_vaccine" data-filter-control="input" >役苗</th>
+                          <th data-halign="center" data-field="pig_weight" data-filter-control="input">体重kg</th>
+                          <th data-halign="center" data-field="pig_long" data-filter-control="input">身长cm</th>
+                          <th data-halign="center" data-field="pig_round" data-filter-control="input">肚围cm</th>
+                          <th data-halign="center" data-field="uid" data-filter-control="input">更新人员</th>
+                          <th data-halign="center" data-field="add_time" data-filter-control="input">更新时间</th>
+                      </tr>
+                  </thead>
+              </table>
+          </div>
+        </div>    <!-- /.content -->
+    </section>
+</div>
+
+{include file="public:js" /}
+<link href="__PUBLIC__/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />
+<script src="__PUBLIC__/plugins/daterangepicker/moment.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/plugins/daterangepicker/daterangepicker.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+     var editor;
+    $(function () {
+        
+
+        $('.save').on('click', function(){
+           $.ajax({
+              url: "{:url('addEditPig')}",
+              type: 'POST',
+              dataType: 'json',
+              data: $('#addEditPigForm').serialize(),
+              success: function(data){
+                  if( data.code ){
+                      window.location.href = "{:url('piglist')}";
+                      //window.location.reload();
+                  }else{
+                      layer.msg(data.msg, {icon: 2}); 
+                  }
+
+              }
+          });
+
+        });
+
+    });  
+    
+    
+	$('#out_time').daterangepicker({
+		format:"YYYY-MM-DD",
+		singleDatePicker: true,
+		showDropdowns: true,
+		minDate:'<?=date("Y-m-d")?>',
+		maxDate:'2030-01-01',
+		startDate:'{$info.out_time|date="Y-m-d",###}',
+	    locale : {
+            applyLabel : '确定',
+            cancelLabel : '取消',
+            fromLabel : '起始时间',
+            toLabel : '结束时间',
+            customRangeLabel : '自定义',
+            daysOfWeek : [ '日', '一', '二', '三', '四', '五', '六' ],
+            monthNames : [ '一月', '二月', '三月', '四月', '五月', '六月','七月', '八月', '九月', '十月', '十一月', '十二月' ],
+            firstDay : 1
+        }
+	});
+
+    //添加成长记录
+    $(document).on("click",'.add-log',function(){
+        var id = $(this).data('id');
+        layer.open({
+            type: 2,
+            area: ['600px', '455px'],
+            offset: '20px',
+            title: '成长数据',
+            shade: 0.6,
+            closeBtn:false,
+            //skin: 'layui-layer-task',
+            content: '{:url('addEditLog')}'+'?pig_id='+id,
+            end:function(index, layero){
+                $(".table").bootstrapTable('refresh');
+            }
+        });
+    });
+
+
+    function call_back3(fileurl_tmp){
+        $("#entry_img").val(fileurl_tmp);
+        $("#entry_img2").attr('href', fileurl_tmp);
+    }
+
+ 
+    // 上传花猪相册回调函数
+    function call_back2(paths){
+        var  last_div = $(".goods_xc:last").prop("outerHTML");  
+        for (i=0;i<paths.length ;i++ )
+        {                    
+            $(".goods_xc:eq(0)").before(last_div);  // 插入一个 新图片
+                $(".goods_xc:eq(0)").find('a:eq(0)').attr('href',paths[i]).attr('onclick','').attr('target', "_blank");// 修改他的链接地址
+            $(".goods_xc:eq(0)").find('img').attr('src',paths[i]);// 修改他的图片路径
+                $(".goods_xc:eq(0)").find('a:eq(1)').attr('onclick',"ClearPicArr2(this,'"+paths[i]+"')").text('删除');
+            $(".goods_xc:eq(0)").find('input').val(paths[i]); // 设置隐藏域 要提交的值
+        }          
+    }
+    /*
+     * 上传之后删除组图input     
+     * @access   public
+     * @val      string  删除的图片input
+     */
+    function ClearPicArr2(obj,path)
+    {
+      $.ajax({
+                    type:'GET',
+                    url:"{:url('home/Uploadify/delupload')}",
+                    data:{action:"del", filename:path},
+                    success:function(){
+                           $(obj).parent().remove(); // 删除完服务器的, 再删除 html上的图片        
+                    }
+    });
+    // 删除数据库记录
+      $.ajax({
+                    type:'GET',
+                    url:"{:url('home/Goods/del_goods_images')}",
+                    data:{filename:path},
+                    success:function(){
+                          //     
+                    }
+    });   
+    }
+
+/*
+ * 上传图片 后台专用
+ * @access  public
+ * @null int 一次上传图片张图
+ * @elementid string 上传成功后返回路径插入指定ID元素内
+ * @path  string 指定上传保存文件夹,默认存在Public/upload/temp/目录
+ * @callback string  回调函数(单张图片返回保存路径字符串，多张则为路径数组 )
+ */
+function GetUploadify(num,elementid,path,callback)
+{
+  var upurl ='/index.php/home/Uploadify/upload?path='+path+'&func='+callback+'&num='+num+'&input='+elementid;
+  var iframe_str='<iframe frameborder="0" ';
+  iframe_str=iframe_str+'id=uploadify ';      
+  iframe_str=iframe_str+' src='+upurl;
+  iframe_str=iframe_str+' allowtransparency="true" class="uploadframe" scrolling="no"> ';
+  iframe_str=iframe_str+'</iframe>';
+  $("body").append(iframe_str); 
+  $("iframe.uploadframe").css("height",$(document).height()).css("width","100%").css("position","absolute").css("left","0px").css("top","0px").css("z-index","999999").show();
+  $(window).resize(function(){
+    $("iframe.uploadframe").css("height",$(document).height()).show();
+  });
+
+}
+
+</script>
+</body>
+</html>

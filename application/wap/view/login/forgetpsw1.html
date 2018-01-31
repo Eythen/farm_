@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+		<meta content="telephone=no" name="format-detection" />
+		<title>修改登录密码</title>
+
+		<link href="__PUBLIC__/skin/css/ydui.css" rel="stylesheet">
+		<link href="__PUBLIC__/skin/css/app.css" rel="stylesheet">
+		<style>
+			.g-flexview {
+				height: auto;
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: -ms-flexbox;
+				display: flex;
+				-webkit-box-orient: vertical;
+				-webkit-box-direction: normal;
+				-webkit-flex-direction: column;
+				-ms-flex-direction: column;
+				flex-direction: column;
+				margin: 0 auto;
+				max-width: 750px;
+				min-width: 300px;
+				padding-top: 1rem;
+			}
+		</style>
+
+		<script src="__PUBLIC__/skin/js/ydui.flexible.js"></script>
+	</head>
+
+	<body>
+		<header class="m-navbar">
+			<a href="{:url('login/index',array('isurl'=>1))}" class="navbar-item"><i class="back-ico"></i></a>
+			<div class="navbar-center"><span class="navbar-title">修改登录密码</span></div>
+		</header>
+		<div class="g-flexview">
+			<div class="top50">
+
+				<div class="m-cell top3">
+					<div class="cell-item">
+						<div class="cell-left">手机号：</div>
+						<div class="cell-right">
+							<input type="number" pattern="[0-9]*" id="Mobile"  class="cell-input" placeholder="输入手机号" autocomplete="off" required/>
+						</div>
+					</div>
+					<div class="cell-item">
+						<div class="cell-left">验证码：</div>
+						<div class="cell-right">
+							<input type="number" pattern="[0-9]*" class="cell-input" id="code" placeholder="输入验证码" autocomplete="off" required/>
+							<button type="button" class="btn btn-warning" id="J_GetCode">获取短信验证码</button>
+						</div>
+					</div>
+				</div>
+				<div class="m-cell">
+					<div class="cell-item">
+						<div class="cell-left">重置密码：</div>
+						<div class="cell-right">
+							<input type="password" class="cell-input" id="pwd" placeholder="输入密码" autocomplete="off" />
+						</div>
+					</div>
+					<div class="cell-item">
+						<div class="cell-left">再次输入：</div>
+						<div class="cell-right">
+							<input type="password" class="cell-input" id="pwd1" placeholder="再次输入密码" autocomplete="off" />
+						</div>
+					</div>
+				</div>
+
+				<div class="weui-btn-area">
+					<a href="javascript:;" onclick="issue()" class="btn-block btn-ls">确定修改</a>
+				</div>
+
+			</div>
+		</div>
+
+		<script src="__PUBLIC__/skin/js/jquery.min.js"></script>
+		<script src="__PUBLIC__/skin/js/ydui.js"></script>
+		<script src="__PUBLIC__/skin/js/app.js"></script>
+		<script>
+			var $getCode = $('#J_GetCode');
+			/* 定义参数 */
+			$getCode.sendCode({
+				disClass: 'btn-disabled',
+				secs: 300,
+				run: false,
+				runStr: '{%s}秒后重新获取',
+				resetStr: '重新获取验证码'
+			});
+			$getCode.on('click', function() {
+				var Mobile = $('#Mobile').val(),
+					    partten = /^1[3|4|5|7|8]\d{9}$/;
+				if(Mobile == '') {
+					$('#Mobile').focus();
+					YDUI.dialog.toast('手机不能为空！', 'none', 1000);
+					return false;
+				} 
+				if(!partten.test(Mobile)) {
+					YDUI.dialog.toast('这个是您手机号码？', 'none', 1000);
+					return false;
+				} 
+					    
+				/* ajax 成功发送验证码后调用【start】 */
+				YDUI.dialog.loading.open('发送中');
+
+				$.ajax({
+                    url: "{:url('users/forgetsendcode')}",
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {mobile: Mobile},
+                    success: function(data){
+                        if( data.code ){
+							setTimeout(function() {
+								YDUI.dialog.loading.close();
+								$getCode.sendCode('start');
+								YDUI.dialog.toast('已发送', 'success', 1500);
+							}, 1500);
+                        }else{
+                        	YDUI.dialog.loading.close();
+                            YDUI.dialog.toast(data.msg, 'error', 1500); 
+                        }
+
+                    }
+                });
+
+				/*setTimeout(function() {
+					YDUI.dialog.loading.close();
+					$getCode.sendCode('start');
+					YDUI.dialog.toast('已发送', 'success', 1500);
+				}, 1500);*/
+			});
+
+			function issue() {
+				! function(win, $) {
+					var dialog = win.YDUI.dialog;
+					var Mobile = $('#Mobile').val(),
+					    partten = /^1[3|4|5|7|8]\d{9}$/;
+					var code = $('#code').val();
+					var pwd = $("#pwd").val();
+					var pwd1 = $("#pwd1").val();
+					if(Mobile == '') {
+						$('#Mobile').focus();
+						dialog.toast('手机不能为空！', 'none', 1000);
+						return false;
+					} else if(!partten.test(Mobile)) {
+						dialog.toast('这个是您手机号码？', 'none', 1000);
+						return false;
+					} else if(code == '') {
+						$('#code').focus();
+						dialog.toast('验证码不能为空！', 'none', 1000);
+						return false;
+					} else if(pwd == '') {
+						$('#pwd').focus();
+						dialog.toast('密码不能为空！', 'none', 1000);
+						return true;
+					} else if(pwd !== pwd1) {
+						$('#pwd1').focus();
+						dialog.toast('2次密码输入不一致！', 'none', 1000);
+						return false;
+					}
+					$.ajax({
+                    url: "{:url('users/resetpassword')}",
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {mobile: Mobile, code:code, password:pwd},
+                    success: function(data){
+                        if( data.code ){
+							
+								YDUI.dialog.loading.close();
+								$getCode.sendCode('start');
+								YDUI.dialog.toast(data.msg, 'success', 1500, function(){
+									window.location.href="{:url('login/index',array('isurl'=>1))}";
+								});
+							
+                        }else{
+                        	YDUI.dialog.loading.close();
+                            YDUI.dialog.toast(data.msg, 'error', 1500); 
+                        }
+
+                    }
+                });
+
+
+				}(window, jQuery);
+			};
+		</script>
+		<script src="__PUBLIC__/js/mui.min.js"></script>
+		<script>
+            mui.init({
+                keyEventBind:{
+                    backbutton:false
+                }
+            })
+		</script>
+		<script src="__PUBLIC__/js/common.js"></script>
+	</body>
+
+</html>

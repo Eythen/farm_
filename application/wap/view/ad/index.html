@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+		<meta content="telephone=no" name="format-detection" />
+		<title>消息</title>
+
+		<link href="__PUBLIC__/skin/css/ydui.css" rel="stylesheet">
+		<link href="__PUBLIC__/skin/css/dropload.css" rel="stylesheet">
+		<link href="__PUBLIC__/skin/css/app.css" rel="stylesheet">
+		<style>
+			.g-flexview {
+				height: 100%;
+				margin: 0 auto;
+				max-width: 750px;
+				min-width: 300px;
+				padding-top: 1rem;
+			}
+			.list-loading img {
+			    display: inline-block;
+			    width: 20px;
+			    height: 20px;
+			}
+			.tab-nav-item.tab-active {
+			    color: #3EC4C8;
+			}
+			.tab-nav-item.tab-active:before {
+			    content: '';
+			    width: 44%;
+			    height: 2px;
+			    position: absolute;
+			    left: 50%;
+			    bottom: 0;
+			    margin-left: -22%;
+			    z-index: 4;
+			    background-color: currentColor;
+			}
+			.list-loading {
+			    margin-top: 0.5remrem; 
+			    text-align: center;
+			    font-size: 0;
+			    color: #999;
+			    height:auto;
+			    line-height:100%;
+			}
+			.tab-panel{
+				background: none;
+			}
+			.tab-panel .tab-panel-item{
+				padding: 0;
+			}
+		</style>
+
+		<script src="__PUBLIC__/skin/js/ydui.flexible.js"></script>
+	</head>
+
+	<body>
+
+		<header class="m-navbar">
+			<a href="{:url('users/index')}" class="navbar-item"><i class="back-ico"></i></a>
+			<div class="navbar-center"><span class="navbar-title">消息</span></div>
+		</header>
+
+		<div class="g-flexview">
+
+			<section class="g-scrollview" id="J_List">
+				<!--模板-->
+				
+					
+				<div id="J_ListContent" class="m-list top3">
+
+				</div>
+						
+						
+					
+				
+			</section>
+			
+		</div>
+		
+		{literal}
+		<script id="J_ListHtml" type="text/html">
+			{{each list as data}}
+			<ul class="message">
+				<li>
+					<a href="javascript:void(0);" class="J_Link" data-page="{{data.page}}">
+						<h1>{{data['title']}}</h1>
+						<time>{{data['add_time']}}</time>
+					</a>
+				</li>
+			</ul>
+			{{/each}}
+		</script>
+		
+		{/literal}
+		
+
+		<script src="__PUBLIC__/skin/js/jquery.min.js"></script>
+		<script src="__PUBLIC__/skin/js/template.js"></script>
+		<script src="__PUBLIC__/skin/js/ydui.js"></script>
+		<script src="__PUBLIC__/skin/js/app.js"></script>
+		<script>
+
+					var page = 1,
+						pageSize = 10,
+						type = 0;
+
+
+					$('#J_List').infiniteScroll({
+						binder: '#J_List',
+						pageSize: pageSize,
+						initLoad: true,
+						loadingHtml: '<img src="__PUBLIC__/skin/img/loading.gif"/>',
+						loadListFn: function() {
+							var def = $.Deferred();
+							$.ajax({
+								url: '{:url("ad/index")}',
+								dataType: 'json',
+								data: {
+									page: page,
+									pagesize: pageSize,
+									type: type
+								},
+								success: function(listArr) {
+
+									listArr.page = page;
+									
+									var html = template('J_ListHtml', {
+										list: listArr['lists']
+									});
+									
+									$('#J_ListContent').append(html);
+									
+									def.resolve(listArr['lists'], page);
+									++page;
+								}
+							});
+							
+							return def.promise();
+						}
+					});
+				//}
+
+				//addpage(0);
+			//}
+				
+
+
+		</script>
+		<script src="__PUBLIC__/js/mui.min.js"></script>
+		<script>
+            mui.init({
+                keyEventBind:{
+                    backbutton:false
+                }
+            })
+		</script>
+		<script src="__PUBLIC__/js/common.js"></script>
+	</body>
+
+</html>

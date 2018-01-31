@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>信息管理平台</title>
+	{include file="public:css" /}
+</head>
+<body>
+<div class="well-lg" >
+    <form class="form-horizontal" id="generalize_info">
+        <div class="form-group">
+            <label for="username" class="col-xs-4 control-label text-right">快递单号:</label>
+            <div class="col-xs-7">	
+				<textarea name="sn" id="sn" class="form-control" rows="5" holeplace="">{$data.sn}</textarea>
+                <!-- <input type="text" class="form-control" id="sn" name="sn" value="{$data.sn}" > -->
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="username" class="col-xs-4 control-label text-right">快递名称:</label>
+            <div class="col-xs-7">
+                <select name="name_code" class="form-control selectpicker" data-live-search="true">
+                    {volist name="cat" id="vo"}
+                    <option value="{$key}" {eq name="last_name_code" value="$key" }selected{/eq}>{$vo}</option>
+                    {/volist}
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <br>
+        </div>
+        <div class="form-group">
+            <div class="col-xs-4 col-xs-offset-4">
+                <button type="button" class="btn btn-primary pull-right" id='submit' >保存</button>
+                <input type="hidden" id="id" name="id" value="{$data.id}" >
+            </div>
+        </div>
+    </form>
+</div>
+	{include file="public:js" /}
+    <script type="text/javascript">
+        $(function(){
+            $('.selectpicker').selectpicker();
+
+            $('#submit').click(function(event) {
+                var sn = $.trim($('#sn').val());
+                if(sn==''){
+                    layer.msg('单号不能为空', {icon: 2}); 
+                }else{
+                    $.ajax({
+                        url: "{:url('edit')}",
+                        type: 'POST',
+                        dataType: 'json',
+                        data: $('#generalize_info').serialize(),
+                        success: function(data){
+                            if( data.code ){
+
+                                var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                                parent.layer.close(index); //再执行关闭 
+                            }else{
+                                layer.msg(data.msg, {icon: 2}); 
+                            }
+                        }
+                    })
+                }
+            });
+
+            $('#sn').blur(function(){
+                var sn = $('#sn').val();
+                if(sn==''){
+                    return ;
+                }
+                $.ajax({
+                        url: "{:url('getKuaidiNameByJson')}",
+                        type: 'POST',
+                        dataType: 'json',
+                        data: {sn:sn},
+                        success: function(data){
+                            if( data.code ){
+
+                                var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                                parent.layer.close(index); //再执行关闭 
+                            }else{
+                                layer.msg(data.msg, {icon: 2}); 
+                            }
+                        }
+                    })
+            })
+        })
+    </script>
+</body>
+</html>

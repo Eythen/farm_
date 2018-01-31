@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>信息管理平台</title>
+    {include file="public:css" /}
+    <style type="text/css">
+    body {
+        background-color: #eee
+    }
+
+    .btn-icon {
+        font-size: 12px;
+        margin: 0px 5px;
+    }
+
+    .user {
+        position: relative;
+        margin-right: 14px;
+    }
+
+    .user i {
+        width: 20px;
+        height: 20px;
+        border-radius: 10px;
+        z-index: 999;
+        position: absolute;
+        background-color: red;
+        color: #fff;
+        top: -10px;
+        right: -10px;
+        padding-top: 3px;
+    }
+
+    #users {
+        position: relative;
+        max-height: 18em;
+        overflow-y: auto;
+    }
+    </style>
+</head>
+<script type="text/javascript">
+window.UEDITOR_Admin_URL = "__ROOT__public/plugins/Ueditor/";
+var URL_upload = "{$URL_upload}";
+var URL_fileUp = "{$URL_fileUp}";
+var URL_scrawlUp = "{$URL_scrawlUp}";
+var URL_getRemoteImage = "{$URL_getRemoteImage}";
+var URL_imageManager = "{$URL_imageManager}";
+var URL_imageUp = "{$URL_imageUp}";
+var URL_getMovie = "{$URL_getMovie}";
+var URL_home = "{$URL_home}";
+</script>
+{load href="__ROOT__public/plugins/Ueditor/ueditor.config.js"/} {load href="__ROOT__public/plugins/Ueditor/ueditor.all.js"/}
+
+<body>
+    <div class="wrapper">
+        <section class="content">
+            <div class="col-md-12">
+                <div class="col-md-12">
+                    <div class="box box-info">
+                        <div class="box-header with-border">
+                            <br>
+                            <!-- <h3 class="box-title">发布文章</h3>
+                 <a href="{:url('Article/articleList')}" data-toggle="tooltip" title="" class="btn btn-default pull-right" data-original-title="返回"><i class="fa fa-reply"></i></a> -->
+                        </div>
+                        <form class="form-horizontal" action="{:url('Article/aticleHandle')}" enctype="multipart/form-data" id="add_post" method="post">
+                            <div class="box-body">
+                                <div class="form-group">
+                                    <label for="inputEmail3" class="col-sm-2 control-label">文章标题</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" value="{$info.title}" name="title">
+                                    </div>
+                                </div>
+                                <div class="form-group" style="display: none;">
+                                    <label for="inputEmail3" class="col-sm-2 control-label">文章类别</label>
+                                    <div class="col-sm-4">
+                                      
+                                        <select class="small form-control" name="cat_id" id="cat_id" readonly>
+                                            <option value="0">选择分类</option>
+                                            {$cat_select}
+                                        </select>
+                                    </div>
+                                </div>
+                                {if condition="$type eq 2"}
+                                <div class="form-group">
+                                    <label for="level_id" class="col-sm-2 control-label">用户分类</label>
+                                    <div class="col-sm-4">
+                                        <select class="small form-control" name="level_id" id="level_id">
+                                            <option value="">选择分类</option>
+                                            <?=dump($level);?>
+                                                {notempty name="level"} {volist name="level" id="vo"}
+                                                <option value="{$key}">{$vo}</option>
+                                                {/volist} {/notempty}
+                                        </select>
+                                    </div>
+                                    <font color="red" style="padding-top: 4px">选择了分类就发给分类下所有用户</font>
+                                </div>
+                                <div class="form-group">
+                                    <label for="user_ids" class="col-sm-2 control-label">用户</label>
+                                    <div class="col-sm-8">
+                                        <input type="button" class="btn btn-sm btn-info selectuser" value="选择用户" /> 选择具体用户就不发送分类的所有用户
+                                        <div class="form-control" id="users" style="min-height: 5em;margin-top: 0.5em;"></div>
+                                        <input type="hidden" id="user_ids" name="user_ids" value="{$info.user_ids}">
+                                    </div>
+                                </div>
+                                {else /}
+                                <!-- <div class="form-group">
+                                    <label for="text" class="col-sm-2 control-label">是否推荐</label>
+                                    <div class="col-sm-5">
+                                        <div class="col-sm-5">
+                                            <label>
+                                                <input type="radio" name="open_type" value="1" {if condition="$info['open_type'] eq 1" } checked="checked" {/if}> 显示在跑马灯 </label>
+                                        </div>
+                                        <div class="col-sm-5">
+                                            <label>
+                                                <input type="radio" name="open_type" value="0" {if condition="$info['open_type'] eq 0" } checked="checked" {/if}> 否推荐</label>
+                                        </div>
+                                    </div>
+                                </div> -->
+                                {/if}
+                                <div class="form-group">
+                                    <label for="text" class="col-sm-2 control-label">banner图</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" id="imagetext" name="thumb" value="{$info.thumb}">
+                                        <input type="button" class="button" onClick="GetUploadify(1,'imagetext','article','')" value="上传图片" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="text" class="col-sm-2 control-label">seo关键字</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" name="keywords" value="{$info.keywords}">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="text" class="col-sm-2 control-label">外部链接</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" name="link" value="{$info.link}">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="text" class="col-sm-2 control-label">发布时间</label>
+                                    <div class="col-sm-8">
+                                        <div class="input-prepend input-group">
+                                            <span class="add-on input-group-addon">
+                                            <i class="glyphicon glyphicon-calendar fa fa-calendar">
+                                            </i>
+                                    </span>
+                                            <input type="text" class="form-control" id="publish_time" name="publish_time" value="{$info.publish_time|date=" Y-m-d H:i:s ",###}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="text" class="col-sm-2 control-label">是否显示</label>
+                                    <div class="col-sm-5">
+                                        <div class="col-sm-4">
+                                            <label>
+                                                <input type="radio" name="is_open" value="1" {if condition="$info['is_open'] eq 1" } checked="checked" {/if}> 显示 </label>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <label>
+                                                <input type="radio" name="is_open" value="0" {if condition="$info['is_open'] eq 0" } checked="checked" {/if}> 不显示</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2">网页描述</label>
+                                    <div class="col-sm-8">
+                                        <textarea class="form-control" id="post_description" name="description" title="">{$info.description}</textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2">文章内容</label>
+                                    <div class="col-sm-8">
+                                        <textarea class="span12 ckeditor" id="post_content" name="content" title="">
+                                            {$info.content}
+                                        </textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2">
+                                        <input type="hidden" name="act" value="{$act}">
+                                        <input type="hidden" name="article_id" value="{$info.article_id}">
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <button type="reset" class="btn btn-default">重置</button>
+                                        <button type="button" onclick="checkForm()" class="btn btn-info pull-right">提交</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box-footer row">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    {include file="public:js" /}
+    <link href="__PUBLIC__/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />
+    <script src="__PUBLIC__/plugins/daterangepicker/moment.min.js" type="text/javascript"></script>
+    <script src="__PUBLIC__/plugins/daterangepicker/daterangepicker.js" type="text/javascript"></script>
+    <script type="text/javascript">
+    var editor;
+    $(function() {
+        //具体参数配置在  editor_config.js 中
+        var options = {
+            zIndex: 999,
+            initialFrameWidth: "100%", //初化宽度
+            initialFrameHeight: 400, //初化高度
+            focus: false, //初始化时，是否让编辑器获得焦点true或false
+            maximumWords: 99999,
+            removeFormatAttributes: 'class,style,lang,width,height,align,hspace,valign', //允许的最大字符数 'fullscreen',
+            pasteplain: true, //是否默认为纯文本粘贴。false为不使用纯文本粘贴，true为使用纯文本粘贴
+            autoHeightEnabled: true,
+            indentValue: '2em',
+            /*   autotypeset: {
+                   mergeEmptyline: true,        //合并空行
+                   removeClass: true,           //去掉冗余的class
+                   removeEmptyline: false,      //去掉空行
+                   textAlign: "left",           //段落的排版方式，可以是 left,right,center,justify 去掉这个属性表示不执行排版
+                   imageBlockLine: 'center',    //图片的浮动方式，独占一行剧中,左右浮动，默认: center,left,right,none 去掉这个属性表示不执行排版
+                   pasteFilter: false,          //根据规则过滤没事粘贴进来的内容
+                   clearFontSize: false,        //去掉所有的内嵌字号，使用编辑器默认的字号
+                   clearFontFamily: false,      //去掉所有的内嵌字体，使用编辑器默认的字体
+                   removeEmptyNode: false,      //去掉空节点
+                                                //可以去掉的标签
+                   removeTagNames: {"font": 1},
+                   indent: false,               // 行首缩进
+                   indentValue: '0em'           //行首缩进的大小
+               }*/
+        };
+        editor = new UE.ui.Editor(options);
+        editor.render("post_content");
+
+
+        $('.selectuser').click(function() {
+            layer.open({
+                title: '选择用户',
+                type: 2,
+                area: ['88%', '88%'],
+                //fix: false, //不固定
+                maxmin: true,
+                content: "{:url('user/selectuser')}",
+                zIndex: layer.zIndex, //重点1
+                success: function(layero) {
+                    layer.setTop(layero); //重点2
+                },
+                end: function() {
+                    //$(".table").bootstrapTable('refresh');
+                }
+            });
+        });
+
+        $('select[name=level_id]').change(function() {
+            var level_id = $(this).val();
+            $('#user_ids').val('');
+            $('#users').html('');
+            if (level_id) {
+                $(this).closest('.form-group').next().hide();
+            } else {
+                $(this).closest('.form-group').next().show();
+            }
+
+        });
+
+         //编辑的时候初始化用户
+        {notempty name="info['article_id']"}
+          {volist name="users" id="vo"}
+            var nickname = "{$vo['nickname']}";
+            var userid = "{$vo['user_id']}";
+            var mobile = "{$vo['mobile']}";
+            adduser(userid, mobile, nickname);
+          {/volist}
+        $('select[name=level_id]').closest('.form-group').hide();
+        {/notempty}
+      //编辑的时候初始化用户end
+
+    });
+
+
+
+    //选择的用户
+    function adduser(userid, mobile, nickname) {
+        var user_ids = $('#user_ids').val() + ',';
+        var id = ',' + userid + ',';
+        var t = user_ids.indexOf(id);
+        if (t == '-1') {
+
+            //删除字符串最后一个字符的
+            user_ids = user_ids.substring(0, user_ids.length - 1);
+            user_ids += ',' + userid;
+
+            var users = $('#users').html();
+            users += '<span class="btn btn-sm btn-default user" data-id="' + userid + '">' + mobile + '(' + nickname + ')<i class="glyphicon glyphicon-remove" onclick="deleteuser(' + userid + ')"></i></span>';
+
+            $('#user_ids').val(user_ids);
+            $('#users').html(users);
+        }
+
+    }
+    //删除选择用户
+    function deleteuser(userid) {
+        var user_ids = $('#user_ids').val() + ',';
+        var id = ',' + userid + ',';
+        user_ids = user_ids.replace(',,', ",");
+        user_ids = user_ids.replace(id, ",");
+        //删除字符串最后一个字符的
+        user_ids = user_ids.substring(0, user_ids.length - 1);
+
+        $('#user_ids').val(user_ids);
+        $('#users').find('span[data-id=' + userid + ']').remove();
+        //检查是否为空
+        var has = $('#user_ids').val();
+        if (has == "") {
+            $('select[name=level_id').closest('.form-group').show();
+        }
+
+
+
+    }
+    $('#publish_time').daterangepicker({
+        //format:"YYYY-MM-DD",
+        singleDatePicker: true,
+        //showDropdowns: true,
+        /*minDate:'2016-01-01',
+        maxDate:'2030-01-01',*/
+        maxDate: moment(), //最大时间 
+        dateLimit: {
+            days: 30
+        }, //起止时间的最大间隔
+        showDropdowns: true,
+        showWeekNumbers: false, //是否显示第几周
+        timePicker: true, //是否显示小时和分钟
+        timePickerIncrement: 10, //时间的增量，单位为分钟
+        timePicker12Hour: false, //是否使用12小时制来显示时间
+        format: 'YYYY-MM-DD HH:mm:ss', //控件中from和to 显示的日期格式
+        separator: ' to ',
+        startDate: '{$info.publish_time|date="Y-m-d H:i:s",###}',
+        locale: {
+            applyLabel: '确定',
+            cancelLabel: '取消',
+            fromLabel: '起始时间',
+            toLabel: '结束时间',
+            customRangeLabel: '自定义',
+            daysOfWeek: ['日', '一', '二', '三', '四', '五', '六'],
+            monthNames: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+            firstDay: 1
+        }
+    });
+
+    function checkForm() {
+        if ($('input[name="title"]').val() == '') {
+            alert("请填写文章标题！");
+            return false;
+        }
+        if ($('#cat_id').val() == '' || $('#cat_id').val() == 0) {
+            alert("请选择文章类别！");
+            return false;
+        }
+        if ($('#post_content').val() == '') {
+            alert("请填写文章内容！");
+            return false;
+        }
+        $('#add_post').submit();
+    }
+
+
+    /*
+     * 上传图片 后台专用
+     * @access  public
+     * @null int 一次上传图片张图
+     * @elementid string 上传成功后返回路径插入指定ID元素内
+     * @path  string 指定上传保存文件夹,默认存在Public/upload/temp/目录
+     * @callback string  回调函数(单张图片返回保存路径字符串，多张则为路径数组 )
+     */
+    function GetUploadify(num, elementid, path, callback) {
+        var upurl = "{:url('home/Uploadify/upload')}" + '?num=' + num + '&input=' + elementid + '&path=' + path + '&func=' + callback;
+
+        var iframe_str = '<iframe frameborder="0" ';
+        iframe_str = iframe_str + 'id=uploadify ';
+        iframe_str = iframe_str + ' src=' + upurl;
+        iframe_str = iframe_str + ' allowtransparency="true" class="uploadframe" scrolling="no"> ';
+        iframe_str = iframe_str + '</iframe>';
+        $("body").append(iframe_str);
+        $("iframe.uploadframe").css("height", $(document).height()).css("width", "100%").css("position", "absolute").css("left", "0px").css("top", "0px").css("z-index", "999999").show();
+        $(window).resize(function() {
+            $("iframe.uploadframe").css("height", $(document).height()).show();
+        });
+    }
+    </script>
+</body>
+
+</html>

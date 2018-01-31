@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>参加自愿者</title>
+		<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport" />
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+		<meta content="telephone=no" name="format-detection" />
+		
+		<!-- 引入YDUI样式 -->
+		<link rel="stylesheet" href="__PUBLIC__/css/ydui.css" />
+		<link rel="stylesheet" href="__PUBLIC__/font/iconfont.css" />
+		<link rel="stylesheet" href="__PUBLIC__/css/animate.min.css" />
+		<link rel="stylesheet" href="__PUBLIC__/css/style.css" />
+		<link rel="stylesheet" href="__PUBLIC__/css/mobileSelect.css" />
+
+		<!-- 引入YDUI自适应解决方案类库 -->
+		<script src="__PUBLIC__/js/ydui.flexible.js"></script>
+	</head>
+	<body>
+		
+		<header class="navheader">
+		    <a class="icon-jiantou-copy" href="javascript:history.go(-1)"></a>
+		    <h1 class="mui-title">参加自愿者</h1>
+		</header>
+		
+		<section class="g-flexview">
+			
+			<div class="people">
+				<div class="animated bounceInLeft">
+				
+					<div class="topbt2">
+						<form action="" method="post" enctype="multipart/form-data">
+							<div class="add_imgs margin-bo">
+			                    <img src="__PUBLIC__/img/people.png" alt="" class="fileImg"/>
+			                	<input type="file" name="pic" class="file" />
+			                </div>
+							<div class="m-cell">
+								<div class="cell-item">
+							        <input type="text" id="chname" name="name" class="cell-input" placeholder="姓名"/>
+							    </div>
+							    <div class="m-cell mb0">
+								    <label class="cell-item">
+								        <span class="cell-left">男</span>
+								        <label class="cell-right">
+								            <input type="radio" name="sex" value="1" checked/>
+								            <i class="cell-checkbox-icon"></i>
+								        </label>
+								    </label>
+								    <label class="cell-item">
+								        <span class="cell-left">女</span>
+								        <label class="cell-right">
+								            <input type="radio" name="sex" value="2"/>
+								            <i class="cell-checkbox-icon"></i>
+								        </label>
+								    </label>
+								</div>
+							    <div class="cell-item">
+							        <input type="text" id="phone" class="cell-input" name="mobile" placeholder="手机号"/>
+							    </div>
+							    <div class="cell-item">
+							        <input type="text" id="card" class="cell-input" name="id_card" placeholder="身份证"/>
+							    </div>
+							</div>
+							<p class="makings">您好！请填写并确认您的个人资料，项目管理方将通过电话与您核实和沟通。如未接到电话通知，则可能人数已满。</p>
+							<div class="topright">
+								<input type="hidden" name="user_id" value="{$user_id}">
+								<input type="hidden" name="help_id" value="{$help_id}">
+								<button type="submit" id="registered" class="btn-block btn-primary"/>提交</button>
+							</div>
+						</form>
+					</div>
+					
+				</div>
+			</div>
+			
+		</section>
+		
+		
+		
+		<script src="__PUBLIC__/js/jquery.min.js"></script>
+		
+		<script src="__PUBLIC__/js/mui.min.js"></script>
+		<script src="__PUBLIC__/js/mui.zoom.js"></script>
+		<script src="__PUBLIC__/js/mui.previewimage.js"></script>
+		<script type="text/javascript">
+			mui.init({
+				keyEventBind:{
+					backbutton:false
+				}
+			})
+		</script>
+		<script src="__PUBLIC__/js/ydui.js"></script>
+		<script src="__PUBLIC__/js/fastclick.js"></script>
+		<script src="__PUBLIC__/js/plugins/layer/layer.js"></script>
+
+
+		
+		<script>
+			$(function() {
+			    //消除IOS延迟
+				FastClick.attach(document.body);
+
+				//上传身份证
+				$(".file").change(function(){
+	                var fileImg = $(this).parent().find(".fileImg");
+	                var explorer = navigator.userAgent;
+	                var imgSrc = $(this)[0].value;
+	                if (explorer.indexOf('MSIE') >= 0) {
+	                    if (!/\.(jpg|jpeg|png|JPG|PNG|JPEG)$/.test(imgSrc)) {
+	                        imgSrc = "";
+	                        fileImg.attr("src","/img/default.png");
+	                        return false;
+	                    }else{
+	                        fileImg.attr("src",imgSrc);
+	                    }
+	                }else{
+	                    if (!/\.(jpg|jpeg|png|JPG|PNG|JPEG)$/.test(imgSrc)) {
+	                        imgSrc = "";
+	                        fileImg.attr("src","");
+	                        return false;
+	                    }else{
+	                        var file = $(this)[0].files[0];
+	                        var url = URL.createObjectURL(file);
+	                        fileImg.attr("src",url);
+	                    }
+	                }
+	            })
+				
+				
+				//判断输入框
+				$('#registered').click(function(event) {
+					//姓名
+			        var chname = $('#chname').val(),
+			            red = /^([a-zA-Z0-9\u4e00-\u9fa5\·]{1,10})$/;
+			            if (chname == '' ) {
+			                layer.msg('姓名不能为空');
+			                return false;
+			            }else if(!red.test(chname)){
+			                layer.msg('请输入正确的姓名');
+			                return false;
+			            }
+			        //手机
+			        var phone = $('#phone').val(),
+			            red = /^1[3|4|5|7|8]\d{9}$/;
+			            if (phone == '' ) {
+			                layer.msg('手机不能为空');
+			                return false;
+			            }else if(!red.test(phone)){
+			                layer.msg('请输入正确的手机号码');
+			                return false;
+			            }
+			        //身份证  
+			        var card = $('#card').val(),
+			            red = /^(\d{15}$|^\d{18}$|^\d{17}(\d|X|x))$/;
+			            if (card == '' ) {
+			                layer.msg('身份证不能为空');
+			                return false;
+			            }else if(!red.test(card)){
+			                layer.msg('请输入正确的身份证号');
+			                return false;
+			            }
+
+			    });
+				
+				
+			});
+		</script>
+	<script src="__PUBLIC__/js/common.js"></script>
+	</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>直播列表</title>
+		<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport" />
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+		<meta content="telephone=no" name="format-detection" />
+
+         <!-- 引入YDUI样式 -->
+		<link rel="stylesheet" href="__PUBLIC__/css/ydui.css" />
+		<link rel="stylesheet" href="__PUBLIC__/font/iconfont.css" />
+		<link rel="stylesheet" href="__PUBLIC__/css/animate.min.css" />
+		<link rel="stylesheet" href="__PUBLIC__/css/style.css" />
+		
+		<!-- 引入YDUI自适应解决方案类库 -->
+		<script src="__PUBLIC__/js/ydui.flexible.js"></script>
+	</head>
+
+	<body>
+		
+        <header class="navheader">
+        	<a class="icon-jiantou-copy" href="{:url('index')}"></a>
+		    <h1 class="mui-title">直播列表</h1>
+		</header>
+
+		<section class="g-flexview">
+			<div class="topbt">
+				<div class="list">
+					<!--<a target="_blank" href="{$lives.link}">-->
+						<!--<div class="playvideo">-->
+							<!--<div class="news_banner playactive">-->
+								<!--<img class="" src="{$lives.thumb}" />-->
+								<!--<figcaption class="img-caption">{$lives.title}</figcaption>-->
+							<!--</div>-->
+						<!--</div>-->
+					<!--</a>-->
+				</div>
+
+			</div>
+        </section>
+
+
+
+		<script src="__PUBLIC__/js/jquery.min.js"></script>
+		
+		<script src="__PUBLIC__/js/mui.min.js"></script>
+		<script src="__PUBLIC__/js/mui.zoom.js"></script>
+		<script src="__PUBLIC__/js/mui.previewimage.js"></script>
+		<script type="text/javascript">
+			mui.init({
+				keyEventBind:{
+					backbutton:false
+				}
+			})
+		</script>
+		<script src="__PUBLIC__/js/ydui.js"></script>
+		<script src="__PUBLIC__/js/fastclick.js"></script>
+		<script src="__PUBLIC__/js/dropload.min.js"></script>
+		<script>
+			$(function() {
+			    //消除IOS延迟
+				FastClick.attach(document.body);
+                var cat_ids = "{$cat_ids}";
+                var page = 1;
+                // dropload
+                $('.topbt').dropload({
+                    scrollArea : window,
+                    loadDownFn : function(me){
+                        $.ajax({
+                            type: 'post',
+                            url: "{:url('ajaxLive')}",
+                            dataType: 'json',
+                            data: {'page':page},
+                            success: function(data){
+                                var result = '';
+                                page++;
+                                for(var i = 0; i < data.length; i++){
+                                    result += '<a target="_blank" href="'+data[i].link+'">'
+                                        +'<div class="playvideo">'
+                                        +'<div class="news_banner playactive">'
+                                        +'<img class="" src="'+data[i].thumb+'" />'
+                                        +'<figcaption class="img-caption" style="font-size:13px">'+data[i].title+'</figcaption>'
+                                        +'</div>'
+                                        +'</div>'
+                                        +'</a>'
+                                }
+                                $('.list').append(result);
+                                // 为了测试，延迟1秒加载
+                                if (data.length == 0){
+                                    // 无数据
+                                    me.noData();
+                                    // 锁定
+                                    me.lock();
+                                }
+                                // 每次数据加载完，必须重置
+                                me.resetload();
+                            },
+                        });
+                    }
+                });
+			});
+		</script>
+		
+	<script src="__PUBLIC__/js/common.js"></script>
+	</body>
+
+</html>

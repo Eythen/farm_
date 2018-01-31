@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>信息管理平台</title>
+  {include file="public:css" /}
+  {include file="public/min-header" /}
+  <style type="text/css">
+        body{background-color: #eee}
+    .btn-icon{ font-size: 12px; margin: 0px 5px; }
+  </style>
+</head>
+<script type="text/javascript">
+    window.UEDITOR_Admin_URL = "__ROOT__public/plugins/Ueditor/";
+    var URL_upload = "{$URL_upload}";
+    var URL_fileUp = "{$URL_fileUp}";
+    var URL_scrawlUp = "{$URL_scrawlUp}";
+    var URL_getRemoteImage = "{$URL_getRemoteImage}";
+    var URL_imageManager = "{$URL_imageManager}";
+    var URL_imageUp = "{$URL_imageUp}";
+    var URL_getMovie = "{$URL_getMovie}";
+    var URL_home = "{$URL_home}";    
+</script>
+
+{load href="__ROOT__public/plugins/Ueditor/ueditor.config.js"/}
+{load href="__ROOT__public/plugins/Ueditor/ueditor.all.js"/}
+
+
+<div class="wrapper animate col-md-12">
+    <section class="content col-md-12">
+        <!-- Main content -->
+        <div class="container-fluid col-md-12">
+            <div class="pull-right">
+                <a href="javascript:history.go(-1)" data-toggle="tooltip" title="" class="btn btn-default" data-original-title="返回"><i class="fa fa-reply"></i></a>
+              <a href="javascript:;" class="btn btn-default" data-url="http://www.tp-shop.cn/Doc/Index/article/id/1007/developer/user.html" onclick="get_help(this)"><i class="fa fa-question-circle"></i> 帮助</a>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-list"></i>{if condition="$goodsInfo['goods_id'] eq '' "}新增商品{else/}编辑商品{/if}</h3>
+                </div>
+                <div class="panel-body">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#tab_tongyong" data-toggle="tab">通用信息</a></li>
+<!--                        <li><a href="#tab_goods_desc" data-toggle="tab">描述信息</a></li>-->
+                        <li><a href="#tab_goods_images" data-toggle="tab">商品相册</a></li>
+                        <!--<li><a href="#tab_goods_spec" data-toggle="tab">商品规格</a></li>-->
+                        <!--<li><a href="#tab_goods_attr" data-toggle="tab">商品属性</a></li>-->
+                        <li><a href="#tab_goods_size" data-toggle="tab">商品参数</a></li>
+                        <li><a href="#tab_goods_entry" data-toggle="tab">礼盒构成</a></li>
+                    </ul>
+                    <!--表单数据-->
+                    <form method="post" id="addEditGoodsForm" >
+                    
+                        <!--通用信息-->
+                    <div class="tab-content">                     
+                        <div class="tab-pane active" id="tab_tongyong">
+                           
+                            <table class="table table-bordered">
+                                <tbody>
+                                <tr>
+                                    <td>商品名称:</td>
+                                    <td>
+                                        <input type="text" value="{$goodsInfo.goods_name}" name="goods_name" class="form-control" style="width:350px;"/>
+                                        <span id="err_goods_name" style="color:#F00; display:none;"></span>                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>商品简介:</td>
+                                    <td>
+                                      <textarea rows="3" cols="50" name="goods_remark">{$goodsInfo.goods_remark}</textarea>
+                                        <span id="err_goods_remark" style="color:#F00; display:none;"></span>
+                                         
+                                    </td>                                                                       
+                                </tr>
+                                <tr>
+                                    <td>商品货号</td>
+                                    <td>                                                                               
+                                        <input type="text" value="{$goodsInfo.goods_sn}" name="goods_sn" class="form-control" style="width:350px;"/>
+                                        <span id="err_goods_sn" style="color:#F00; display:none;"></span>
+                                    </td>
+                                </tr>
+                                <!--<tr>-->
+                                    <!--<td>SPU</td>-->
+                                    <!--<td>                                                                               -->
+                                        <!--<input type="text" value="{$goodsInfo.spu}" name="spu" class="form-control" style="width:350px;"/>-->
+                                        <!--<span id="err_goods_spu" style="color:#F00; display:none;"></span>-->
+                                    <!--</td>-->
+                                <!--</tr>-->
+                                <!--<tr>-->
+                                    <!--<td>SKU</td>-->
+                                    <!--<td>                                                                               -->
+                                        <!--<input type="text" value="{$goodsInfo.sku}" name="sku" class="form-control" style="width:350px;"/>-->
+                                        <!--<span id="err_goods_sku" style="color:#F00; display:none;"></span>-->
+                                    <!--</td>-->
+                                <!--</tr>-->
+                                <tr>
+                                    <td>商品分类:</td>
+                                    <td>
+                                        <select name="cat_id" id="cat_id" class="form-control" style="width:250px;">
+                                            <option value="">所有分类</option>
+                                            {foreach name="cat_list" item="v" key="k" }
+                                            <option value="{$v['id']}"  {if condition="$v['id'] eq $goodsInfo['cat_id'] "}selected="selected"{/if}>
+                                            {$v['name']}
+                                            </option>
+                                            {/foreach}
+                                        </select>
+                                    </td>
+                                </tr>
+
+                                <!--<tr>-->
+                                    <!--<td>商品分类:</td>-->
+                                    <!--<td>-->
+                                        <!--<select name="cat_id" id="cat_id" class="form-control" style="width:250px;">-->
+                                            <!--<option value="">所有分类</option>-->
+                                            <!--{foreach name="cat_list" item="v" key="k" >-->
+                                            <!--<option value="{$v.id}" {if condition="$v['id'] eq $goodsInfo['cat_id']"} selected="selected" {/if} >-->
+                                                <!--{$v.name}-->
+                                            <!--</option>-->
+                                            <!--{/foreach}-->
+                                        <!--</select>-->
+                                    <!--</td>-->
+                                <!--</tr>-->
+
+                                <!--<tr>-->
+                                    <!--<td>商品品牌:</td>-->
+                                    <!--<td>-->
+                  <!--<select name="brand_id" id="brand_id" class="form-control" style="width:250px;">-->
+                                           <!--<option value="">所有品牌</option>-->
+                                            <!--{foreach name="brandList" item="v" key="k" }-->
+                                               <!--<option value="{$v['id']}"  {if condition="$v['id'] eq $goodsInfo['brand_id'] "}selected="selected"{/if}>-->
+                                                  <!--{$v['name']}-->
+                                               <!--</option>-->
+                                           <!--{/foreach}-->
+                                      <!--</select>-->
+                                    <!--</td>-->
+                                <!--</tr>-->
+                                <!--<tr>-->
+                                    <!--<td>供应商:</td>-->
+                                    <!--<td>-->
+                                        <!--<select name="suppliers_id" id="suppliers_id" class="form-control" style="width:250px;">-->
+                                            <!--<option value="0">不指定供应商属于本店商品</option>-->
+                                            <!--{foreach name="suppliersList" item="v" key="k" }-->
+                                                <!--<option value="{$v['suppliers_id']}"  {if condition="$v['suppliers_id'] eq $goodsInfo['suppliers_id'] "}selected="selected"{/if}>-->
+                                                <!--{$v['suppliers_name']}-->
+                                                <!--</option>-->
+                                            <!--{/foreach}-->
+                                        <!--</select>-->
+                                    <!--</td>-->
+                                <!--</tr>-->
+                                <tr>
+                                    <td>本店售价:</td>
+                                    <td>
+                                        <input type="text" value="{$goodsInfo.shop_price}" name="shop_price" class="form-control" style="width:150px;" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')" onpaste="this.value=this.value.replace(/[^\d.]/g,'')" />
+                                        <span id="err_shop_price" style="color:#F00; display:none;"></span>                                                 
+                                    </td>
+                                </tr>  
+                                <tr>
+                                    <td>市场价:</td>
+                                    <td>
+                                        <input type="text" value="{$goodsInfo.market_price}" name="market_price" class="form-control" style="width:150px;" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')" onpaste="this.value=this.value.replace(/[^\d.]/g,'')" />
+                                        <span id="err_market_price" style="color:#F00; display:none;"></span>                                                 
+                                    </td>
+                                </tr>  
+                                <!--<tr>-->
+                                    <!--<td>成本价:</td>-->
+                                    <!--<td>-->
+                                        <!--<input type="text" value="{$goodsInfo.cost_price}" name="cost_price" class="form-control" style="width:150px;" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')" onpaste="this.value=this.value.replace(/[^\d.]/g,'')" />-->
+                                        <!--<span id="err_cost_price" style="color:#F00; display:none"></span>                                                  -->
+                                    <!--</td>-->
+                                <!--</tr>       -->
+                                <!--<tr>-->
+                                    <!--<td>佣金:</td>-->
+                                    <!--<td>-->
+                                        <!--<input type="text" value="{$goodsInfo.commission}" name="commission" class="form-control" style="width:150px;" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')" onpaste="this.value=this.value.replace(/[^\d.]/g,'')" />-->
+                                        <!--用于分销的分成金额-->
+                                    <!--</td>-->
+                                <!--</tr>                                  -->
+                                <tr>
+                                    <td>上传商品图片:</td>
+                                    <td>
+                                        <input type="button" value="上传图片"  onclick="GetUploadify(1,'','goods','call_back');"/>
+                                        <input type="text" class="input-sm"  name="original_img" id="original_img" value="{$goodsInfo.original_img}"/>
+                                        {if condition="$goodsInfo['original_img'] neq null"}
+                                            &nbsp;&nbsp;
+                                            <a target="_blank" href="{$goodsInfo.original_img}" id="original_img2">
+                                                <img width="25" height="25" src="/public/images/image_icon.jpg">
+                                            </a>
+                                        {/if}
+                                        <span id="err_original_img" style="color:#F00; display:none;"></span>                                                 
+                                    </td>
+                                </tr>                                 
+                                <tr>
+                                    <td>商品重量:</td>
+                                    <td>
+                                        <input type="text" class="form-control" style="width:150px;" value="{$goodsInfo.weight}" name="weight" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')" onpaste="this.value=this.value.replace(/[^\d.]/g,'')" />
+                                        &nbsp;克 (以克为单位)                                        
+                                        <span id="err_weight" style="color:#F00; display:none;"></span>
+                                    </td>
+                                </tr>
+                                <!--<tr>-->
+                                    <!--<td>邮费:</td>-->
+                                    <!--<td>-->
+                                        <!--<input type="text" value="{$goodsInfo.shipping_price}" name="shipping_price" class="form-control" style="width:150px;" />-->
+                                        <!--<span id="shipping_price" style="color:#F00; display:none;"></span>-->
+                                    <!--</td>-->
+                                <!--</tr>-->
+                                <tr>
+                                    <td>库存数量:</td>
+                                    <td>
+                                        {if condition="$goodsInfo['goods_id'] gt 0"}
+                                            <input type="text" value="{$goodsInfo.store_count}" class="form-control" style="width:150px;" name="store_count" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')" onpaste="this.value=this.value.replace(/[^\d.]/g,'')" />
+                                        {else /}
+                                            <input type="text" value="{$tpshop_config['basic_default_storage']}" class="form-control" style="width:150px;" name="store_count" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')" onpaste="this.value=this.value.replace(/[^\d.]/g,'')" />                                         
+                                        {/if}
+                                        
+                                        <span id="err_store_count" style="color:#F00; display:none;"></span>                                                  
+                                    </td>
+                                </tr>
+                                <!--<tr>-->
+                                    <!--<td>赠送积分:</td>-->
+                                    <!--<td>-->
+                                        <!--<input type="text" class="form-control" style="width:150px;" value="{$goodsInfo.give_integral}" name="give_integral" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')" onpaste="this.value=this.value.replace(/[^\d.]/g,'')" />-->
+                                        <!--<span id="err_give_integral" style="color:#F00; display:none;"></span>                                                  -->
+                                    <!--</td>-->
+                                <!--</tr>-->
+                                <!--<tr>-->
+                                    <!--<td>兑换积分:</td>-->
+                                    <!--<td>-->
+                                        <!--<input type="text" class="form-control" style="width:150px;" value="{$goodsInfo.exchange_integral}" name="exchange_integral" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')" onpaste="this.value=this.value.replace(/[^\d.]/g,'')" />-->
+                                        <!--<span id="err_exchange_integral" style="color:#F00; display:none;"></span>-->
+                                    <!--</td>-->
+                                <!--</tr>-->
+                                <!--
+                                <tr>
+                                    <td>设置:</td>
+                                    <td>
+                                      <input type="checkbox" checked="checked" value="{$goodsInfo.is_on_sale}" name="is_on_sale"/> 上架&nbsp;&nbsp;
+                                  <input type="checkbox" checked="checked" value="{$goodsInfo.is_free_shipping}" name="is_free_shipping"/> 包邮&nbsp;&nbsp;
+                                        <input type="checkbox" checked="checked" value="{$goodsInfo.is_recommend}" name="is_recommend"/>推荐&nbsp;&nbsp;
+                                        <input type="checkbox" checked="checked" value="{$goodsInfo.is_new}" name="is_new"/>新品&nbsp;&nbsp;
+                                    </td>
+                                </tr>
+                                -->
+                                <tr>
+                                    <td>商品关键词:</td>
+                                    <td>
+                                        <input type="text" class="form-control" style="width:350px;" value="{$goodsInfo.keywords}" name="keywords"/>用空格分隔
+                                        <span id="err_keywords" style="color:#F00; display:none;"></span>
+                                    </td>
+                                </tr>                                    
+                                <tr>
+                                    <td>商品详情描述:</td>
+                                    <td width="85%">
+                    <textarea class="span12 ckeditor" id="goods_content" name="goods_content" title="">{$goodsInfo.goods_content}</textarea>
+                                        <span id="err_goods_content" style="color:#F00; display:none;"></span>                                         
+                                    </td>                                                                       
+                                </tr>   
+                                </tbody>                                
+                                </table>
+                        </div>
+                         <!--其他信息-->
+                         
+                        <!-- 商品相册-->
+                        <div class="tab-pane" id="tab_goods_images">
+                            <table class="table table-bordered">
+                                <tbody>
+                                <tr>                                    
+                                    <td>                                    
+                                    {foreach name="goodsImages" item="vo" key="k" }
+                                        <div style="width:100px; text-align:center; margin: 5px; display:inline-block;" class="goods_xc">
+                                            <input type="hidden" value="{$vo['image_url']}" name="goods_images[]">
+                                            <a onclick="" href="{$vo['image_url']}" target="_blank"><img width="100" height="100" src="{$vo['image_url']}"></a>
+                                            <br>
+                                            <a href="javascript:void(0)" onclick="ClearPicArr2(this,'{$vo['image_url']}')">删除</a>
+                                        </div>
+                                    {/foreach}
+                                    
+                                        <div class="goods_xc" style="width:100px; text-align:center; margin: 5px; display:inline-block;">
+                                            <input type="hidden" name="goods_images[]" value="" />
+                                            <a href="javascript:void(0);" onclick="GetUploadify(10,'','goods','call_back2');"><img src="/public/images/add-button.jpg" width="100" height="100" /></a>
+                                            <br/>
+                                            <a href="javascript:void(0)">&nbsp;&nbsp;</a>
+                                        </div>                                        
+                                    </td>
+                                </tr>                                              
+                                </tbody>
+                            </table>
+                        </div>
+                         <!--商品相册--> 
+   
+                        <!-- 商品规格-->
+                        <!--<div class="tab-pane" id="tab_goods_spec">-->
+                            <!--<table class="table table-bordered" id="goods_spec_table">-->
+                                <!--<tr>-->
+                                    <!--<td>商品类型:</td>-->
+                                    <!--<td>-->
+                                      <!--<select name="spec_type" id="spec_type" class="form-control" style="width:250px;">-->
+                                        <!--<option value="0">选择商品类型</option>-->
+                                        <!--{foreach name="goodsType" item="vo" key="k" }-->
+                                            <!--<option value="{$vo.id}"{if condition="$goodsInfo['spec_type'] eq $vo['id']"} selected="selected" {/if} >{$vo.name}</option>-->
+                                        <!--{/foreach}-->
+                                      <!--</select>-->
+                                    <!--</td>-->
+                                <!--</tr>-->
+
+                            <!--</table>-->
+                            <!--<div id="ajax_spec_data">&lt;!&ndash; ajax 返回规格&ndash;&gt;</div>-->
+                        <!--</div>-->
+                        <!-- 商品规格-->
+
+
+                        <!-- 商品属性-->
+                        <!--<div class="tab-pane" id="tab_goods_attr">-->
+                            <!--<table class="table table-bordered" id="goods_attr_table">-->
+                                <!--<tr>-->
+                                    <!--<td>商品属性:</td>-->
+                                    <!--<td>-->
+                                      <!--<select name="goods_type" id="goods_type" class="form-control" style="width:250px;">-->
+                                        <!--<option value="0">选择商品属性</option>-->
+                                        <!--{foreach name="goodsType" item="vo" key="k" }-->
+                                            <!--<option value="{$vo.id}"{if condition="$goodsInfo['goods_type'] eq $vo['id']"} selected="selected" {/if} >{$vo.name}</option>-->
+                                        <!--{/foreach}-->
+                                      <!--</select>-->
+                                    <!--</td>-->
+                                <!--</tr>-->
+                            <!--</table>-->
+                        <!--</div>-->
+                        <!-- 商品属性-->
+
+
+                        <!--商品参数-->
+                        <div class="tab-pane" id="tab_goods_size">
+                            <input type="hidden" id="size_num" value="{$size_list_count}">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th colspan="3">商品参数:</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="goods_size">
+                                    <tr>
+                                        <td onclick="addSizeTr()"><i class="fa fa-plus"></i></td>
+                                        <td>参数名称</td>
+                                        <td>参数数值</td>
+                                    </tr>
+                                    {volist name='size_list' id='v' key="k"}
+                                    <tr id="goods_size_{$k}">
+                                        <td onclick='delTr("{$k}","goods_size","{$v.id}")'><i class="fa fa-minus"></i></td>
+                                        <td>
+                                            <input type="hidden" name="size[{$k}][id]" value="{$v.id}"><input name="size[{$k}][name]" value="{$v.name}">
+                                        </td>
+                                        <td>
+                                            <input name="size[{$k}][val]" value="{$v.val}">
+                                        </td>
+                                    </tr>
+                                    {/volist}
+                                </tbody>
+                            </table>
+                        </div>
+                        <!--商品参数-->
+
+                        <!--套餐组成-->
+                        <div class="tab-pane" id="tab_goods_entry">
+                            <input type="hidden" id="entry_num" value="{$entry_list_count}">
+                            <table class="table table-bordered" >
+                                <thead>
+                                <tr>
+                                    <th colspan="5">礼盒构成（礼盒分类的商品才需要填写，否则填了也不会在商品详情页显示）:</th>
+                                </tr>
+                                </thead>
+                                <tbody id="goods_entry">
+                                    <tr>
+                                        <td onclick="addEntryTr()"><i class="fa fa-plus"></i></td>
+                                        <td>商品照片</td>
+                                        <td>商品名称</td>
+                                        <td>价格</td>
+                                        <td>重量（g）</td>
+                                    </tr>
+                                    {volist name='entry_list' id='v' key="k"}
+                                    <tr id="goods_entry_{$k}">
+                                        <td onclick='delTr("{$k}","goods_entry","{$v.id}")'><i class="fa fa-minus"></i></td>
+                                        <td>
+                                            <input type="button" value="上传图片"  onclick="GetUploadify(1,'entry_img_{$k}','goods','');"/>
+                                            <input type="text" class="input-sm"  name="entry[{$k}][pic]" id="entry_img_{$k}" value="{$v.pic}"/>
+                                            {if condition="$v['pic'] neq null"}
+                                            &nbsp;&nbsp;
+                                            <a target="_blank" href="{$v.pic}">
+                                                <img width="25" height="25" src="/public/images/image_icon.jpg">
+                                            </a>
+                                            {/if}
+                                            <span style="color:#F00; display:none;"></span>
+                                        </td>
+                                        <td>
+                                            <input type="hidden" name="entry[{$k}][id]" value="{$v.id}"><input name="entry[{$k}][name]" value="{$v.name}">
+                                        </td>
+                                        <td>
+                                            <input name="entry[{$k}][price]" value="{$v.price}">
+                                        </td>
+                                        <td>
+                                            <input name="entry[{$k}][weight]" value="{$v.weight}">
+                                        </td>
+                                    </tr>
+                                    {/volist}
+                                </tbody>
+                            </table>
+                        </div>
+                        <!--商品参数-->
+
+                    </div>              
+                    <div class="pull-right">
+                        <input type="hidden" name="goods_id" value="{$goodsInfo.goods_id}">
+                        <!-- onclick="ajax_submit_form('addEditGoodsForm','{:url('Goods/addEditGoods?is_ajax=1')}');"  -->
+                        <button class="btn btn-primary save" title="" data-toggle="tooltip" type="button" data-original-title="保存">保存</button>
+                    </div>
+          </form><!--表单数据-->
+                </div>
+            </div>
+        </div>    <!-- /.content -->
+    </section>
+</div>
+
+{include file="public:js" /}
+<link href="__PUBLIC__/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />
+<script src="__PUBLIC__/plugins/daterangepicker/moment.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/plugins/daterangepicker/daterangepicker.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+     var editor;
+    $(function () {
+        //具体参数配置在  editor_config.js  中
+        var options = {
+            zIndex: 999,
+            initialFrameWidth: "95%", //初化宽度
+            initialFrameHeight: 400, //初化高度
+            focus: false, //初始化时，是否让编辑器获得焦点true或false
+            maximumWords: 99999, removeFormatAttributes: 'class,style,lang,width,height,align,hspace,valign'
+            , //允许的最大字符数 'fullscreen',
+            pasteplain:false, //是否默认为纯文本粘贴。false为不使用纯文本粘贴，true为使用纯文本粘贴
+            autoHeightEnabled: true
+         /*   autotypeset: {
+                mergeEmptyline: true,        //合并空行
+                removeClass: true,           //去掉冗余的class
+                removeEmptyline: false,      //去掉空行
+                textAlign: "left",           //段落的排版方式，可以是 left,right,center,justify 去掉这个属性表示不执行排版
+                imageBlockLine: 'center',    //图片的浮动方式，独占一行剧中,左右浮动，默认: center,left,right,none 去掉这个属性表示不执行排版
+                pasteFilter: false,          //根据规则过滤没事粘贴进来的内容
+                clearFontSize: false,        //去掉所有的内嵌字号，使用编辑器默认的字号
+                clearFontFamily: false,      //去掉所有的内嵌字体，使用编辑器默认的字体
+                removeEmptyNode: false,      //去掉空节点
+                                             //可以去掉的标签
+                removeTagNames: {"font": 1},
+                indent: false,               // 行首缩进
+                indentValue: '0em'           //行首缩进的大小
+            }*/,
+          toolbars: [
+                   ['fullscreen', 'source', '|', 'undo', 'redo',
+                       '|', 'bold', 'italic', 'underline', 'fontborder',
+                       'strikethrough', 'superscript', 'subscript',
+                       'removeformat', 'formatmatch', 'autotypeset',
+                       'blockquote', 'pasteplain', '|', 'forecolor',
+                       'backcolor', 'insertorderedlist',
+                       'insertunorderedlist', 'selectall', 'cleardoc', '|',
+                       'rowspacingtop', 'rowspacingbottom', 'lineheight', '|',
+                       'customstyle', 'paragraph', 'fontfamily', 'fontsize',
+                       '|', 'directionalityltr', 'directionalityrtl',
+                       'indent', '|', 'justifyleft', 'justifycenter',
+                       'justifyright', 'justifyjustify', '|', 'touppercase',
+                       'tolowercase', '|', 'link', 'unlink', 'anchor', '|',
+                       'imagenone', 'imageleft', 'imageright', 'imagecenter',
+                       '|', 'insertimage', 'emotion', 'insertvideo',
+                       'attachment', 'map', 'gmap', 'insertframe',
+                       'insertcode', 'webapp', 'pagebreak', 'template',
+                       'background', '|', 'horizontal', 'date', 'time',
+                       'spechars', 'wordimage', '|',
+                       'inserttable', 'deletetable',
+                       'insertparagraphbeforetable', 'insertrow', 'deleterow',
+                       'insertcol', 'deletecol', 'mergecells', 'mergeright',
+                       'mergedown', 'splittocells', 'splittorows',
+                       'splittocols', '|', 'print', 'preview', 'searchreplace']
+               ]
+        };
+        editor = new UE.ui.Editor(options);
+        editor.render("goods_content");  //  指定 textarea 的  id 为 goods_content
+
+        $('.save').on('click', function(){
+           $.ajax({
+              url: "{:url('addEditGoods')}",
+              type: 'POST',
+              dataType: 'json',
+              data: $('#addEditGoodsForm').serialize(),
+              success: function(data){
+                  if( data.status ){
+                      alert(data.msg);
+                      window.location.href = data.data.url;
+                      //window.location.reload();
+                  }else{
+                      layer.msg(data.msg, {icon: 2}); 
+                  }
+
+              }
+          });
+
+        });
+
+    });  
+    
+    
+	$('#publish_time').daterangepicker({
+		format:"YYYY-MM-DD",
+		singleDatePicker: true,
+		showDropdowns: true,
+		minDate:'2016-01-01',
+		maxDate:'2030-01-01',
+		startDate:'{$info.publish_time|date="Y-m-d",###}',
+	    locale : {
+            applyLabel : '确定',
+            cancelLabel : '取消',
+            fromLabel : '起始时间',
+            toLabel : '结束时间',
+            customRangeLabel : '自定义',
+            daysOfWeek : [ '日', '一', '二', '三', '四', '五', '六' ],
+            monthNames : [ '一月', '二月', '三月', '四月', '五月', '六月','七月', '八月', '九月', '十月', '十一月', '十二月' ],
+            firstDay : 1
+        }
+	});
+	
+/*	function checkForm(){
+		if($('input[name="title"]').val() == ''){
+			alert("请填写文章标题！");
+			return false;
+		}
+		if($('#cat_id').val() == '' || $('#cat_id').val() == 0){
+			alert("请选择文章类别！");
+			return false;
+		}
+		if($('#post_content').val() == ''){
+			alert("请填写文章内容！");
+			return false;
+		}
+		$('#add_post').submit();
+	}*/
+
+    /*
+     * 以下是图片上传方法
+     */
+    // 上传商品图片成功回调函数
+//    function call_back(fileurl_tmp){
+//        $("#original_img").val(fileurl_tmp);
+//        $("#original_img2").attr('href', fileurl_tmp);
+//    }
+
+    function call_back3(fileurl_tmp){
+        $("#entry_img").val(fileurl_tmp);
+        $("#entry_img2").attr('href', fileurl_tmp);
+    }
+
+ 
+    // 上传商品相册回调函数
+    function call_back2(paths){
+        var  last_div = $(".goods_xc:last").prop("outerHTML");  
+        for (i=0;i<paths.length ;i++ )
+        {                    
+            $(".goods_xc:eq(0)").before(last_div);  // 插入一个 新图片
+                $(".goods_xc:eq(0)").find('a:eq(0)').attr('href',paths[i]).attr('onclick','').attr('target', "_blank");// 修改他的链接地址
+            $(".goods_xc:eq(0)").find('img').attr('src',paths[i]);// 修改他的图片路径
+                $(".goods_xc:eq(0)").find('a:eq(1)').attr('onclick',"ClearPicArr2(this,'"+paths[i]+"')").text('删除');
+            $(".goods_xc:eq(0)").find('input').val(paths[i]); // 设置隐藏域 要提交的值
+        }          
+    }
+    /*
+     * 上传之后删除组图input     
+     * @access   public
+     * @val      string  删除的图片input
+     */
+    function ClearPicArr2(obj,path)
+    {
+      $.ajax({
+                    type:'GET',
+                    url:"{:url('home/Uploadify/delupload')}",
+                    data:{action:"del", filename:path},
+                    success:function(){
+                           $(obj).parent().remove(); // 删除完服务器的, 再删除 html上的图片        
+                    }
+    });
+    // 删除数据库记录
+      $.ajax({
+                    type:'GET',
+                    url:"{:url('home/Goods/del_goods_images')}",
+                    data:{filename:path},
+                    success:function(){
+                          //     
+                    }
+    });   
+    }
+ 
+
+
+/** 以下 商品属性相关 js*/
+$(document).ready(function(){
+  
+    // 商品类型切换时 ajax 调用  返回不同的属性输入框
+    $("#goods_type").change(function(){        
+        var goods_id = $("input[name='goods_id']").val();
+        var type_id = $(this).val();
+            $.ajax({
+                    type:'GET',
+                    data:{goods_id:goods_id,type_id:type_id}, 
+                    url:"/index.php/home/Goods/ajaxGetAttrInput",
+                    success:function(data){                            
+                            $("#goods_attr_table tr:gt(0)").remove()
+                            $("#goods_attr_table").append(data);
+                    }        
+            });                     
+    });
+  // 触发商品类型
+  $("#goods_type").trigger('change');
+    $("input[name='exchange_integral']").blur(function(){
+        var shop_price = parseInt($("input[name='shop_price']").val());
+        var exchange_integral = parseInt($(this).val());
+        if (shop_price * 100 < exchange_integral) {
+
+        }
+    });
+});
+ 
+
+// 属性输入框的加减事件
+function addAttr(a)
+{
+  var attr = $(a).parent().parent().prop("outerHTML");  
+  attr = attr.replace('addAttr','delAttr').replace('+','-');  
+  $(a).parent().parent().after(attr);
+}
+// 属性输入框的加减事件
+function delAttr(a)
+{
+   $(a).parent().parent().remove();
+}
+ 
+
+/** 以下 商品规格相关 js*/
+$(document).ready(function(){
+  
+    // 商品类型切换时 ajax 调用  返回不同的属性输入框
+    $("#spec_type").change(function(){        
+        var goods_id = '{$goodsInfo.goods_id}';
+        var spec_type = $(this).val();
+            $.ajax({
+                    type:'GET',
+                    data:{goods_id:goods_id,spec_type:spec_type}, 
+                    url:"{:url('home/Goods/ajaxGetSpecSelect')}",
+                    success:function(data){
+                        $("#ajax_spec_data").html('')
+                        $("#ajax_spec_data").append(data);
+               //alert('132');
+               ajaxGetSpecInput();  // 触发完  马上处罚 规格输入框
+                    }
+            });                     
+    });
+  // 触发商品规格
+  $("#spec_type").trigger('change'); 
+});
+
+///** 以下是编辑时默认选中某个商品分类*/
+//$(document).ready(function(){
+//
+//  {if condition="$level_cat['2'] gt 0"}
+//     // 商品分类第二个下拉菜单
+//     get_category('{$level_cat[1]}','cat_id_2','{$level_cat[2]}');
+//  {/if}
+//  {if condition="$level_cat['3'] gt 0"}
+//    // 商品分类第二个下拉菜单
+//     get_category('{$level_cat[2]}','cat_id_3','{$level_cat[3]}');
+//  {/if}
+//
+//    //  扩展分类
+//  {if condition="$level_cat2['2'] gt 0"}
+//     // 商品分类第二个下拉菜单
+//     get_category('{$level_cat2[1]}','extend_cat_id_2','{$level_cat2[2]}');
+//  {/if}
+//  {if condition="$level_cat2['3'] gt 0"}
+//    // 商品分类第二个下拉菜单
+//     get_category('{$level_cat2[2]}','extend_cat_id_3','{$level_cat2[3]}');
+//  {/if}
+//
+//});
+
+/*
+ * 上传图片 后台专用
+ * @access  public
+ * @null int 一次上传图片张图
+ * @elementid string 上传成功后返回路径插入指定ID元素内
+ * @path  string 指定上传保存文件夹,默认存在Public/upload/temp/目录
+ * @callback string  回调函数(单张图片返回保存路径字符串，多张则为路径数组 )
+ */
+function GetUploadify(num,elementid,path,callback)
+{
+  var upurl ='/index.php/home/Uploadify/upload?path='+path+'&func='+callback+'&num='+num+'&input='+elementid;
+  var iframe_str='<iframe frameborder="0" ';
+  iframe_str=iframe_str+'id=uploadify ';      
+  iframe_str=iframe_str+' src='+upurl;
+  iframe_str=iframe_str+' allowtransparency="true" class="uploadframe" scrolling="no"> ';
+  iframe_str=iframe_str+'</iframe>';
+  $("body").append(iframe_str); 
+  $("iframe.uploadframe").css("height",$(document).height()).css("width","100%").css("position","absolute").css("left","0px").css("top","0px").css("z-index","999999").show();
+  $(window).resize(function(){
+    $("iframe.uploadframe").css("height",$(document).height()).show();
+  });
+
+}
+
+function addSizeTr() {
+    var size_num = $("#size_num").val()==''?1:$("#size_num").val();
+    size_num++;
+    var html = '<tr id="goods_size_'+size_num+'"><td onclick="delTr('+size_num+',\'goods_size\')"><i class="fa fa-minus"></i></td>'+
+            '<td><input type="hidden" name="size['+size_num+'][id]" value=""><input name="size['+size_num+'][name]"></td>'+
+            '<td><input name="size['+size_num+'][val]"></td>'+
+            '</tr>';
+    $("#goods_size").append(html);
+    $("#size_num").val(size_num);
+}
+
+ function addEntryTr() {
+     var entry_num = $("#entry_num").val()==''?1:$("#entry_num").val();
+     entry_num++;
+     var html = '<tr id="goods_entry_'+entry_num+'"><td onclick="delTr('+entry_num+',\'goods_entry\')"><i class="fa fa-minus"></i></td>'+
+             '<td>' +
+             '<input type="button" value="上传图片"  onclick="GetUploadify(1,\'entry_img_'+entry_num+'\',\'goods\',\'\');"/>'+
+             '<input type="text" class="input-sm"  name="entry['+entry_num+'][pic]" id="entry_img_'+entry_num+'" />' +
+             '</td>'+
+             '<td><input type="hidden" name="entry['+entry_num+'][id]" value=""><input name="entry['+entry_num+'][name]"></td>'+
+             '<td><input name="entry['+entry_num+'][price]"></td>'+
+             '<td><input name="entry['+entry_num+'][weight]"></td>'+
+             '</tr>';
+     $("#goods_entry").append(html);
+     $("#entry_num").val(entry_num);
+ }
+
+function delTr(num,type,id) {
+    if(id){
+        $.ajax({
+            type : "POST",
+            dataType: 'json',
+            url:"/index.php/home/Goods/delSizeFrom",
+            data : {"id":id,"type":type},
+            success: function(data){
+                if(data.code == 1){
+                    $("#"+type+'_'+num).remove();
+                }else{
+                    alert(data.msg);
+                }
+            }
+        });
+    }else{
+        $("#"+type+'_'+num).remove();
+    }
+}
+</script>
+</body>
+</html>

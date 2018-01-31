@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>信息管理平台</title>
+	{include file="public:css" /}
+</head>
+<body>
+<div class="well-lg" >
+    <form class="form-horizontal" id="generalize_info">
+        <div class="form-group">
+            <label for="username" class="col-xs-4 control-label text-right">用户ID</label>
+            <div class="col-xs-7">  
+                {$data.user_id}
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="username" class="col-xs-4 control-label text-right">用户名</label>
+            <div class="col-xs-7">  
+                {$data.username}
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="username" class="col-xs-4 control-label text-right">申请时间</label>
+            <div class="col-xs-7">  
+                {$data.add_time}
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="username" class="col-xs-4 control-label text-right">充值</label>
+            <div class="col-xs-7">  
+                {$data.points_recharge}
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="username" class="col-xs-4 control-label text-right">审核状态</label>
+            <div class="col-xs-7">
+                {$data.status}
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="username" class="col-xs-4 control-label text-right">审核时间</label>
+            <div class="col-xs-7">
+                {$data.update_time}
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="username" class="col-xs-4 control-label text-right">前台审核人</label>
+            <div class="col-xs-7">
+                {$data.user_check_name}
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="username" class="col-xs-4 control-label text-right">后台审核人</label>
+            <div class="col-xs-7">
+                {$data.admin_name}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="username" class="col-xs-4 control-label text-right">审核备注</label>
+            <div class="col-xs-7">  
+                {$data.des}
+            </div>
+        </div>
+
+        
+    </form>
+</div>
+	
+</body>
+</html>

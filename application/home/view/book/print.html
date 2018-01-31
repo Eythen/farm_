@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="cn">
+<head>
+    <meta charset="UTF-8" />
+    <title>订单打印</title>
+    <link href="__PUBLIC__/bootstrap/css/bootstrap.css" rel="stylesheet" media="all" />
+    {include file="public:css" /}
+    <style media="print" type="text/css">.noprint{display:none}</style>
+</head>
+<body>
+<div class="container">
+    <div style="page-break-after: always;">
+        <h1 class="text-center">订单信息</h1>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <td>用餐时间</td>
+                <td colspan="2">订单详情</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <!-- <td><address><strong>商城</strong><br/>{$shop.address}</address>
+                    <b>网址:</b> <a href="http://m.septfarm.com">http://m.septfarm.com</a>
+                    <b>电话:</b> {$shop.phone}<br/>
+                    <b>E-Mail:</b> {$shop.smtp_user}<br/>
+                    <b>网址:</b> <a href="{$shop.tpshop_http}">{$shop.tpshop_http}</a>
+                </td> -->
+                <td>
+                    <b>用餐时间:</b> {$order.at_time}<br/>
+                    <b>人数:</b> {$order.people_num}<br/>
+                    <!-- <b>支付方式:</b>{$order.pay_name}<br/>
+                    <b>配送方式:</b>{$order.shipping_name}<br/> -->
+                    <b>座位:</b>{$order.table}<br/>
+                    <b>备注:</b>{$order.user_note}
+                </td>
+                <td>
+                	<b>用户:</b> {$order.name}<br/>
+                    <b>手机:</b> {$order.mobile}<br/>
+                   <!--  <b>订单优惠:</b> {$order.coupon_price}<br/>
+                   <b>使用积分:</b> {$order.integral}<br/>
+                   <b>使用余额:</b> {$order.user_money}<br/>
+                    <b>应付金额:</b>{$order.order_amount}-->
+                </td>
+                <td>
+                    <b>下单日期:</b> {$order.add_time|date='Y-m-d H:i:s',###}<br/>
+                    <b>订单号:</b> {$order.order_sn}<br/>
+                    <!-- <b>支付方式:</b>{$order.pay_name}<br/>
+                    <b>配送方式:</b>{$order.shipping_name}<br/> -->
+                    <b>订单总价:</b>{$order.total_amount}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <td><b>名称</b></td>
+                
+                <td><b>数量</b></td>
+                <td><b>单价</b></td>
+                <td class="text-right"><b>小计</b></td>
+            </tr>
+            </thead>
+            <tbody>
+            {volist name="order['order_combo']" id="good"}
+                <tr>
+                    <td>{$good.goods_name}</td>
+                    <td>{$good.goods_num}</td>
+                    <td>{$good.goods_price}</td>
+                    <td class="text-right"><?=$good['goods_price']*$good['goods_num']?></td>
+                    <!-- <td class="text-right">{$good.goods_total}</td> -->
+                </tr>
+                <tr>
+                    <td colspan="5">{$good.goods_content}</td>
+                </tr>
+            {/volist}
+
+            {volist name="order['order_goods']" id="good"}
+                <tr>
+                    <td>{$good.goods_name}</td>
+                    <td>{$good.goods_num}</td>
+                    <td>{$good.goods_price}</td>
+                    <td class="text-right"><?=$good['goods_price']*$good['goods_num']?></td>
+                    <!-- <td class="text-right">{$good.goods_total}</td> -->
+                </tr>
+            {/volist}
+            </tbody>
+            <tfoot>
+            <tr><td colspan="6" class="text-center"><input class="btn btn-default noprint" type="submit" onclick="window.print();" value="打印"></td></tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+</body>
+</html>

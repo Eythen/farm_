@@ -1,0 +1,287 @@
+.half_div {
+	width:50%;
+	min-width:550px;
+	margin-top:20px;
+	text-align:center;
+	height:160px;
+	text-align:center;
+	float:left;
+}
+
+.ap{
+	width:550px;
+	height:160px;
+	margin:0px auto;
+}
+
+.avatar{
+    width:100px;  
+	height:160px; 
+	text-align:center;
+	float:left;
+	padding-top:30px;
+}
+
+.avatar img {
+	width:70px;
+	height:70px;
+    -moz-border-radius:50%;  
+    -webkit-border-radius:50%;  
+    border-radius:50%;
+}
+
+
+.progress_div{
+	width:390px;
+	height:160px;
+	position:relative;
+	float:left;
+	padding-top:70px;
+}
+
+
+.pr_tt{
+	position:absolute;
+	top:45px;
+	left:0px;
+}
+
+
+.pr_done{
+	position:absolute;
+	top:30px;
+	right:0px;
+}
+
+.pr_done span font{
+	color:#f79445;
+	font-size:30px;
+}
+
+.last_target{
+	
+	position:absolute;
+	top:90px;
+	right:0px;
+	float:left;
+	width:90px;
+	margin-right:-45px;
+}
+
+
+.money {
+	
+	color:#f79445;
+	font-size:25px;
+	
+	
+}
+
+.base_target{
+	
+	position:absolute;
+	top:90px;
+	float:left;
+	width:90px;
+	margin-left:-45px;
+	
+}
+
+.progress{
+	
+	background:#c0e2f1;
+
+	
+}
+
+
+.progress-bar-success{
+	background:#8bc9e4;
+}
+
+
+
+
+.firstpr_div{
+	
+	text-align:center;
+	margin-top:20px;
+	width:100%;
+	/* min-width:1200px; */
+	min-width:1000px;
+	height:220px; 
+	border:1px solid #8bc9e4;
+	float:left;
+	
+	-moz-border-radius:5px;  
+    -webkit-border-radius:5px;  
+    border-radius:5px;
+	background-color:#e9f5fa;
+}
+
+
+.first_ap {
+	
+	width:1100px;
+	height:220px;
+	margin:0px auto;
+}
+
+
+.first_avatar{
+	
+	width:120px;  
+	height:220px; 
+	text-align:center;
+	float:left;
+	padding-top:50px;
+}
+
+
+.first_avatar img {
+	width:79px;
+	height:79px;
+    -moz-border-radius:50%;  
+    -webkit-border-radius:50%;  
+    border-radius:50%;
+}
+
+.first_progress_div{
+	/* width:1040px; */
+	width:840px;
+	height:220px;
+	float:left;
+	position:relative;
+	padding-top:95px;
+}
+
+
+.first_pr_tt{
+	position:absolute;
+	top:65px;
+	left:0px;
+}
+
+.first_pr_tt span{
+	
+	font-size:20px;
+}
+
+
+.first_pr_done{
+	position:absolute;
+	top:45px;
+	right:0px;
+}
+
+
+
+.first_pr_done span {
+	font-size:20px;
+}
+
+
+.first_pr_done span font{
+	color:#f79445;
+	font-size:34px;
+}
+
+.first_last_target{
+	
+	position:absolute;
+	top:115px;
+	right:0px;
+	float:left;
+	width:110px;
+	margin-right:-54px;
+}
+
+
+.first_money {
+	
+	color:#f79445;
+	font-size:25px;
+	
+	
+}
+
+.first_base_target{
+	
+	position:absolute;
+	top:115px;
+	float:left;
+	width:110px;
+	margin-left:-54px;
+	
+}
+
+
+.base_target{
+	padding-top:10px;
+	background:url(../img/triangle_01.png) no-repeat center top;
+	
+}
+
+
+.last_target{
+	padding-top:10px;
+	background:url(../img/triangle_01.png) no-repeat center top;
+	
+}
+
+
+.first_base_target{
+    padding-top:15px;
+	background:url(../img/triangle_02.png) no-repeat center top;
+}
+
+
+.first_last_target{
+    padding-top:15px;
+	background:url(../img/triangle_02.png) no-repeat center top;
+}
+
+
+.first_png {
+	width:60px;  
+	height:220px; 
+	float:left;
+	padding-top:55px;
+}
+
+
+.first_png  img {
+	width:59px;
+	height:73px;
+}
+
+
+
+.second_png {
+	width:60px;  
+	height:160px; 
+	float:left;
+	padding-top:40px;
+}
+
+
+.second_png  img {
+	width:42px;
+	height:63px;
+}
+
+.rank_div{
+	width:60px;  
+	height:160px; 
+	float:left;
+	line-height:140px;
+	font-size:25px;
+	font-weight:bold;
+}
+.btn-year{
+	margin-top: 10px;
+	margin-right: 10px;
+	cursor: pointer;
+	padding: 8px;
+    font-size: 18px;
+}

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>信息管理平台</title>
+	{include file="public:css" /}
+	<style type="text/css">
+        body{background-color: #f5f5f5}
+		.btn-icon{ font-size: 12px; margin: 0px 5px; }
+	</style>
+</head>
+<body>
+	<div class="well well-sm" >
+		<div id="toolbar">
+          	<!--<select name="cat_id" class="form-control pull-left" style="width:180px;margin-right:8px;">-->
+          		<!--<option value="">选择文章类别</option>-->
+          		<!--{foreach name="cats" item="vo"}-->
+          		<!--<option value="{$vo.cat_id}" {if condition="$vo[cat_id] eq $cat_id"}selected{/if}>{$vo.cat_name}</option>-->
+          		<!--{/foreach}-->
+          	<!--</select>-->
+        </div>
+		<table class="table text-center table-hover table-condensed" data-toolbar="#toolbar" data-toggle="table" data-sort-name="card_id" data-sort-order="desc" data-url="{:url('cardList')}" data-side-pagination="server" data-pagination="true" data-page-list="[10, 20, 50, 100, 200]" data-show-refresh="true" data-search="true" data-show-export="true" data-filter-control="true" data-filter-show-clear="true" >
+            <thead>
+                <tr>
+                    <th data-halign="center" data-field="card_id" data-filter-control="input" >ID</th>
+                    <th data-halign="center" data-field="user_name" data-filter-control="input" >用户昵称</th>
+                    <th data-halign="center" data-field="status" data-filter-control="input" >状态</th>
+                    <th data-halign="center" data-field="add_time" data-filter-control="input" >新增时间</th>
+                    <th data-halign="center" data-field="check_user" data-filter-control="input" >审核人</th>
+                    <th data-halign="center" data-field="check_time" data-filter-control="input" >审核时间</th>
+                    <th data-halign="center" data-field="operate" data-formatter="operateFormatter" data-events="operateEvents" >操作</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+	{include file="public:js" /}
+	<script type="text/javascript">
+		function operateFormatter(value, row, index) {
+		    if (row.status == '待审核'){
+                return [
+                    '<a href="javascript:void(0);" class="btn-icon view btn btn-sm btn-success" title="查看"><i class="fa fa-edit"></i>查看</a> <a href="javascript:void(0);" class="btn-icon open btn btn-sm btn-danger" title="审核"><i class="fa fa-check"></i>审核</a>',
+                ].join('');
+            }else{
+                return [
+                    '<a href="javascript:void(0);" class="btn-icon view btn btn-sm btn-success" title="查看"><i class="fa fa-edit"></i>查看</a>',
+                ].join('');
+            }
+        }
+
+        window.operateEvents = {
+        	// 查看
+            'click .view': function (e, value, row, index) {
+                //var url = $(this).data('url');
+                var url = "{:url('home/UsersCard/detail')}?card_id="+row.card_id;
+                var title = row.user_name+'-详情';
+                var arr = new Array();
+                
+                $(window.parent.document).find(".page-tabs-content a").each(function(index){
+                    arr[index] = $(this).data('id');
+                });
+                //获取导航index    
+                var weizhi = $.inArray( url, arr );
+                if(weizhi < 0 ){
+
+                    $(window.parent.document).find(".page-tabs-content a").removeClass('active');
+                    $(window.parent.document).find(".page-tabs-content").append('<a href="javascript:;" class="J_menuTab active" data-id="'+url+'">'+title+' <i class="fa fa-times-circle"></i></a>');
+
+                    $(window.parent.document).find(".J_mainContent iframe").css('display','none');
+                    $(window.parent.document).find(".J_mainContent").append('<iframe class="J_iframe" name="iframeUid0" width="100%" height="100%" src="'+url+'" frameborder="0" data-id="'+url+'" seamless></iframe>');
+                }
+                else{
+                    $(window.parent.document).find(".page-tabs-content a").removeClass('active');
+                    $(window.parent.document).find(".J_mainContent iframe").css('display','none');
+                    $(window.parent.document).find(".J_mainContent iframe:eq("+weizhi+")").css('display','block');
+                    $(window.parent.document).find(".page-tabs-content a:eq("+weizhi+")").addClass('active');
+                }
+            },
+            // 审核
+            'click .open': function (e, value, row, index) {
+                window.location = "{:url('cardHandle')}?card_id="+row.card_id;
+            },
+        };
+
+	</script>
+</body>
+</html>

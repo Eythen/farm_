@@ -1,0 +1,106 @@
+*.{margin:0;padding:0;font-family:"microsoft yahei";margin:0 auto;}
+
+/*SEO工作安排*/
+.table{width: 100%;text-align:center;margin:0 auto;}
+.table td, th{border-right:1px solid #fff;border-bottom:1px solid #fff;}
+.table thead tr{width:100%;background:#86ceed;color:#fff;}
+.table thead th{border-radius:5px 5px 0 0;}
+.table .tr1{background:#86ceed;color:#fff;font-size:14px;}
+.table .tr2{background:#def0f8;font-size:14px;}
+.table .tr3{background:#2092a8;font-size:14px;color:#fff;}
+.table .td1{border-radius:0 0 0 5px;}
+.table .td2{border-radius:0 0 5px 0;}
+
+
+/*添加按钮和时间段搜索、备注*/
+.box{margin:20px 0;}
+.box p{color:#d2413f;font-size:14px;}
+.Button_tj{display:inline-block;width:69px;height:34px;background:#428bca;border-radius:5px;line-height:34px;color:#fff;text-decoration:none;text-align:center;font-size:14px;transition:all .5s;-webkit-transition:all .5s;cursor: pointer;}
+.Button_tj:hover{background:#2674b8;}
+
+
+/*工作内容*/
+.table1{min-width:1000px;text-align:center;}
+.table1 td, th{border-right:1px solid #fff;border-bottom:1px solid #fff;padding:8px;text-align:center;font-weight: normal;}
+.table1 pre{border: 0;background-color: inherit;padding: 0;font-size: 14px;color: inherit;border-radius: inherit;margin: inherit;}
+.table1 .tr1{background:#86ceed;color:#fff;font-size:14px;}
+.table1 .tr2{background:#def0f8;font-size:14px;}
+.table1 .tr3{background:#b4e2f7;font-size:14px;}
+.table1 tbody tr:nth-child(odd){background:#b4e2f7;font-size:14px;}
+.table1 tbody tr:nth-child(even){background:#def0f8;font-size:14px;}
+.Button_xg{width:69px;height:34px;float:left;background:#efad57;border-radius:5px;line-height:34px;text-align:center;font-size:14px;transition:all .5s;-webkit-transition:all .5s;}
+.Button_xg a{display:block;width:69px;height:34px;color:#fff;text-decoration:none;}
+.Button_xg:hover{background:#eba344;}
+.Button_sc{width:69px;height:34px;float:right;background:#d75452;border-radius:5px;line-height:34px;text-align:center;font-size:14px;transition:all .5s;-webkit-transition:all .5s;}
+.Button_sc a{display:block;width:69px;height:34px;color:#fff;text-decoration:none;}
+.Button_sc:hover{background:#cc403e;}
+
+
+/*第二个表*/
+.table2{width:100%;text-align:center;}
+.table2 td, th{border-right:1px solid #fff;border-bottom:1px solid #fff;vertical-align: top;}
+.table2 th{background:#86ceed;color:#fff;font-size:14px;}
+.table2 .tr2{background:#def0f8;font-size:12px;}
+.table2 .tr1{background:#b4e2f7;font-size:14px;}
+.table2 tbody tr{background:#def0f8;font-size:14px;line-height:35px;}
+.table2 tbody tr p{margin:0;}
+.table2 tbody tr div{background: #b4e2f7;}
+.Button_tjzd{width:120px;height:34px;background:#efad57;border-radius:5px;line-height:34px;text-align:center;font-size:14px;transition:all .5s;-webkit-transition:all .5s;}
+.Button_tjzd a{display:block;width:120px;height:34px;color:#fff;text-decoration:none;}
+.Button_tjzd:hover{background:#e59b3b;}
+
+
+.table3{width:100%;text-align:center;}
+.table3 td, th{border-right:1px solid #fff;border-bottom:1px solid #fff;}
+.table3 th{background:#86ceed;color:#fff;font-size:14px;vertical-align: middle;}
+.table3 .tr1{background:#def0f8;font-size:12px;}
+.table3 .tr2{background:#b4e2f7;font-size:12px;}
+.table3 tbody tr:nth-child(odd){background:#def0f8;font-size:12px;line-height: 50px;}
+.table3 tbody tr:nth-child(even){background:#b4e2f7;font-size:12px;line-height: 50px;}
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{
+	text-align: center;
+}
+.ajax{display: inline-block;}
+.ajax:hover{background-color: #88CFEE;}
+.container-fluid{
+	padding:10px 30px;
+}
+
+/* layer */
+.layui-layer-record{border-radius:10px!important;max-width: 1250px;}
+.layui-layer-record .layui-layer-setwin .layui-layer-close2{position:absolute;right:0px;top:0px;width:30px;height:30px;margin-left:0;background-position:-149px -31px;_display:none;}
+.layui-layer-content {border-radius: 15px;}
+
+.content-title{
+	padding-left:10px;
+	line-height: 45px;
+	border-bottom:4px solid #428bca;
+	font-size:18px;
+	color:#000;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+		<meta content="yes" name="apple-mobile-web-app-capable" />
+		<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+		<meta content="telephone=no" name="format-detection" />
+		<title>付款成功</title>
+
+		<link href="__PUBLIC__/skin/css/ydui.css" rel="stylesheet">
+		<link href="__PUBLIC__/skin/css/app.css" rel="stylesheet">
+		<style>
+			.g-flexview {
+				height: auto;
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: -ms-flexbox;
+				display: flex;
+				-webkit-box-orient: vertical;
+				-webkit-box-direction: normal;
+				-webkit-flex-direction: column;
+				-ms-flex-direction: column;
+				flex-direction: column;
+				margin: 0 auto;
+				max-width: 750px;
+				min-width: 300px;
+			}
+			
+			.cell-right {
+				font-size: .3rem;
+			}
+		</style>
+
+		<script src="__PUBLIC__/skin/js/ydui.flexible.js"></script>
+	</head>
+
+	<body>
+		<div class="g-flexview">
+
+			<div class="msg_warn">
+				<div class="weui-msg">
+					<div class="weui-msg__icon-area">
+						<span class="icon-checkoff"></span>
+					</div>
+					<div class="weui-msg__text-area">
+						<h2 class="weui-msg__title">支付成功</h2>
+					</div>
+					<div class="m-cell">
+						<div class="cell-item">
+							<div class="cell-left">订单号码</div>
+							<div class="cell-right">{$orders.order_sn}</div>
+						</div>
+						<div class="cell-item">
+							<div class="cell-left">手机号码</div>
+							<div class="cell-right">{$orders.mobile}</div>
+						</div>
+						<div class="cell-item">
+							<div class="cell-left">订单数量</div>
+							<div class="cell-right">{$n}件</div>
+						</div>
+						<div class="cell-item">
+							<div class="cell-left">订单总额</div>
+							<div class="cell-right">{$orders.total_amount}</div>
+						</div>
+					</div>
+					<div class="weui-msg__opr-area">
+						<p class="weui-btn-area">
+							<a href="{:url('details',array('order_id'=>$orders['order_id']))}" class="btn-block btn-hollow" style="width: 47%; float: left; margin-right: 5%">查看订单</a>
+							<a href="{:url('Index/index')}" class="btn-block btn-hollow" style="width: 47%; float: left;">返回商城</a>
+						</p>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+		<script src="__PUBLIC__/skin/js/jquery.min.js"></script>
+		<script src="__PUBLIC__/skin/js/ydui.js"></script>
+		<script src="__PUBLIC__/skin/js/app.js"></script>
+		<script src="__PUBLIC__/js/mui.min.js"></script>
+		<script>
+            mui.init({
+                keyEventBind:{
+                    backbutton:false
+                }
+            })
+		</script>
+		<script src="__PUBLIC__/js/common.js"></script>
+	</body>
+
+</html>
